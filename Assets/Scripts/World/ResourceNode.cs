@@ -33,6 +33,27 @@ public class ResourceNode : MonoBehaviour, ITickable, IExaminable
     [Tooltip("Optional reachable place to stand (for example the bank beside a fishing ripple).")]
     public Transform interactionPoint;
     public Vector3 InteractionPosition => interactionPoint != null ? interactionPoint.position : transform.position;
+
+    /// <summary>The point the player faces while working this node: the middle of the visible model.
+    /// A model's pivot is often off to one side or at a corner, so aiming at transform.position could
+    /// turn the player away from the thing being chopped or mined. Fishing spots face the water spot.</summary>
+    public Vector3 FacingPosition
+    {
+        get
+        {
+            if (skill == Skill.Fishing || _renderers == null) return transform.position;
+            Bounds visual = default;
+            bool any = false;
+            foreach (var r in _renderers)
+            {
+                if (r == null || !r.enabled || !(r is MeshRenderer || r is SkinnedMeshRenderer)) continue;
+                if (!any) { visual = r.bounds; any = true; }
+                else visual.Encapsulate(r.bounds);
+            }
+            return any ? visual.center : transform.position;
+        }
+    }
+
     [Tooltip("Shown instead of the node while it's depleted (a tree's stump). Leave empty and the node just vanishes until it respawns.")]
     [SerializeField] public GameObject depletedVisual;
 

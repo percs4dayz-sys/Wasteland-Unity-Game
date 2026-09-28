@@ -41,7 +41,16 @@ public class Interactor3D : MonoBehaviour
         ShowPrompt(thing != null ? verb : null);
 
         if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton0)) && thing != null)
-            InteractWith(thing);
+        {
+            // The prompt shows from a few metres out. Walk up to a solid node before working it, rather
+            // than swinging at it from where you stand.
+            var walker = GetComponent<ClickToMove3D>();
+            if (walker != null && ClickToMove3D.IsSolidNode(thing) &&
+                Planar(ClickToMove3D.UsePosition(thing) - transform.position) > ClickToMove3D.GatherReach)
+                walker.UseFromMenu(thing);
+            else
+                InteractWith(thing);
+        }
     }
 
     /// <summary>Nearest interactable (any type) within range, plus the action label to show.</summary>
@@ -110,7 +119,11 @@ public class Interactor3D : MonoBehaviour
         if (thing is ResourceNode node)
         {
             if (node.IsDepleted) { Msg("Nothing left there right now."); return false; }
-            FaceToward(node.transform.position);
+            // Gathering and fighting don't mix: a live combat target keeps turning you toward the enemy
+            // and holds the aim pose, so you'd work the node facing away with the wrong animation.
+            var combat = GetComponent<ActionCombat3D>();
+            if (combat != null) combat.Disengage();
+            FaceToward(node.FacingPosition);
             // A pending click destination must not make Update immediately cancel gathering.
             _pc.ClearDestination();
             SkillingManager.Instance?.StartGathering(node);
@@ -124,6 +137,8 @@ public class Interactor3D : MonoBehaviour
         }
         return false;
     }
+
+    static float Planar(Vector3 v) { v.y = 0f; return v.magnitude; }
 
     void FaceToward(Vector3 pos)
     {

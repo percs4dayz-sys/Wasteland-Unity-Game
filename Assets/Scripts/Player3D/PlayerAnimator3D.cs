@@ -288,7 +288,7 @@ public class PlayerAnimator3D : MonoBehaviour
         var node = SkillingManager.Instance != null ? SkillingManager.Instance.ActiveNode : null;
         if (node != null && _pc != null && !_pc.IsMoving)
         {
-            Vector3 toward = node.transform.position - transform.position;
+            Vector3 toward = node.FacingPosition - transform.position;
             toward.y = 0f;
             if (toward.sqrMagnitude > 0.001f) transform.rotation = Quaternion.LookRotation(toward);
         }
