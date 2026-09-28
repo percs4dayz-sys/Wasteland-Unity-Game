@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 ///      the screen edge when she's off screen, and the minimap marker).
 ///   3. Each lesson she gives points at where it's done — the nearest dead tree, fishing spot, furnace … —
 ///      with a short camera glide over to it, then the objective marker stays on that same spot until you
-///      earn XP in that skill (Beastmastery requires a task kill with your beast). Then it's "Return to
+///      earn XP in that skill (Beastmastery requires finishing a whole beast task with your beast). Then it's "Return to
 ///      Roxy", and round again.
 /// Meeting her sets the player flag "roxy_met", so returning players aren't welcomed all over again, and
 /// the lesson in progress (or "return to Roxy") is kept in the saved flags too, so it's still pointing the
@@ -240,9 +240,22 @@ public class StarterGuide : MonoBehaviour
         if (_roxy != null) QuestGuide.Show("Return to Roxy for your next lesson", _roxy.transform);
     }
 
+    void OnEnable() => BeastTasks.TaskCompleted += OnBeastTaskCompleted;
+    void OnDisable() => BeastTasks.TaskCompleted -= OnBeastTaskCompleted;
+
+    /// <summary>The hunting lesson ends when the whole beast task is done, read from the saved flags so it
+    /// still counts if the lesson was restored late (or the guide hadn't picked it back up yet).</summary>
+    void OnBeastTaskCompleted()
+    {
+        if (TryActiveLesson(PlayerEntity.Instance, out var skill, out _) && skill == Skill.Beastmastery) FinishLesson();
+    }
+
     void OnXp(Skill skill, int amount)
     {
         if (_lesson != skill) return;
+        // A single task kill (or burying old bones) is Beastmastery XP too, but the lesson is the full
+        // hunt: finishing it early made Roxy hand out her next lesson mid-count. See OnBeastTaskCompleted.
+        if (skill == Skill.Beastmastery) return;
         if (_lessonItem == FissionItems.GeigerCounter)
         {
             var p = PlayerEntity.Instance;

@@ -201,9 +201,21 @@ public class RoxyNPC : MonoBehaviour, ITalkableNPC
         {
             if (activeSkill == Skill.Beastmastery)
             {
-                dlg.StartDialogue(npcName, BeastLessonLine);
-                if (!player.HasFlag("egg_chosen")) EggChoiceUI.Show();
-                else CompanionManager.Instance?.Summon();
+                if (!player.HasFlag("egg_chosen"))
+                {
+                    dlg.StartDialogue(npcName, BeastLessonLine);
+                    EggChoiceUI.Show();
+                }
+                else
+                {
+                    // Mid-hunt: say where the count stands instead of replaying the whole lesson, so it's
+                    // clear she's still waiting on this hunt and hasn't moved on.
+                    var task = BeastTasks.Current;
+                    dlg.StartDialogue(npcName, task != null
+                        ? $"You're not done yet, sweetcheeks. {task.done}/{task.required} {task.creature} down. Keep your beast out and finish the count, then come see me."
+                        : "Your beast is sniffing out your first hunt. Keep it out with you, finish the whole count, then come see me.");
+                    CompanionManager.Instance?.Summon();
+                }
             }
             else
             {
@@ -288,8 +300,9 @@ public class RoxyNPC : MonoBehaviour, ITalkableNPC
         }
     }
 
-    /// <summary>Give the quest's tool/material to the player (bag, or bank if the bag is full).
-    /// Returns true if it landed somewhere (or there was nothing to give).</summary>
+    /// <summary>Give the quest's tool/material to the player. Returns true if it's handled (landed in the bag,
+    /// the player already has one, or there was nothing to give). A full bag is a no: she keeps the lesson
+    /// for next time instead of stuffing the item somewhere or handing out duplicates.</summary>
     private bool GiveQuestItem(Quest q)
     {
         if (q == null || q.giveItemId <= 0) return true;
@@ -298,18 +311,31 @@ public class RoxyNPC : MonoBehaviour, ITalkableNPC
         if (player == null || item == null) return false;
 
         int qty = Mathf.Max(1, q.giveQty);
+        if (player.Inventory.Contains(q.giveItemId, qty) || IsEquipped(player, q.giveItemId))
+        {
+            HUDController.Emit($"<color=#FF7AB0>[Roxy]:</color> You've already got a {item.name}, so I'll hang on to mine.");
+            return true;
+        }
+        if (player.Bank != null && player.Bank.Contains(q.giveItemId, qty))
+        {
+            HUDController.Emit($"<color=#FF7AB0>[Roxy]:</color> You've already got a {item.name} in your bank, sweetcheeks. Take it out for this one.");
+            return true;
+        }
+
         string n = qty > 1 ? qty + "x " : "";
         if (player.Inventory.Add(q.giveItemId, qty))
         {
             HUDController.Emit($"<color=#FF7AB0>[Roxy]:</color> Here, take {n}{item.name} — you'll want it for this one. <i>*winks*</i>");
             return true;
         }
-        if (player.Bank != null && player.Bank.Deposit(q.giveItemId, qty))
-        {
-            HUDController.Emit($"<color=#FF7AB0>[Roxy]:</color> Your bag's stuffed, so I tucked the {item.name} into your bank, sweetcheeks.");
-            return true;
-        }
-        HUDController.Emit($"<color=#FF7AB0>[Roxy]:</color> Make some room and I'll hand you the {item.name}.");
+        HUDController.Emit($"<color=#FF7AB0>[Roxy]:</color> Your bag's stuffed. Make some room and I'll hand you the {item.name}.");
+        return false;
+    }
+
+    static bool IsEquipped(PlayerEntity player, int itemId)
+    {
+        if (player.Equipment == null) return false;
+        foreach (var worn in player.Equipment.GetAll().Values) if (worn == itemId) return true;
         return false;
     }
 
