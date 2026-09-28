@@ -1,0 +1,137 @@
+# Blender 4.0.2 MTL File: 'Cool Girl 4.0.blend'
+# www.blender.org
+
+newmtl axe
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd textures/Axe_basecolor.png
+map_Ns textures/Axe_roughness.png
+map_Bump -bm 1.000000 textures/Axe_normal.png
+
+newmtl body
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/body_basecolor.png
+map_Ks textures/Body_specular.png
+map_Ns textures/Body_Roughness.png
+map_Bump -bm 1.000000 textures/body_normal.png
+
+newmtl bunny_ear
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/bunny_ear_basecolor.png
+map_Ns textures/bunny_ear_roughness.png
+map_Bump -bm 1.000000 textures/bunny_ear_normal.png
+
+newmtl eyelashes
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd textures/eyelashes_basecolor_opacity.png
+map_d textures/eyelashes_basecolor_opacity.png
+map_Bump -bm 1.000000 textures/eyelashes_normal.png
+
+newmtl eyes
+Ns 1000.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.300000 0.300000 0.300000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/Eye_green_BaseColor.png
+
+newmtl glasses
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd textures/glasses_basecolor.png
+map_Ns textures/glasses_roughness.png
+map_refl textures/glasses_metallic.png
+map_d textures/glasses_alpha.png
+map_Bump -bm 1.000000 textures/glasses_normal.png
+
+newmtl hair
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd textures/hair_basecolor.png
+map_Ns textures/hair_roughness.png
+map_d textures/hair_Opacity.png
+
+newmtl outfit
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 0.990000
+illum 9
+map_Kd textures/outfit_basecolor.png
+map_Ns textures/outfit_roughness.png
+map_refl textures/outfit_metallic.png
+map_Bump -bm 1.000000 textures/outfit_normal.png
+
+newmtl shoes
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/shoes_basecolor.png
+map_Ns textures/shoes_roughness.png
+map_refl textures/shoes_metallic.png
+map_Bump -bm 1.000000 textures/shoes_normal.png
+
+newmtl smoke
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/smoke_basecolor.png
+map_refl textures/smoke_metallic.png
+map_Bump -bm 1.000000 textures/smoke_normal.png
+
+newmtl sock
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd textures/sock_basecolor.png
+map_Ns textures/sock_roughness.png
+map_refl textures/sock_metallic.png
+map_d textures/sock_basecolor.png
+map_Bump -bm 1.000000 textures/sock_normal.png
+
+newmtl teeth
+Ka 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/teeth_basecolor.png
+map_Ks textures/teeth_specular.png
+map_Ns textures/teeth_roughness.png
+map_Bump -bm 1.000000 textures/teeth_normal.png

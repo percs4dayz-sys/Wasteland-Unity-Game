@@ -1,0 +1,114 @@
+# ── Only the Unity project itself is versioned ─────────────────────────
+# Everything at the top level is ignored except these folders/files.
+/*
+!/Assets/
+!/Packages/
+!/ProjectSettings/
+!/.gitignore
+!/.gitattributes
+!/.editorconfig
+!/README.md
+!/CLAUDE.md
+!/AGENTS.md
+
+# ── Unity auto-generated (rebuilt on open — never commit) ──────────────
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+Assets/ExternalAssets/
+
+# ── IDE / editor project files (regenerated automatically) ─────────────
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# ── OS junk ────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+# ── Build artifacts / packages / archives ──────────────────────────────
+*.apk
+*.aab
+*.unitypackage
+*.app
+.gradle/
+.consulo/
+crashlytics-build.properties
+*.rar
+*.zip
+*.7z
+
+# ── Binary art stays local (≈20 GB, too big for GitHub, and the repo is
+#    public so paid store assets must not be redistributed). Their .meta
+#    files ARE committed so GUID references stay traceable. ─────────────
+*.png
+*.tga
+*.jpg
+*.jpeg
+*.tif
+*.tiff
+*.psd
+*.exr
+*.hdr
+*.dds
+*.bmp
+*.gif
+*.texture2d
+*.fbx
+*.obj
+*.glb
+*.gltf
+*.blend
+*.blend1
+*.blend2
+*.max
+*.ma
+*.mb
+*.3ds
+*.dae
+*.stl
+*.ply
+*.c4d
+*.abc
+*.spp
+*.sbsar
+*.wav
+*.mp3
+*.ogg
+*.aif
+*.aiff
+*.flac
+*.avi
+*.mp4
+*.mov
+*.webm
+*.bin
+*.ttf
+*.otf
+
+# ── Individual oversized text assets (GitHub rejects files over 100 MB) ─
+Assets/Resources/NPC/RoxyIdle.anim
+Assets/Worlds/BrokenCrescent/Navigation/BC_ClickToMove.asset
+Assets/_Recovery/

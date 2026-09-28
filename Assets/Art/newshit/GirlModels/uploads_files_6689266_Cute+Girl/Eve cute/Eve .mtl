@@ -1,0 +1,208 @@
+# Blender 4.0.2 MTL File: 'Eve blender 4.0 + .blend'
+# www.blender.org
+
+newmtl bikini
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd textures/bikini_basecolor.png
+map_d textures/bikini_opacity.png
+map_Bump -bm 1.000000 textures/bikini_normal.png
+
+newmtl body
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/body_basecolor_tattoo.png
+map_Ns textures/Body_Roughness.png
+map_Bump -bm 1.000000 textures/body_normal.png
+
+newmtl doll
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/doll_Base_color.png
+map_Ns textures/doll_Roughness.png
+map_Bump -bm 1.000000 textures/doll_Normal.png
+
+newmtl eyes
+Ns 1000.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/Eye_BaseColor.tga
+
+newmtl eyes_lashes
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd textures/eyelashes_basecolor_opacity.png
+map_d textures/eyelashes_basecolor_opacity.png
+map_Bump -bm 1.000000 textures/eyelashes_normal.png
+
+newmtl hair
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 2
+map_Kd textures/hair_basecolor.png
+map_d textures/hair_alpha.png
+
+newmtl hat
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd textures/hat_basecolor.png
+map_Bump -bm 1.000000 textures/hat_normal.png
+
+newmtl photostudio_flower_boquet_002_01a_mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+
+newmtl photostudio_flower_boquet_002_01b_mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.773585 0.773585 0.773585
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+
+newmtl photostudio_flower_boquet_002_03_mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.792453 0.751335 0.751335
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+
+newmtl photostudio_flower_boquet_002_04_mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.886792 0.832414 0.832414
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+
+newmtl photostudio_flower_boquet_002_08_mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.726415 0.726415 0.726415
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+
+newmtl photostudio_flower_boquet_002_09_mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.622642 0.622642 0.622642
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+
+newmtl photostudio_flower_boquet_002_10_mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.754717 0.740477 0.715557
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+
+newmtl photostudio_flower_boquet_002_11_mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.679245 0.679245 0.679245
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+
+newmtl photostudio_flower_boquet_002_13_mat
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.450000
+illum 2
+map_Kd textures/photostudio_flower_boquet_002_13_d.png
+map_Ke textures/photostudio_flower_boquet_002_13_mask.png
+map_d textures/photostudio_flower_boquet_002_13_d.png
+map_Bump -bm 1.000000 textures/photostudio_flower_boquet_002_13_m.png
+
+newmtl photostudio_flower_boquet_002_14_mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.754717 0.687077 0.687077
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+
+newmtl photostudio_flower_boquet_002_15_mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.962264 0.962264 0.962264
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+
+newmtl photostudio_flower_boquet_002_16_mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.632075 0.593316 0.593316
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3
+
+newmtl photostudio_flower_boquet_002_ribbon_mat
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.745283 0.488032 0.467560
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 3

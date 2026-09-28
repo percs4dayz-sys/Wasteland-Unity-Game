@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Suimono_Water
+  - Suimono_Depth
+  - Suimono_Screen
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: MG_Ground
+    uniqueID: 26951
+    locked: 0
+  - name: MG_Water
+    uniqueID: 70574
+    locked: 0
+  - name: MG_Objects
+    uniqueID: 1262
+    locked: 0
+  m_RenderingLayers:
+  - Default
+  - Light Layer 1 - InteriorOnly
+  - Light Layer 2 - ExteriorOnly
+  - Light Layer 3 - LampsOnly
+  - Light Layer 4 - ReflectionsOnly
+  - Light Layer 5
+  - Light Layer 6
+  - Light Layer 7
+  - Decal Layer default
+  - Decal Layer 1
+  - Decal Layer 2
+  - Decal Layer 3
+  - Decal Layer 4
+  - Decal Layer 5
+  - Decal Layer 6
+  - Decal Layer 7
+  m_MigratedRenderPipelines:
+  - UnityEngine.Rendering.Universal.UniversalRenderPipeline
+  - UnityEngine.Rendering.HighDefinition.HDRenderPipeline

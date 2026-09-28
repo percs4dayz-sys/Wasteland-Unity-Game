@@ -1,0 +1,27 @@
+# Silences Unity's obsolete-API warning (CS0618) inside third-party packs ONLY.
+# Our own code (Assets/Scripts, Assets/Editor, Assets/Worlds, ...) still reports it,
+# so future Unity API deprecations in project code stay visible.
+# The compiler reads this file because Assets/csc.rsp passes it with -analyzerconfig.
+# To undo: delete this file and Assets/csc.rsp.
+root = true
+
+[Assets/AQUAS-Lite/**.cs]
+dotnet_diagnostic.CS0618.severity = none
+
+[Assets/Bitgem/**.cs]
+dotnet_diagnostic.CS0618.severity = none
+
+[Assets/DunGen/**.cs]
+dotnet_diagnostic.CS0618.severity = none
+
+[Assets/RetroStyleGames/**.cs]
+dotnet_diagnostic.CS0618.severity = none
+
+[Assets/RoadArchitect/**.cs]
+dotnet_diagnostic.CS0618.severity = none
+
+[Assets/SUIMONO - WATER SYSTEM 2/**.cs]
+dotnet_diagnostic.CS0618.severity = none
+
+[Assets/Synty/**.cs]
+dotnet_diagnostic.CS0618.severity = none

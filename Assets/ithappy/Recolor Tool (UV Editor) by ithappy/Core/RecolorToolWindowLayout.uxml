@@ -1,0 +1,37 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/ithappy/Recolor%20Tool%20(UV%20Editor)%20by%20ithappy/Core/RecolorToolWindowStyleSheet.uss?fileID=7433441132597879392&amp;guid=6d719c2aa84496e40876d7952a122f6c&amp;type=3#RecolorToolWindowStyleSheet" />
+    <ui:VisualElement name="Container" style="flex-grow: 1;">
+        <ui:VisualElement name="SelectionMenu" style="height: 22px; flex-direction: row;">
+            <uie:ObjectField label="Asset" name="ObjectField" style="min-width: 220px; flex-grow: 1; opacity: 1;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="SelectionMenu" style="height: 22px; flex-direction: row;">
+            <ui:DropdownField name="SubMeshField" label="Materials" choices="0" />
+            <ui:DropdownField index="0" choices="UV0,UV1,UV2,UV3,UV4" name="UVField" />
+            <ui:DropdownField name="SubPrefabsField" label="Parts" choices="0" />
+            <ui:Button text="Visibility" display-tooltip-when-elided="true" name="VisibilityButton" />
+            <ui:Button text="Apply MM" display-tooltip-when-elided="true" name="MasterMaterialButton" />
+        </ui:VisualElement>
+        <ui:VisualElement name="ObjectContainer" style="flex-grow: 1;">
+            <ui:VisualElement name="TopMenu" style="height: 22px; flex-direction: row;">
+                <ui:Button text="Rect" display-tooltip-when-elided="true" name="RectSelectButton" focusable="true" />
+                <ui:Button text="Lasso" display-tooltip-when-elided="true" name="LassoSelectButton" focusable="true" />
+                <ui:Button text="Color" display-tooltip-when-elided="true" name="ColorButton" />
+                <ui:Button text="Center" display-tooltip-when-elided="true" name="CenterButton" />
+                <ui:Button text="Focus" display-tooltip-when-elided="true" name="FocusButton" />
+                <ui:Button text="Copy" display-tooltip-when-elided="true" name="CopyButton" />
+                <ui:Button text="Paste" display-tooltip-when-elided="true" name="PasteButton" />
+                <ui:Button text="Test Asset" display-tooltip-when-elided="true" name="TestAssetButton" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Canvas" style="flex-grow: 1; overflow: hidden;" />
+            <ui:VisualElement name="InfoMenu" style="height: 22px; flex-direction: row; justify-content: flex-start;">
+                <ui:Label display-tooltip-when-elided="true" />
+            </ui:VisualElement>
+            <ui:VisualElement name="BottomMenu" style="height: 22px; flex-direction: row; justify-content: flex-start;">
+                <ui:Button text="Asset Viewer" display-tooltip-when-elided="true" name="AssetViewerButton" style="flex-grow: 0;" />
+                <ui:Button text="Save" display-tooltip-when-elided="true" name="SaveButton" style="flex-grow: 0;" />
+                <ui:Button text="Support" display-tooltip-when-elided="true" name="SupportButton" style="flex-grow: 0;" />
+                <ui:Button text="All Assets" display-tooltip-when-elided="true" name="AllAssetsButton" style="flex-grow: 0;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5756458058672608233
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da692e001514ec24dbc4cca1949ff7e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.HighDefinition.Editor::UnityEditor.Rendering.HighDefinition.AssetVersion
+  version: 13
+  hdPluginSubTargetMaterialVersions:
+    m_Keys: []
+    m_Values: 
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BiomeTerrain
+  m_Shader: {fileID: 4800000, guid: 87bce82b80434144b8615422bf646c8c, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BiomeMask:
+        m_Texture: {fileID: 2800000, guid: cc5068ae4164ca9458f0525e756d69d5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RockTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BiomeSharpness: 2.5
+    - _DetailScale: 0.12
+    - _DetailStrength: 0.35
+    - _RockEnd: 0.78
+    - _RockStart: 0.5
+    - _RockTexScale: 0.2
+    - _Smoothness: 0.06
+    - _SunShade: 0.6
+    m_Colors:
+    - _GrassColor: {r: 0.25999996, g: 0.39999998, b: 0.14999998, a: 1}
+    - _RockColor: {r: 0.35999998, g: 0.33999997, b: 0.31999996, a: 1}
+    - _SandColor: {r: 0.78, g: 0.69, b: 0.45999992, a: 1}
+    - _SnowColor: {r: 0.93, g: 0.95, b: 0.97999996, a: 1}
+    - _SwampColor: {r: 0.16999996, g: 0.23999995, b: 0.12999997, a: 1}
+    - _WorldMin: {r: -300, g: 0, b: -299.76196, a: 0}
+    - _WorldSize: {r: 600, g: 1, b: 599.5239, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
+--- !u!114 &6908772794643827739
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639247ca83abc874e893eb93af2b5e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.ShaderGraph.Editor::UnityEditor.Rendering.BuiltIn.AssetVersion
+  version: 0

@@ -1,0 +1,27 @@
+.gizmo-style {
+    background-color: rgb(0, 255, 0);
+}
+
+.unity-popup-field__label {
+    min-width: 45px;
+}
+
+.unity-object-field__label {
+    min-width: 45px;
+}
+
+.unity-popup-field__input {
+    min-width: 45px;
+}
+
+#SelectionMenu {
+    background-color: var(--unity-colors-app_toolbar-background);
+}
+
+#TopMenu {
+    background-color: var(--unity-colors-app_toolbar-background);
+}
+
+#BottomMenu {
+    background-color: var(--unity-colors-app_toolbar-background);
+}
