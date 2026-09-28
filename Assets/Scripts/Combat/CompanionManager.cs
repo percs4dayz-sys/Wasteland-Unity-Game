@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Animations;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
@@ -84,8 +86,18 @@ public class CompanionManager : MonoBehaviour
     const float ModelBaseHeight = 0.7f;   // a stage-1 dog ≈ 0.7 m tall; stageScale grows from here
     public float modelYawOffset = 0f;     // correct a model whose forward isn't +Z (try 90/180/270 if it faces wrong)
     Animator _modelAnimator;              // set when the body is a rigged model with a controller
+    bool    _useSpeedParam;               // body runs a controller with a "Speed" blend (the wolf)
     Vector3 _lastModelPos;
     static readonly int _speedHash = Animator.StringToHash("Speed");
+
+    // Models with clips but no controller of ours (the glb bird / tortoise): an idle ↔ move blend
+    // played straight onto the Animator, looped by hand since imported clips may not be set to loop.
+    PlayableGraph _clipGraph;
+    AnimationMixerPlayable _clipMixer;
+    AnimationClipPlayable _idlePlayable, _movePlayable;
+    bool  _hasMovePlayable;
+    float _clipSpeed;
+    const float MoveBlendSpeed = 1.5f;    // m/s at which the move clip fully takes over from idle
 
     // Directional beast art (loaded from Assets/Resources/). Left falls back to flipped right.
     Sprite _pupDown, _pupUp, _pupRight, _pupLeft;
@@ -509,11 +521,11 @@ public class CompanionManager : MonoBehaviour
         if (_isModel)
         {
             // Drive the locomotion blend (idle/walk/run) from how fast the body is actually moving.
-            if (_modelAnimator != null && _modelAnimator.runtimeAnimatorController != null)
-                _modelAnimator.SetFloat(_speedHash,
-                    (_go.transform.position - _lastModelPos).magnitude / Mathf.Max(Time.deltaTime, 1e-4f),
-                    0.12f, Time.deltaTime);
+            float speed = (_go.transform.position - _lastModelPos).magnitude / Mathf.Max(Time.deltaTime, 1e-4f);
             _lastModelPos = _go.transform.position;
+            if (_useSpeedParam && _modelAnimator != null)
+                _modelAnimator.SetFloat(_speedHash, speed, 0.12f, Time.deltaTime);
+            else UpdateClipAnimation(speed);
 
             // Face the enemy while fighting; otherwise face the way you're facing.
             Vector3 faceDir = fighting
@@ -570,6 +582,8 @@ public class CompanionManager : MonoBehaviour
         // Reuse the current body only if it already matches this species + growth stage.
         if (_go != null && _builtStage == Stage && _builtKey == def.key) return;
         if (_go != null) { Destroy(_go); _go = null; _sr = null; _modelAnimator = null; }
+        StopClipAnimation();
+        _useSpeedParam = false;
 
         _go = new GameObject("Companion");
         _builtStage = Stage;
@@ -590,14 +604,18 @@ public class CompanionManager : MonoBehaviour
             EnsureModelMaterials(mesh);
 
             // Rigged model with a controller (e.g. the wolf) → animate it instead of sliding.
+            // Otherwise play the model's own clips (the glb bird / tortoise carry theirs inside).
             _modelAnimator = mesh.GetComponentInChildren<Animator>();
-            if (_modelAnimator != null && !string.IsNullOrEmpty(def.controllerName))
+            var rc = string.IsNullOrEmpty(def.controllerName) ? null
+                   : Resources.Load<RuntimeAnimatorController>(def.controllerName);
+            if (_modelAnimator != null && rc != null)
             {
                 _modelAnimator.applyRootMotion = false;
-                var rc = Resources.Load<RuntimeAnimatorController>(def.controllerName);
-                if (rc != null) _modelAnimator.runtimeAnimatorController = rc;
+                _modelAnimator.runtimeAnimatorController = rc;
+                _useSpeedParam = true;
                 _modelAnimator.Update(0f);
             }
+            else StartClipAnimation(mesh, def, Stage);
             NormalizeModelHeight(sizeRoot, 1f);
             _lastModelPos = _go.transform.position;
             return;
@@ -636,6 +654,92 @@ public class CompanionManager : MonoBehaviour
         string n = def.modelNames[stage];
         return string.IsNullOrEmpty(n) ? null : Resources.Load<GameObject>(n);
     }
+
+    /// <summary>Animates a model that has clips but no controller of ours: picks an idle and a
+    /// move clip by name and blends between them by speed. No clips → the model stays posed.</summary>
+    void StartClipAnimation(GameObject mesh, SpeciesDef def, int stage)
+    {
+        AnimationClip idle = null, move = null, first = null;
+        foreach (var c in ModelClips(mesh, def, stage))
+        {
+            if (c == null || c.legacy || c.length <= 0f) continue;
+            string n = c.name.ToLowerInvariant();
+            bool isMove = n.Contains("walk") || n.Contains("run") || n.Contains("fly") || n.Contains("move")
+                       || n.Contains("swim") || n.Contains("crawl") || n.Contains("trot") || n.Contains("gallop");
+            if (isMove) { if (move == null) move = c; }
+            else if (n.Contains("idle") || n.Contains("stand") || n.Contains("breath")) { if (idle == null) idle = c; }
+            else if (first == null) first = c;
+        }
+        idle = idle ?? first ?? move;
+        if (idle == null) return;   // model has no usable animation
+        move = move ?? idle;
+
+        if (_modelAnimator == null) _modelAnimator = mesh.AddComponent<Animator>();
+        _modelAnimator.applyRootMotion = false;
+        _modelAnimator.runtimeAnimatorController = null;   // our graph drives it, not an importer default
+        _modelAnimator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+
+        _clipGraph = PlayableGraph.Create("CompanionClips");
+        _clipGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
+        _clipMixer = AnimationMixerPlayable.Create(_clipGraph, 2);
+        _idlePlayable = AnimationClipPlayable.Create(_clipGraph, idle);
+        _clipGraph.Connect(_idlePlayable, 0, _clipMixer, 0);
+        _hasMovePlayable = move != idle;
+        if (_hasMovePlayable)
+        {
+            _movePlayable = AnimationClipPlayable.Create(_clipGraph, move);
+            _clipGraph.Connect(_movePlayable, 0, _clipMixer, 1);
+        }
+        _clipMixer.SetInputWeight(0, 1f);
+        _clipMixer.SetInputWeight(1, 0f);
+        AnimationPlayableOutput.Create(_clipGraph, "Companion", _modelAnimator).SetSourcePlayable(_clipMixer);
+        _clipSpeed = 0f;
+        _clipGraph.Play();
+        _clipGraph.Evaluate(0f);
+    }
+
+    /// <summary>The clips a model came with: its importer-made controller's, else the asset's sub-assets.</summary>
+    AnimationClip[] ModelClips(GameObject mesh, SpeciesDef def, int stage)
+    {
+        var anim = mesh.GetComponentInChildren<Animator>();
+        if (anim != null && anim.runtimeAnimatorController != null)
+        {
+            var clips = anim.runtimeAnimatorController.animationClips;
+            if (clips != null && clips.Length > 0) return clips;
+        }
+        return Resources.LoadAll<AnimationClip>(def.modelNames[stage]);
+    }
+
+    void UpdateClipAnimation(float speed)
+    {
+        if (!_clipGraph.IsValid()) return;
+        _clipSpeed = Mathf.Lerp(_clipSpeed, speed, Time.deltaTime * 8f);
+        if (_hasMovePlayable)
+        {
+            float w = Mathf.Clamp01(_clipSpeed / MoveBlendSpeed);
+            _clipMixer.SetInputWeight(0, 1f - w);
+            _clipMixer.SetInputWeight(1, w);
+            LoopPlayable(_movePlayable);
+        }
+        LoopPlayable(_idlePlayable);
+    }
+
+    /// <summary>Wrap a clip back to its start so a clip imported without "Loop Time" keeps cycling.</summary>
+    static void LoopPlayable(AnimationClipPlayable p)
+    {
+        if (!p.IsValid()) return;
+        float len = p.GetAnimationClip().length;
+        double t = p.GetTime();
+        if (len > 0f && t >= len) p.SetTime(t % len);
+    }
+
+    void StopClipAnimation()
+    {
+        if (_clipGraph.IsValid()) _clipGraph.Destroy();
+        _hasMovePlayable = false;
+    }
+
+    void OnDestroy() => StopClipAnimation();
 
     /// <summary>Imported FBX models often carry the authoring scene's Light/Camera/AudioListener
     /// (wolf.fbx has importLights/importCameras on). Instantiating those injects a stray light/camera
