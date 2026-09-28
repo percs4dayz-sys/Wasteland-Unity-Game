@@ -7,8 +7,8 @@ using TMPro;
 /// <summary>
 /// OSRS-style combat-style selector. The equipped weapon decides Melee vs Ranged
 /// (handled in PlayerEntity.UpdateCombatStyle); this panel lets you pick the STANCE:
-///   Melee : Aggressive / Accurate / Shared-Defensive (Controlled)
-///   Ranged: Accurate (Distance) / Rapid / Longrange
+///   Melee       : Accurate / Aggressive / Defensive
+///   Marksmanship: Accurate / Rapid / Distance
 ///
 /// Self-building & auto-spawned — open with the "⚔ STYLE" button (top-right) or F7.
 /// </summary>
@@ -96,7 +96,7 @@ public class CombatStyleUI : MonoBehaviour
         if (_styleText != null)
             _styleText.text = _combat.Style switch
             {
-                CombatStyle.Ranged  => "RANGED STANCES",
+                CombatStyle.Ranged  => "MARKSMANSHIP STANCES",
                 CombatStyle.Fission => "FISSION STANCES",
                 _                   => "MELEE STANCES",
             };
