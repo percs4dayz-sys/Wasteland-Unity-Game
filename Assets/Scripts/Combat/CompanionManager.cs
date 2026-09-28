@@ -44,6 +44,7 @@ public class CompanionManager : MonoBehaviour
         public int[] carrySlots;
         public string[] modelNames;   // 3D model per stage (Resources/). null/empty → 2D sprite billboard.
         public string controllerName; // animator controller in Resources for a rigged model. null = static.
+        public float hoverHeight;     // metres a flying model floats above the ground (0 = walks)
     }
 
     static readonly SpeciesDef[] Defs =
@@ -65,6 +66,7 @@ public class CompanionManager : MonoBehaviour
             stageNames=new[]{"Rad-Chick","Razorbeak","Storm Razorbeak"},
             stageScale=new[]{0.7f,1f,1.3f}, carrySlots=new[]{0,0,0},
             modelNames=new[]{"otherneededassets/beastmasterbird","otherneededassets/beastmasterbird","otherneededassets/beastmasterbird"},
+            hoverHeight=1.3f,
             hatchMsg="The speckled egg bursts — a scrappy rad-chick shrieks its first war cry!" },
     };
 
@@ -473,8 +475,15 @@ public class CompanionManager : MonoBehaviour
     {
         if (!GameMode.Is3D) return player.transform.position + new Vector3(-0.6f, -0.3f, 0f);
         // 3D: a ground-standing model sits at the player's feet; a billboard sprite floats mid-height.
-        float y = _isModel ? 0f : 0.6f;
+        float y = _isModel ? ModelHover() : 0.6f;
         return player.transform.position + new Vector3(-0.7f, y, -0.7f);
+    }
+
+    /// <summary>A flying model hovers with a slow bob; walkers stay on the ground.</summary>
+    float ModelHover()
+    {
+        float h = CurrentDef().hoverHeight;
+        return h > 0f ? h + 0.12f * Mathf.Sin(Time.time * 2.2f) : 0f;
     }
 
     // ── combat positioning ────────────────────────────────────────────────
@@ -489,7 +498,7 @@ public class CompanionManager : MonoBehaviour
         Vector3 dir = player.transform.position - tp; dir.y = 0f;
         dir = dir.sqrMagnitude > 0.01f ? dir.normalized : Vector3.back;
         Vector3 g = tp + dir * PackReach;
-        g.y = tp.y + (_isModel ? 0f : 0.6f);
+        g.y = tp.y + (_isModel ? ModelHover() : 0.6f);
         return g;
     }
 
