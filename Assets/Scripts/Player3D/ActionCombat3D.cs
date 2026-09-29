@@ -165,6 +165,7 @@ public class ActionCombat3D : MonoBehaviour
         if (_pe == null || _pe.Stats == null) return;
 
         _queued = null;                                  // stand your ground — cancel any walk-to-attack
+        SkillingManager.Instance?.StopGathering();       // swinging at something ends the gather
         if (_autoFollowing) { _pc.ClearDestination(); _autoFollowing = false; }
         FaceToward(aimPoint);
 

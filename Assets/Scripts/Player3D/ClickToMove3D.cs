@@ -31,10 +31,23 @@ public class ClickToMove3D : MonoBehaviour
     float UseReach => Mathf.Min(useReach, 2f);
     float ApproachStop => Mathf.Min(interactRange * 0.9f, UseReach - 0.2f);
 
+    /// <summary>How close to a solid resource node's near surface the player works it from. The generic
+    /// use reach left you swinging a pickaxe or hatchet at thin air almost two metres short of the node,
+    /// so gathering walks right up to it first.</summary>
+    public const float GatherReach = 1.1f;
+    const float GatherStop = GatherReach - 0.25f;
+
+    /// <summary>True when this is a node you gather by standing right against it (not a fishing spot,
+    /// whose interaction point on the bank is already where you stand).</summary>
+    public static bool IsSolidNode(Component c) => c is ResourceNode node && node.interactionPoint == null;
+    float StopFor(Component c) => IsSolidNode(c) ? GatherStop : ApproachStop;
+    float ReachFor(Component c) => IsSolidNode(c) ? GatherReach : UseReach;
+
     Player3DController _pc;
     ActionCombat3D _combat;
     Interactor3D _interactor;
     Component _pendingUse;     // the node/bank/station we're walking toward
+    float _pendingBest; float _pendingStallAt;   // closest we've got to it, and when that last improved
     float _nextSteerAt;
     Vector3 _rmbDownPos; float _rmbDownAt; bool _rmbCanMenu;   // right-click vs right-drag (camera orbit)
 
@@ -156,9 +169,7 @@ public class ClickToMove3D : MonoBehaviour
         }
         if (clicked != null)
         {
-            _pendingUse = clicked;
-            _combat?.Disengage();
-            _pc.SetDestination(UsePosition(clicked), ApproachStop);
+            BeginUse(clicked);
             Feedback(screenPos, true);
             return;
         }
@@ -262,9 +273,17 @@ public class ClickToMove3D : MonoBehaviour
             if (!enemy.IsDead) { _pendingUse = null; _combat?.Engage(enemy); }
             return;
         }
+        BeginUse(c);
+    }
+
+    /// <summary>Walk over to a thing and use it on arrival.</summary>
+    void BeginUse(Component c)
+    {
         _pendingUse = c;
+        _pendingBest = float.PositiveInfinity;
+        _pendingStallAt = Time.time;
         _combat?.Disengage();
-        _pc.SetDestination(UsePosition(c), ApproachStop);
+        _pc.SetDestination(UsePosition(c), StopFor(c));
     }
 
     /// <summary>Walk to a point (drops combat and any errand). The minimap's tap-to-walk uses it too.</summary>
@@ -300,7 +319,13 @@ public class ClickToMove3D : MonoBehaviour
         }
 
         Vector3 to = UsePosition(_pendingUse) - transform.position; to.y = 0f;
-        if (to.magnitude <= UseReach)
+        float distance = to.magnitude;
+        if (distance < _pendingBest - 0.02f) { _pendingBest = distance; _pendingStallAt = Time.time; }
+
+        // Close enough — or, for a node, as close as the ground allows: the walk ended, or the player has
+        // been pressed against its collider without getting any nearer, within the usual use reach.
+        bool stalled = !_pc.HasDestination || Time.time - _pendingStallAt > 0.3f;
+        if (distance <= ReachFor(_pendingUse) || (stalled && distance <= UseReach))
         {
             var use = _pendingUse;
             _pendingUse = null;
