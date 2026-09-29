@@ -259,6 +259,7 @@ public static class SideQuestActors
 {
     static CombatTarget _rabbit;
     const string RabbitModel = "NPC/GiantRabbit";   // Assets/Resources/NPC/GiantRabbit.glb
+    const float RabbitHeight = 5.5f, RabbitHalfHeight = 2.75f, RabbitWidth = 4.5f;
 
     static Bounds MeasureBounds(GameObject model)
     {
@@ -282,7 +283,7 @@ public static class SideQuestActors
         if (b.size.y < 0.001f) return;
         model.transform.localScale *= height / b.size.y;
         b = MeasureBounds(model);
-        float capsuleBottom = parent.position.y - 1.6f;   // capsule primitive is 2 tall at scale 1.6 → 1.6 m below centre
+        float capsuleBottom = parent.position.y - parent.lossyScale.y;   // capsule primitive is 2 units tall
         model.transform.position += Vector3.up * (capsuleBottom - b.min.y);
     }
 
@@ -332,12 +333,15 @@ public static class SideQuestActors
         if (p.HasFlag(SideQuests.PestRabbitDeadFlag)) return;
         if (_rabbit != null && !_rabbit.IsDead) return;
 
-        Vector3 spot = WorldAnchors.Ground(farmerPos + new Vector3(14f, 0f, 6f));
+        Vector3 spot = WorldAnchors.Ground(farmerPos + new Vector3(22f, 0f, 10f));
 
         var rabbit = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         rabbit.name = SideQuests.GiantRabbitName;
-        rabbit.transform.localScale = new Vector3(2.4f, 1.6f, 2.4f);
-        rabbit.transform.position = spot + Vector3.up * 1.6f;
+        // Stupidly big on purpose: roughly half the height of a house.
+        rabbit.transform.localScale = new Vector3(RabbitWidth, RabbitHalfHeight, RabbitWidth);
+        rabbit.transform.position = spot + Vector3.up * RabbitHalfHeight;
+        // Narrow hitbox inside the huge body, so melee (1.9 m reach) can still land.
+        rabbit.GetComponent<CapsuleCollider>().radius = 0.25f;
 
         var model = Resources.Load<GameObject>(RabbitModel);
         if (model != null)
@@ -347,7 +351,7 @@ public static class SideQuestActors
             var visual = Object.Instantiate(model, rabbit.transform);
             visual.name = "RabbitModel";
             visual.transform.localRotation = Quaternion.identity;
-            SizeAndSeat(visual, rabbit.transform, 2.6f);
+            SizeAndSeat(visual, rabbit.transform, RabbitHeight);
         }
         else
         {
@@ -367,11 +371,12 @@ public static class SideQuestActors
         }
 
         var ct = rabbit.AddComponent<CombatTarget>();
-        ct.maxHP = 60; ct.attackLevel = 8; ct.defenceLevel = 6; ct.maxDamage = 4; ct.tier = 1;
+        ct.maxHP = 80; ct.attackLevel = 8; ct.defenceLevel = 6; ct.maxDamage = 5; ct.tier = 1;
         ct.isAggressive = false; ct.isMiniBoss = true;
         ct.Reset();   // AddComponent ran Awake at the default 10 HP, before maxHP was set
         var e = rabbit.AddComponent<Enemy3D>();
-        e.aggroRange = 10f; e.moveSpeed = 3.6f; e.attackCooldown = 2.2f; e.respawnSeconds = 99999f;
+        e.aggroRange = 14f; e.moveSpeed = 3.6f; e.attackCooldown = 2.4f; e.respawnSeconds = 99999f;
+        e.attackRange = 3.2f;   // a big body swings from further away
         _rabbit = ct;
     }
 }
