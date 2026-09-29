@@ -5,7 +5,8 @@ using TMPro;
 
 /// <summary>
 /// A simple full-text reader for the survivor's journal pages (JournalLore). Self-building and
-/// auto-spawned after each scene load — call JournalUI.Instance.Open(itemId) to read a page.
+/// auto-spawned after each scene load — call JournalUI.Instance.Open(itemId) to read a page, or press J
+/// (or type /quests) for the quest log.
 /// Esc or the backdrop closes it.
 /// </summary>
 public class JournalUI : MonoBehaviour
@@ -39,6 +40,28 @@ public class JournalUI : MonoBehaviour
     void Update()
     {
         if (IsOpen && Input.GetKeyDown(KeyCode.Escape)) Close();
+        // J opens the quest log (and closes it again). Not while typing in chat.
+        if (Input.GetKeyDown(KeyCode.J) && !ChatInput.IsTyping)
+        {
+            if (IsOpen && _showingQuests) Close();
+            else OpenQuests();
+        }
+        else if (IsOpen && _showingQuests && Time.unscaledTime >= _nextQuestRefresh) OpenQuests();   // keep it live
+    }
+
+    bool _showingQuests;
+    float _nextQuestRefresh;
+
+    /// <summary>The quest log: every settlement quest, its status and what to do next.</summary>
+    public void OpenQuests()
+    {
+        var p = PlayerEntity.Instance;
+        if (p == null) return;
+        _showingQuests = true;
+        _nextQuestRefresh = Time.unscaledTime + 1f;
+        if (_titleText) _titleText.text = "Quests";
+        if (_bodyText)  _bodyText.text  = SideQuests.JournalText(p);
+        if (_backdrop)  _backdrop.SetActive(true);
     }
 
     public bool IsOpen => _backdrop != null && _backdrop.activeSelf;
@@ -47,6 +70,7 @@ public class JournalUI : MonoBehaviour
     {
         var entry = JournalLore.Get(itemId);
         if (entry == null) return;
+        _showingQuests = false;
         if (_titleText) _titleText.text = entry.title;
         if (_bodyText)  _bodyText.text  = entry.body;
         if (_backdrop)  _backdrop.SetActive(true);

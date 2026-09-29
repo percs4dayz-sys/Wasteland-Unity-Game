@@ -22,6 +22,10 @@ public class SideQuestStage
     public Action<PlayerEntity, Vector3> onVisit;       // every visit while active — must be idempotent
     public Action<PlayerEntity> onComplete;
 
+    // tracking (Journal + objective marker)
+    public string objective;       // what to do on this step, e.g. "Bring Deacon Pruitt 2 Scrap Bars"
+    public string unmetTarget;     // while the requirement isn't met, point here instead (a scene object name)
+
     // world-site stage
     public string siteName, siteExamine;
     public string siteAnchor;                            // scene object the site is placed at (WorldAnchors)
@@ -47,6 +51,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 npc = "Deacon Pruitt",
+                objective = "Bring Deacon Pruitt 2 Scrap Bars",
                 offer = new[]
                 {
                     "Traveler. You come at a terrible hour. The Machine has fallen silent.",
@@ -77,6 +82,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 npc = "Gideon Marsh",
+                objective = "Talk to Gideon Marsh in the harbor village",
                 offer = new[]
                 {
                     "My brother Tobias joined a cult out east. He stopped answering my letters.",
@@ -86,6 +92,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 npc = "Brother Tobias",
+                objective = "Find Brother Tobias at the Sanctuary",
                 offer = new[]
                 {
                     "Oh! Visitors. Did Gideon send you? Of course he did.",
@@ -96,6 +103,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 npc = "Brother Tobias",
+                objective = "Hear Brother Tobias out",
                 offer = new[]
                 {
                     "So here's what I get: electricity. A hot shower, genuinely hot. Three meals a day. Nobody has tried to eat me in eleven weeks.",
@@ -106,6 +114,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 npc = "Gideon Marsh",
+                objective = "Tell Gideon Marsh what Tobias said",
                 needsRoom = true,
                 offer = new[]
                 {
@@ -124,6 +133,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 npc = "Farmer Hale",
+                objective = "Kill the Giant Rabbit, then report to Farmer Hale", unmetTarget = GiantRabbitName,
                 offer = new[]
                 {
                     "Something's been eating my crops. Whole rows, every night.",
@@ -153,6 +163,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 npc = "Old Dusty",
+                objective = "Talk to Old Dusty",
                 needsRoom = true,
                 offer = new[]
                 {
@@ -166,6 +177,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 siteName = "Circled Location I", siteAnchor = "Spawn - West meadow",
+                objective = "Dig at the first X on Old Dusty's map",
                 siteExamine = "An X on Old Dusty's map. The ground has been disturbed.",
                 complete = new[]
                 {
@@ -176,6 +188,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 siteName = "Circled Location II", siteAnchor = "Spawn - Creek bend",
+                objective = "Dig at the second X on Old Dusty's map",
                 siteExamine = "The second X on Old Dusty's map. Something is buried here.",
                 complete = new[]
                 {
@@ -186,6 +199,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 siteName = "Circled Location III", siteAnchor = "Spawn - Quarry flats", needsRoom = true,
+                objective = "Dig at the last X on Old Dusty's map",
                 siteExamine = "The third X. A hatch is half-buried in the ground.",
                 complete = new[]
                 {
@@ -206,6 +220,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 npc = "Old Marta",
+                objective = "Talk to Old Marta by the harbor fire",
                 offer = new[]
                 {
                     "The well water tastes like pennies and regret. Has for years.",
@@ -215,6 +230,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 npc = "Tinker Voss",
+                objective = "Bring Tinker Voss 3 Wood Scrap and 1 Scrap Bar",
                 needsRoom = true,
                 offer = new[]
                 {
@@ -239,6 +255,7 @@ public static class SideQuests
             new SideQuestStage
             {
                 npc = "Old Marta",
+                objective = "Tell Old Marta the filter works",
                 offer = new[]
                 {
                     "<i>She sips. Her face does something complicated.</i>",
@@ -249,6 +266,33 @@ public static class SideQuests
             },
         }},
     };
+
+    /// <summary>Hint shown in the Journal for a quest you haven't started: who to talk to.</summary>
+    public static string StartHint(SideQuest q)
+    {
+        var npc = q.stages.Length > 0 ? q.stages[0].npc : null;
+        return npc != null ? $"Talk to {npc}." : "";
+    }
+
+    /// <summary>The quest list for the Journal: every quest with its status and current step.</summary>
+    public static string JournalText(PlayerEntity p)
+    {
+        var sb = new System.Text.StringBuilder();
+        var tracked = Tracked(p);
+        foreach (var q in All)
+        {
+            bool done = Stage(p, q) >= q.stages.Length;
+            bool started = IsStarted(p, q);
+            string mark = done ? "<color=#7FE77F>[DONE]</color>" : started ? "<color=#FFD24A>[ACTIVE]</color>" : "<color=#8A8070>[NEW]</color>";
+            string title = q == tracked && !done ? $"<b>{q.title}</b>  <color=#B8A98A>(tracking)</color>" : $"<b>{q.title}</b>";
+            sb.Append(mark).Append("  ").Append(title).Append('\n');
+            string detail = done ? "Complete." : started ? CurrentObjective(p, q) : StartHint(q);
+            if (!string.IsNullOrEmpty(detail)) sb.Append("<color=#C8C0B0>    ").Append(detail).Append("</color>\n");
+            sb.Append('\n');
+        }
+        sb.Append("<color=#8A8070>Your objective marker follows the quest you last worked on. Press J to close.</color>");
+        return sb.ToString();
+    }
 
     /// <summary>Where each NPC lives and what they say when they have no active stage for you.</summary>
     public class NpcDef
@@ -307,6 +351,34 @@ public static class SideQuests
 
     public static SideQuest Find(string id) => Array.Find(All, q => q.id == id);
 
+    public static bool IsStarted(PlayerEntity p, SideQuest q) => Stage(p, q) > 0 || p.HasFlag(SeenFlag(q, 0));
+
+    /// <summary>The objective line for the quest's current step (null when done or not started).</summary>
+    public static string CurrentObjective(PlayerEntity p, SideQuest q)
+    {
+        int n = Stage(p, q);
+        if (n >= q.stages.Length || !IsStarted(p, q)) return null;
+        return q.stages[n].objective;
+    }
+
+    // The quest the objective marker follows: the one you last started or advanced. Saved as a flag.
+    const string TrackedPrefix = "sq:tracked:";
+
+    public static SideQuest Tracked(PlayerEntity p)
+    {
+        foreach (var f in p.GetAllFlags())
+            if (f.StartsWith(TrackedPrefix)) return Find(f.Substring(TrackedPrefix.Length));
+        return null;
+    }
+
+    public static void Track(PlayerEntity p, SideQuest q)
+    {
+        var old = new List<string>();
+        foreach (var f in p.GetAllFlags()) if (f.StartsWith(TrackedPrefix)) old.Add(f);
+        foreach (var f in old) p.RemoveFlag(f);
+        if (q != null) p.SetFlag(TrackedPrefix + q.id);
+    }
+
     // ── running a stage ──────────────────────────────────────────────────────
     /// <summary>Runs whatever stage <paramref name="q"/> is on for the given speaker.
     /// Returns the lines to show (null = nothing to say) and advances the quest when it completes.</summary>
@@ -321,6 +393,7 @@ public static class SideQuests
             return new[] { "Your bag is full. Make some room, then come back." };
 
         p.SetFlag(SeenFlag(q, n));
+        Track(p, q);
         if (!met) return first ? s.offer : (s.reminder.Length > 0 ? s.reminder : s.offer);
 
         var lines = new List<string>();

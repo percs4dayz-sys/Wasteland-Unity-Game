@@ -173,7 +173,7 @@ public class SideQuestSpawner : MonoBehaviour
     void Update()
     {
         if (Time.time < _next) return;
-        _next = Time.time + 2f;
+        _next = Time.time + 1f;
         var p = PlayerEntity.Instance;
         if (p == null) return;
 
@@ -188,7 +188,7 @@ public class SideQuestSpawner : MonoBehaviour
             _noVillage = !WorldAnchors.TryGet(WorldAnchors.VillageKey, out Vector3 c, out float r);
             if (!_noVillage) Build(c, r);
         }
-        if (_root != null) { UpdateSites(p); KeepRabbit(p); }
+        if (_root != null) { UpdateSites(p); KeepRabbit(p); UpdateObjective(p); }
     }
 
     void Build(Vector3 center, float radius)
@@ -214,6 +214,52 @@ public class SideQuestSpawner : MonoBehaviour
         }
     }
 
+    // ── objective marker ─────────────────────────────────────────────────────
+    string _shownObjective;
+
+    /// <summary>Point the on-screen objective (QuestGuide) at the tracked quest's next step. Roxy's lessons
+    /// (StarterGuide) take priority: this only writes when the guide is free or still showing our own line.</summary>
+    void UpdateObjective(PlayerEntity p)
+    {
+        string text = null;
+        Transform target = null;
+        var q = SideQuests.Tracked(p);
+        if (q != null)
+        {
+            int n = SideQuests.Stage(p, q);
+            if (n < q.stages.Length)
+            {
+                var s = q.stages[n];
+                text = s.objective;
+                bool met = s.requirement == null || s.requirement(p);
+                string where = !met && s.unmetTarget != null ? s.unmetTarget : (s.npc ?? s.siteName);
+                target = FindNamed(where);
+            }
+        }
+
+        bool ours = QuestGuide.Objective == null || QuestGuide.Objective == _shownObjective;
+        if (text == null)
+        {
+            if (_shownObjective != null && QuestGuide.Objective == _shownObjective) QuestGuide.Clear();
+            _shownObjective = null;
+            return;
+        }
+        if (!ours) return;
+        if (QuestGuide.Objective != text || QuestGuide.Target != target) QuestGuide.Show(text, target);
+        _shownObjective = text;
+    }
+
+    /// <summary>The live object for a quest step: a quest NPC, a village resident, a dig site, or the rabbit.</summary>
+    static Transform FindNamed(string name)
+    {
+        if (string.IsNullOrEmpty(name)) return null;
+        foreach (var n in FindObjectsByType<SideQuestNPC>(FindObjectsSortMode.None)) if (n.npcName == name) return n.transform;
+        foreach (var v in FindObjectsByType<VillagerLife>(FindObjectsSortMode.None)) if (v.npcName == name) return v.transform;
+        foreach (var s in FindObjectsByType<SideQuestSite>(FindObjectsSortMode.None)) if (s.siteName == name) return s.transform;
+        var go = GameObject.Find(name);
+        return go != null ? go.transform : null;
+    }
+
     /// <summary>Pest Control: once Farmer Hale has asked, keep the rabbit around (e.g. after a reload) until it dies.</summary>
     void KeepRabbit(PlayerEntity p)
     {
@@ -237,12 +283,8 @@ public class SideQuestSpawner : MonoBehaviour
             var s = q.stages[n];
             if (!WorldAnchors.TryGet(s.siteAnchor, out Vector3 a, out _)) continue;
 
-            var go = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            go.name = s.siteName;
+            var go = SideQuestActors.BuildDigSite(s.siteName, WorldAnchors.Ground(a + new Vector3(4f, 0f, -3f)), s.siteColor);
             go.transform.SetParent(_root.transform, true);
-            go.transform.localScale = new Vector3(1.4f, 0.12f, 1.4f);   // a disturbed patch of earth
-            go.transform.position = WorldAnchors.Ground(a + new Vector3(4f, 0f, -3f)) + Vector3.up * 0.1f;
-            go.GetComponent<Renderer>().material.color = s.siteColor;
             var site = go.AddComponent<SideQuestSite>();
             site.questId = q.id; site.stageIndex = n; site.siteName = s.siteName; site.examine = s.siteExamine;
             _sites[key] = go;
@@ -257,6 +299,51 @@ public class SideQuestSpawner : MonoBehaviour
 
 public static class SideQuestActors
 {
+    /// <summary>A treasure-map dig spot that reads from a distance: a dirt mound with a red X, a shovel stuck in it
+    /// and a tall red flag. One box collider on the root so it's easy to click.</summary>
+    public static GameObject BuildDigSite(string name, Vector3 ground, Color dirt)
+    {
+        var root = new GameObject(name);
+        root.transform.position = ground;
+        var col = root.AddComponent<BoxCollider>();
+        col.size = new Vector3(2.6f, 1.4f, 2.6f);
+        col.center = new Vector3(0f, 0.7f, 0f);
+
+        var red = new Color(0.75f, 0.12f, 0.1f);
+        var wood = new Color(0.35f, 0.22f, 0.12f);
+
+        Part(root, PrimitiveType.Sphere, "Mound", new Vector3(0f, 0.05f, 0f), Vector3.zero, new Vector3(2.4f, 0.55f, 2.4f), dirt);
+        Part(root, PrimitiveType.Sphere, "Spoil", new Vector3(1.2f, 0.05f, 0.6f), Vector3.zero, new Vector3(1.1f, 0.4f, 1f), dirt * 0.85f);
+        // The X, painted on top of the mound.
+        Part(root, PrimitiveType.Cube, "X1", new Vector3(0f, 0.33f, 0f), new Vector3(0f, 45f, 0f), new Vector3(1.4f, 0.04f, 0.2f), red);
+        Part(root, PrimitiveType.Cube, "X2", new Vector3(0f, 0.33f, 0f), new Vector3(0f, -45f, 0f), new Vector3(1.4f, 0.04f, 0.2f), red);
+        // A shovel stuck in the dirt at an angle.
+        var shovel = new GameObject("Shovel").transform;
+        shovel.SetParent(root.transform, false);
+        shovel.localPosition = new Vector3(-0.7f, 0.2f, 0.3f);
+        shovel.localRotation = Quaternion.Euler(0f, 30f, 18f);
+        Part(shovel.gameObject, PrimitiveType.Cylinder, "Handle", new Vector3(0f, 0.75f, 0f), Vector3.zero, new Vector3(0.06f, 0.6f, 0.06f), wood);
+        Part(shovel.gameObject, PrimitiveType.Cube, "Blade", new Vector3(0f, 0.05f, 0f), Vector3.zero, new Vector3(0.3f, 0.35f, 0.04f), new Color(0.45f, 0.45f, 0.48f));
+        // A tall flag so you can spot it across a field.
+        Part(root, PrimitiveType.Cylinder, "Pole", new Vector3(0.9f, 1.4f, -0.8f), Vector3.zero, new Vector3(0.06f, 1.4f, 0.06f), wood);
+        var flag = Part(root, PrimitiveType.Cube, "Flag", new Vector3(1.25f, 2.5f, -0.8f), Vector3.zero, new Vector3(0.7f, 0.45f, 0.03f), red);
+        root.AddComponent<FlagWave>().flag = flag.transform;
+        return root;
+    }
+
+    static GameObject Part(GameObject parent, PrimitiveType type, string name, Vector3 pos, Vector3 euler, Vector3 scale, Color color)
+    {
+        var go = GameObject.CreatePrimitive(type);
+        go.name = name;
+        Object.Destroy(go.GetComponent<Collider>());
+        go.transform.SetParent(parent.transform, false);
+        go.transform.localPosition = pos;
+        go.transform.localRotation = Quaternion.Euler(euler);
+        go.transform.localScale = scale;
+        go.GetComponent<Renderer>().material.color = color;
+        return go;
+    }
+
     static CombatTarget _rabbit;
     const string RabbitModel = "NPC/GiantRabbit";   // Assets/Resources/NPC/GiantRabbit.glb
     const float RabbitHeight = 5.5f, RabbitHalfHeight = 2.75f, RabbitWidth = 4.5f;
@@ -378,5 +465,19 @@ public static class SideQuestActors
         e.aggroRange = 14f; e.moveSpeed = 3.6f; e.attackCooldown = 2.4f; e.respawnSeconds = 99999f;
         e.attackRange = 3.2f;   // a big body swings from further away
         _rabbit = ct;
+    }
+}
+
+/// <summary>Gently flaps a dig-site flag so it catches the eye.</summary>
+public class FlagWave : MonoBehaviour
+{
+    public Transform flag;
+    float _seed;
+    void Start() => _seed = Random.value * 10f;
+    void Update()
+    {
+        if (flag == null) return;
+        float t = Time.time * 3f + _seed;
+        flag.localRotation = Quaternion.Euler(0f, Mathf.Sin(t) * 18f, Mathf.Sin(t * 1.7f) * 4f);
     }
 }
