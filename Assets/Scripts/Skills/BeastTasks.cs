@@ -23,6 +23,10 @@ public class BeastTasks : MonoBehaviour
 {
     public static BeastTasks Instance { get; private set; }
 
+    /// <summary>Raised when a whole task's count is finished (not on each kill). Roxy's hunting lesson
+    /// ends here, so one kill can't mark it done while the rest of the count is still outstanding.</summary>
+    public static event System.Action TaskCompleted;
+
     const string FlagPrefix    = "bmtask|";
     const float  KillRange     = 80f;    // a kill further than this from you isn't yours
     const float  NextTaskDelay = 4f;     // pause after finishing before the next assignment
@@ -211,6 +215,7 @@ public class BeastTasks : MonoBehaviour
             _nextAssignAt = Time.unscaledTime + NextTaskDelay;
             Say($"<color=#80FF80>Task complete!</color> {t.required} × {t.creature} hunted down with your beast. " +
                 $"Bonus <b>+{bonus}</b> Beastmastery XP — your next task is on its way.");
+            TaskCompleted?.Invoke();
         }
         else
         {

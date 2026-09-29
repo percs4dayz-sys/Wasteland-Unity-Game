@@ -68,8 +68,11 @@ public static class PlayerBugfixValidation
             stats.AddXP(Skill.Woodcutting, 10);
             Check(!player.HasFlag("guide_return"), "Unrelated XP does not complete Beastmastery");
             stats.AddXP(Skill.Beastmastery, 25);
+            Check(!player.HasFlag("guide_return") && StarterGuide.TryActiveLesson(player, out _, out _),
+                "A single beast-task kill does not complete the hunting lesson");
+            Call(guide, "OnBeastTaskCompleted");
             Check(player.HasFlag("guide_return") && !StarterGuide.TryActiveLesson(player, out _, out _),
-                "Beastmastery XP completes the active lesson");
+                "Finishing the beast task completes the hunting lesson");
             Call(guide, "Unhook");
 
             var xp = Make("XP test").AddComponent<XPDropUI>();
