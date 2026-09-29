@@ -2,12 +2,12 @@ using UnityEngine;
 
 public enum CombatStyle { Melee, Ranged, Fission }
 
-// Attack options: each trains a DIFFERENT melee skill — style stat is gone; the stance picks the skill.
-//   Accurate/Precise → trains Melee (accuracy + damage)
-//   Aggressive/Powerful → trains Brutality (raw power, bigger hits)
-//   Defensive → trains Hardening (defence, damage reduction)
-//   Rapid → trains Melee (faster swings, same skill as Accurate)
-// Ranged always trains Marksmanship. Endurance (HP) trains from all combat.
+// Attack options (OSRS-style), per weapon style:
+//   Melee        : Accurate → Attack, Aggressive → Strength, Defensive → Defence
+//   Marksmanship : Accurate (better aim), Rapid (faster fire), Distance/Longrange (more reach,
+//                  better defence) — all train Marksmanship
+//   Fission      : Accurate only → Fission
+// Endurance (HP) trains from all combat.
 public enum CombatStance
 {
     Accurate,
@@ -15,7 +15,7 @@ public enum CombatStance
     Defensive,
     Controlled,  // retired
     Rapid,
-    Longrange    // retired
+    Longrange    // marksmanship "Distance"
 }
 
 /// <summary>
@@ -33,27 +33,24 @@ public class CombatManager : MonoBehaviour
     public CombatStyle Style { get; private set; } = CombatStyle.Ranged;
     public CombatStance Stance { get; private set; } = CombatStance.Accurate;
 
-    /// <summary>The 4 attack options each style offers — each trains a DIFFERENT melee skill:
-    ///   Accurate → Melee, Aggressive → Brutality, Defensive → Hardening, Rapid → Melee (faster).
-    /// Ranged always trains Marksmanship regardless of stance.</summary>
-    public static CombatStance[] StancesFor(CombatStyle style)
-        // Melee is back with the tick-combat return, so it offers the full four OSRS-style options —
-        // Defensive trains Defence again. Fission offers only Accurate (its level buys accuracy and
-        // nothing else — all damage is in the loaded core). Ranged keeps the three that change how the
-        // gun shoots (no Defensive: ranged defence was the retired Longrange line).
-        => style == CombatStyle.Fission
-            ? new[] { CombatStance.Accurate }
-            : style == CombatStyle.Melee
-                ? new[] { CombatStance.Accurate, CombatStance.Aggressive, CombatStance.Defensive, CombatStance.Rapid }
-                : new[] { CombatStance.Accurate, CombatStance.Aggressive, CombatStance.Rapid };
+    /// <summary>The attack options each style offers:
+    ///   Melee → Accurate / Aggressive / Defensive; Marksmanship → Accurate / Rapid / Distance;
+    ///   Fission → Accurate (its level buys accuracy and nothing else — all damage is in the core).</summary>
+    public static CombatStance[] StancesFor(CombatStyle style) => style switch
+    {
+        CombatStyle.Fission => new[] { CombatStance.Accurate },
+        CombatStyle.Melee   => new[] { CombatStance.Accurate, CombatStance.Aggressive, CombatStance.Defensive },
+        _                   => new[] { CombatStance.Accurate, CombatStance.Rapid, CombatStance.Longrange },
+    };
 
     /// <summary>Human label for an attack option.</summary>
     public static string StanceLabel(CombatStance s, CombatStyle style) => s switch
     {
-        CombatStance.Accurate   => "Precise",
-        CombatStance.Aggressive => "Powerful",
+        CombatStance.Accurate   => "Accurate",
+        CombatStance.Aggressive => "Aggressive",
         CombatStance.Defensive  => "Defensive",
         CombatStance.Rapid      => "Rapid",
+        CombatStance.Longrange  => "Distance",
         _ => s.ToString()
     };
 
@@ -68,8 +65,8 @@ public class CombatManager : MonoBehaviour
             string reffect = s switch
             {
                 CombatStance.Accurate   => "better accuracy",
-                CombatStance.Aggressive => "bigger hits, slower",
                 CombatStance.Rapid      => "faster fire rate",
+                CombatStance.Longrange  => "longer range, better defence",
                 _ => ""
             };
             return $"{reffect} · trains Marksmanship";
@@ -77,10 +74,8 @@ public class CombatManager : MonoBehaviour
 
         string skill = s switch
         {
-            CombatStance.Accurate   => "Bladework",
             CombatStance.Aggressive => "Brutality",
             CombatStance.Defensive  => "Hardening",
-            CombatStance.Rapid      => "Bladework",
             _ => "Bladework"
         };
         string effect = s switch
@@ -88,7 +83,6 @@ public class CombatManager : MonoBehaviour
             CombatStance.Accurate   => "better accuracy",
             CombatStance.Aggressive => "bigger hits, slower",
             CombatStance.Defensive  => "tougher defence, reduced damage",
-            CombatStance.Rapid      => "faster attacks",
             _ => ""
         };
         return $"{effect} · trains {skill}";
@@ -103,7 +97,7 @@ public class CombatManager : MonoBehaviour
         {
             CombatStance.Aggressive => Skill.Strength,
             CombatStance.Defensive  => Skill.Defence,
-            _                       => Skill.Attack   // Accurate, Rapid, anything else
+            _                       => Skill.Attack   // Accurate, anything else
         };
     }
 
@@ -128,8 +122,8 @@ public class CombatManager : MonoBehaviour
     {
         Style = style;
 
-        // Fission offers only Accurate/Defensive, so switching to gauntlets while on Powerful or
-        // Rapid would leave a stance the panel no longer shows — and a stance you cannot see is a
+        // Each style offers its own options, so switching weapons (e.g. a gun on Distance to a blade)
+        // would leave a stance the panel no longer shows — and a stance you cannot see is a
         // stance you cannot get out of. Clamp to whatever this style actually offers.
         var allowed = StancesFor(style);
         if (System.Array.IndexOf(allowed, Stance) < 0)

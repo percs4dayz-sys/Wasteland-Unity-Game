@@ -252,7 +252,7 @@ public class ActionCombat3D : MonoBehaviour
     float RangedReachMeters()
     {
         var w = _pe.Equipment.GetItem("Weapon");
-        int tiles = (w != null && w.attackRange > 0) ? w.attackRange : 1;
+        int tiles = ((w != null && w.attackRange > 0) ? w.attackRange : 1) + LongrangeBonusTiles();
         return rangedBaseMeters + Mathf.Max(0, tiles - 1) * rangedMetersPerTile;
     }
 
@@ -394,8 +394,12 @@ public class ActionCombat3D : MonoBehaviour
     {
         var weapon = _pe.Equipment.GetItem("Weapon");
         int tiles = (weapon != null && weapon.attackRange > 0) ? weapon.attackRange : 1;
+        if (IsRangedEquipped()) tiles += LongrangeBonusTiles();
         return meleeReach + Mathf.Max(0, tiles - 1) * tileMeters;
     }
+
+    /// <summary>OSRS Longrange: the marksmanship Distance option adds 2 tiles of reach.</summary>
+    static int LongrangeBonusTiles() => CurrentStance() == CombatStance.Longrange ? 2 : 0;
 
     static CombatStance CurrentStance() =>
         CombatManager.Instance != null ? CombatManager.Instance.Stance : CombatStance.Accurate;
@@ -734,15 +738,15 @@ public class ActionCombat3D : MonoBehaviour
         }
     }
 
-    // Attack-option contributions (no XP split): Precise (Accurate) → +accuracy; Powerful
-    // (Aggressive) → +damage; Rapid → faster swings (handled in CurrentSpeedTicks). Each is a small
-    // tradeoff on the same swing; all train the one style stat.
+    // Attack-option contributions: Accurate → +accuracy; Aggressive (melee) → +damage; Rapid
+    // (marksmanship) → faster fire (CurrentSpeedTicks); Distance (marksmanship Longrange) → +reach
+    // (LongrangeBonusTiles) and +defence (Enemy3D.DefenceStanceBonus).
     static int AccuracyStance(CombatStance s) => s == CombatStance.Accurate ? 3 : 0;
     static int StrengthStance(CombatStance s) => s == CombatStance.Aggressive ? 3 : 0;
 
     // Combat XP: 4 XP per damage to the primary skill, plus 1.333 XP to HP (Endurance).
-    // Melee:  Accurate/Rapid → Melee,  Aggressive → Brutality,  Defensive → Hardening
-    // Ranged: Precise/Powerful/Rapid → Marksmanship,  Defensive → Marksmanship + Hardening
+    // Melee:  Accurate → Attack,  Aggressive → Strength,  Defensive → Defence
+    // Ranged: Accurate/Rapid/Distance → Marksmanship
     // Fractions carried so small hits don't lose XP to rounding.
     const float XP_PER_DAMAGE    = 4f;
     const float HP_XP_PER_DAMAGE = 4f / 3f;   // 1.333
@@ -782,7 +786,7 @@ public class ActionCombat3D : MonoBehaviour
         else
         {
             // Melee is live again (tick-combat return). Each stance trains its own skill, matching
-            // CombatManager.StanceSkill: Precise/Rapid → Attack (accuracy), Powerful → Strength,
+            // CombatManager.StanceSkill: Accurate → Attack (accuracy), Aggressive → Strength,
             // Defensive → Defence. This is what makes the melee skills worth levelling.
             GiveXP(CombatManager.StanceSkill(stance, CombatStyle.Melee), damage * XP_PER_DAMAGE);
         }

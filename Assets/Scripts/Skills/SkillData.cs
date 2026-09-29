@@ -36,7 +36,7 @@ public class SkillData
     public static List<SkillData> GetDefaults() => new()
     {
         new() { skill = Skill.Attack,       displayName = "Attack",       description = "Melee accuracy — how reliably your swings land.", levelUpFlavour = "Your strikes grow sharper." },
-        new() { skill = Skill.Strength,     displayName = "Strength",     description = "Raw melee power. Trained via Powerful stance.", levelUpFlavour = "Your blows land with crushing force." },
+        new() { skill = Skill.Strength,     displayName = "Strength",     description = "Raw melee power. Trained via Aggressive stance.", levelUpFlavour = "Your blows land with crushing force." },
         new() { skill = Skill.Defence,      displayName = "Defence",      description = "Melee defence and resilience. Trained via Defensive stance.", levelUpFlavour = "Your body hardens against blows." },
         new() { skill = Skill.Endurance,    displayName = "Hit Points",   description = "Your health pool — this level IS your HP, up to 220.", levelUpFlavour = "Your body endures more." },
         new() { skill = Skill.Marksmanship, displayName = "Marksmanship", description = "Ranged combat with firearms.", levelUpFlavour = "Your aim sharpens." },

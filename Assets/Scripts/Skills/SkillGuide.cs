@@ -56,7 +56,7 @@ public static class SkillGuide
     // Concise "how/where to train it" hints — surfaced in the skills-panel hover tooltip.
     private static readonly Dictionary<Skill, string> _trainedBy = new()
     {
-        [Skill.Attack]       = "Attack enemies with a melee weapon in Precise or Rapid stance.",
+        [Skill.Attack]       = "Attack enemies with a melee weapon in Accurate stance.",
         [Skill.Strength]     = "Attack enemies in Powerful (Aggressive) stance with a melee weapon.",
         [Skill.Defence]      = "Attack enemies in Defensive stance with a melee weapon.",
         [Skill.Endurance]    = "Deal damage in any fight — it levels passively.",
@@ -83,7 +83,7 @@ public static class SkillGuide
             new Milestone(80, "Equip Myomer Blade; devastating cleave to nearby enemies."),
             new Milestone(99, "Max melee - bonus first-strike damage and extra damage vs bosses."),
         },
-        [Skill.Strength] = new[]   // raw melee power (Powerful stance)
+        [Skill.Strength] = new[]   // raw melee power (Aggressive stance)
         {
             new Milestone(1,  "Base max-hit bonus from strength."),
             new Milestone(20, "Unlock heavy swings — chance for bonus damage on each hit."),
