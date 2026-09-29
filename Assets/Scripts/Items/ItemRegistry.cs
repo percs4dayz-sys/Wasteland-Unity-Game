@@ -51,6 +51,7 @@ public static class ItemRegistry
         // Fission line (ids 400-414): geiger counter, raw + refined cores per tier, power gauntlets.
         FissionItems.Register(Add);
         GatheringTools.Register(Add);
+        WeaponSpecials.Register(Add);        // ids 162-163 + specials on Warblade / Railgun
 
         // Tiered gatherables: raw fish 200-203, cooked food 210-213, raw wood 220-223.
         TierGatherables.Register(Add);

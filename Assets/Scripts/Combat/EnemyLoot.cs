@@ -74,7 +74,8 @@ public static class EnemyLoot
     // God Tier table — hit 1-in-50, then a quarter each.
     static readonly int[] GodMeleeWeapon = { 159 };
     static readonly int[] GodMeleeArmour = { 140, 141, 142, 143 };
-    static readonly int[] GodRangedWeapon = { 160, 161 };          // railgun or slugs
+    static readonly int[] GodRangedWeapon = { 160, 161, 163 };     // railgun, slugs or stasis rifle
+    static readonly int[] GodFissionWeapon = { 162 };              // ascendant gauntlets
     static readonly int[] GodRangedArmour = { 156, 157, 158 };
 
     const int GodGearChance = 50;   // 1 in 50 to reach the God table at all
@@ -135,11 +136,12 @@ public static class EnemyLoot
         // the rare God Tier equipment table
         if (!OneIn(GodGearChance)) return;
 
-        int[] table = Random.Range(0, 4) switch
+        int[] table = Random.Range(0, 5) switch
         {
             0 => GodMeleeWeapon,
             1 => GodMeleeArmour,
             2 => GodRangedWeapon,
+            3 => GodFissionWeapon,
             _ => GodRangedArmour,
         };
         int id = table[Random.Range(0, table.Length)];

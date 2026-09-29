@@ -449,6 +449,11 @@ public class ActionCombat3D : MonoBehaviour
 
         var stance = CurrentStance();
         bool fission  = IsFissionEquipped();   // gauntlets: a sub-case of `ranged`
+
+        // Dial In: the special forces a real accuracy roll even on a crosshair shot, and each shot spends a charge.
+        if (Time.time >= _dialInUntil) _dialInShots = 0;
+        bool dialed = ranged && !fission && _dialInShots > 0;
+        if (dialed) { _dialInShots--; hitscan = false; }
         int melee     = _pe.Stats.GetLevel(Skill.Attack);      // accuracy
         int brutality = _pe.Stats.GetLevel(Skill.Strength);    // raw power
         int hardening = _pe.Stats.GetLevel(Skill.Defence);     // defence
@@ -475,6 +480,7 @@ public class ActionCombat3D : MonoBehaviour
         if (!hit)
         {
             ModuleEffects.For(_pe).Miss(target);
+            if (dialed) Msg("<color=#FFD24A>The dialed-in shot goes wide.</color>");
             if (ranged) ConsumeShot(fission);
             CombatFeedbackUI.ShowWorldSplat(target.transform.position, 0, false);
             _streakTarget = null; _streak = 0;   // a miss breaks the ranged consecutive-hit ramp
@@ -503,11 +509,12 @@ public class ActionCombat3D : MonoBehaviour
         // Fission armour line yet, so a gauntlet build simply gets no set bonus.
         float setMul = GearSets.DamageMultiplier(_pe.Equipment, style);
         if (setMul > 1f) maxHit = Mathf.RoundToInt(maxHit * setMul);
+        if (dialed) maxHit = Mathf.RoundToInt(maxHit * DialInDamageMult);
 
         float dmgF   = Mathf.Max(1, CombatMath.RollDamage(maxHit));
 
         // ── milestone damage multipliers ──
-        string tag = null;
+        string tag = dialed ? "DIAL IN" : null;
         // Headshot / consecutive-hit / companion perks are MARKSMANSHIP milestones — they key off
         // the marks level, so they must not fire for gauntlets even though those are "ranged".
         if (ranged && !fission)
@@ -554,6 +561,7 @@ public class ActionCombat3D : MonoBehaviour
 
         if (ranged) ConsumeShot(fission);
         target.TakeDamage(dmg);               // hitsplat comes via the feedback UI's OnDamaged hook
+        if (fission && RadiationEquipped) RadiationDot.Apply(target, dmg);   // endgame gauntlets irradiate
         AwardXP(dmg, ranged, fission, stance);
 
         // Brutality L40 stagger: delay the enemy's next swing.
@@ -583,30 +591,241 @@ public class ActionCombat3D : MonoBehaviour
     public bool SpecialReady =>
         CombatManager.Instance != null && CombatManager.Instance.SpecialEnergy + 0.001f >= specialEnergyCost;
 
-    public bool HasWeaponSpecial => _pe != null && IsFissionEquipped();
-    public string SpecialAttackName => "Overload Cascade";
+    /// <summary>The special the equipped weapon grants. A Fission weapon that names none keeps the original
+    /// Overload Cascade, so every older gauntlet works untouched.</summary>
+    public WeaponSpecial CurrentSpecial
+    {
+        get
+        {
+            var w = _pe != null ? _pe.Equipment.GetItem("Weapon") : null;
+            if (w == null) return WeaponSpecial.None;
+            if (w.special != WeaponSpecial.None) return w.special;
+            return w.weaponStyle == WeaponStyle.Fission ? WeaponSpecial.OverloadCascade : WeaponSpecial.None;
+        }
+    }
+
+    public bool HasWeaponSpecial => CurrentSpecial != WeaponSpecial.None;
+    public string SpecialAttackName => WeaponSpecials.NameOf(CurrentSpecial);
     public string SpecialBlockReason
     {
         get
         {
             if (_pe == null || _pe.Stats == null || _pe.Stats.IsDead) return "Unavailable while down";
-            if (!HasWeaponSpecial) return "Equip Power Gauntlets";
+            var sp = CurrentSpecial;
+            if (sp == WeaponSpecial.None) return "This weapon has no special";
             if (!SpecialReady) return "Recharging";
-            var ammo = _pe.Equipment.GetItem("Ammo");
-            if (ammo == null || ammo.id < FissionItems.RefinedCore(1) || ammo.id > FissionItems.RefinedCore(5) || _pe.Equipment.AmmoQuantity < SpecialHits)
-                return "Load 4 fission cores";
+
+            if (sp == WeaponSpecial.DialIn)
+                return _dialInShots > 0 && Time.time < _dialInUntil ? "Already dialed in" : null;
+
+            if (sp == WeaponSpecial.OverloadCascade || sp == WeaponSpecial.RapidBlast)
+            {
+                int need = sp == WeaponSpecial.RapidBlast ? RapidBlastShots : SpecialHits;
+                var ammo = _pe.Equipment.GetItem("Ammo");
+                if (ammo == null || ammo.id < FissionItems.RefinedCore(1) || ammo.id > FissionItems.RefinedCore(5) || _pe.Equipment.AmmoQuantity < need)
+                    return $"Load {need} fission cores";
+            }
+            else if (sp == WeaponSpecial.StunShot)
+            {
+                if (_pe.Equipment.GetItemId("Ammo") == null || _pe.Equipment.AmmoQuantity <= 0) return "Out of ammo";
+                if (_mag != null && (_mag.IsReloading || _mag.Loaded <= 0)) return "Reload first";
+            }
+
             if (Target == null || Target.IsDead) return "Select an enemy";
             if (TooFar(Target)) return "Move closer to target";
+            if (sp == WeaponSpecial.SiphonStrike)
+            {
+                Vector3 to = Target.transform.position - transform.position; to.y = 0f;
+                if (to.magnitude > ReachMeters() + 0.5f) return "Move into melee reach";
+            }
             return null;
         }
     }
 
-    /// <summary>Fire the special. Public so the COMBAT panel's button can call it, not just the key.</summary>
+    /// <summary>Fire the equipped weapon's special. Public so the COMBAT panel's button can call it, not just the key.</summary>
     public void TrySpecial()
     {
         string blocked = SpecialBlockReason;
         if (blocked != null) { Msg(blocked + "."); return; }
-        if (!IsFissionEquipped()) { Msg("Only the Power Gauntlets can overload."); return; }
+        switch (CurrentSpecial)
+        {
+            case WeaponSpecial.OverloadCascade: OverloadCascade(); break;
+            case WeaponSpecial.SiphonStrike:    SiphonStrike();    break;
+            case WeaponSpecial.DialIn:          DialIn();          break;
+            case WeaponSpecial.StunShot:        StunShot();        break;
+            case WeaponSpecial.RapidBlast:      RapidBlast();      break;
+        }
+    }
+
+    // ── shared special helpers ───────────────────────────────────────────────
+    bool SpendSpecial() => CombatManager.Instance != null && CombatManager.Instance.TrySpendSpecial(specialEnergyCost);
+
+    void StartSpecialCooldown() =>
+        _readyAt = Mathf.Max(_readyAt, Time.time + CurrentSpeedTicks() * GameTick.TICK_DURATION * ModuleEffects.For(_pe).CooldownMultiplier());
+
+    int SpecialMaxHit(WeaponStyle style)
+    {
+        int m;
+        if (style == WeaponStyle.Fission)
+        {
+            m = Mathf.Max(1, _pe.Equipment.AmmoStrengthBonus());   // the core IS the max hit
+        }
+        else if (style == WeaponStyle.Ranged)
+        {
+            m = CombatMath.MaxHit(_pe.Stats.GetLevel(Skill.Marksmanship),
+                _pe.Equipment.TotalStrengthBonus() + _pe.Equipment.AmmoStrengthBonus(), StrengthStance(CurrentStance()));
+        }
+        else
+        {
+            m = CombatMath.MaxHit(_pe.Stats.GetLevel(Skill.Strength),
+                _pe.Equipment.TotalStrengthBonus(), StrengthStance(CurrentStance()));
+        }
+        float setMul = GearSets.DamageMultiplier(_pe.Equipment, style);
+        return setMul > 1f ? Mathf.RoundToInt(m * setMul) : m;
+    }
+
+    float SpecialHitChance(CombatTarget t, WeaponStyle style, float accuracyMult)
+    {
+        int lvl = style == WeaponStyle.Fission ? _pe.Stats.GetLevel(Skill.Fission)
+                : style == WeaponStyle.Ranged  ? _pe.Stats.GetLevel(Skill.Marksmanship)
+                                               : _pe.Stats.GetLevel(Skill.Attack);
+        int equipAcc = _pe.Equipment.TotalAttackBonusFor(style) + ModuleEffects.For(_pe).Accuracy(t, style);
+        int atk = Mathf.RoundToInt(CombatMath.AttackRoll(lvl, equipAcc, AccuracyStance(CurrentStance())) * accuracyMult);
+        int def = CombatMath.DefenceRoll(ModuleEffects.For(_pe).TargetDefence(t), 0, 0);
+        return CombatMath.HitChance(atk, def);
+    }
+
+    bool RadiationEquipped => _pe != null && _pe.Equipment.GetItem("Weapon") is { radiation: true };
+
+    /// <summary>Land a special's hit: module modifiers, clamp to remaining HP, splat, and radiation if the weapon has it.</summary>
+    int DealSpecialDamage(CombatTarget t, int raw, WeaponStyle style)
+    {
+        int dmg = Mathf.Min(ModuleEffects.For(_pe).Outgoing(t, Mathf.Max(1, raw), style), t.CurrentHP);
+        t.TakeDamage(dmg);
+        CombatFeedbackUI.ShowWorldSplat(t.transform.position, dmg, true);
+        if (style == WeaponStyle.Fission && RadiationEquipped) RadiationDot.Apply(t, dmg);
+        return dmg;
+    }
+
+    // ── Melee special: Siphon Strike ─────────────────────────────────────────
+    // One heavy, accurate blow that heals you for half of what it deals. Melee's endgame identity is
+    // sustain: it's the only style that can heal without food.
+    void SiphonStrike()
+    {
+        var target = Target;
+        if (!SpendSpecial()) return;
+        FaceToward(target.transform.position);
+        OnAttackPerformed?.Invoke(false);
+        StartSpecialCooldown();
+
+        int maxHit = SpecialMaxHit(WeaponStyle.Melee);
+        if (Random.value > SpecialHitChance(target, WeaponStyle.Melee, 1.25f))
+        {
+            CombatFeedbackUI.ShowWorldSplat(target.transform.position, 0, false);
+            Msg("<color=#FF6060>SIPHON STRIKE</color> misses.");
+            return;
+        }
+        int lo = Mathf.Max(1, maxHit * 4 / 10), hi = Mathf.Max(lo + 1, maxHit * 15 / 10);
+        int dmg = DealSpecialDamage(target, Random.Range(lo, hi + 1), WeaponStyle.Melee);
+        int heal = Mathf.Max(1, dmg / 2);
+        _pe.Stats.Heal(heal);
+        Msg($"<color=#FF6060>SIPHON STRIKE!</color> <color=#7FE77F>(+{heal} HP)</color>");
+        AwardXP(dmg, false, false, CurrentStance());
+        if (target.IsDead) Msg($"{target.DisplayName} is defeated.");
+    }
+
+    // ── Marksmanship special: Dial In ────────────────────────────────────────
+    // Lock on: the next three shots hit far harder, but each still rolls accuracy on its own — even
+    // through the first-person crosshair, which normally skips the roll. Three hits is a delete; a run
+    // of misses is RNG making a public example of you.
+    const int   DialInShots = 3;
+    const float DialInSeconds = 15f;
+    const float DialInDamageMult = 2.2f;
+    int _dialInShots;
+    float _dialInUntil;
+
+    /// <summary>Shots left on the Dial In buff (0 when inactive/expired) — for HUD hooks.</summary>
+    public int DialInShotsLeft => Time.time < _dialInUntil ? _dialInShots : 0;
+
+    void DialIn()
+    {
+        if (!SpendSpecial()) return;
+        _dialInShots = DialInShots;
+        _dialInUntil = Time.time + DialInSeconds;
+        Msg($"<color=#FFD24A>DIAL IN!</color> Your next {DialInShots} shots hit for enormous damage — each still has to land.");
+    }
+
+    // ── Marksmanship special: Stun Shot ──────────────────────────────────────
+    // Control: one accurate shot that pins the target so it can't close the distance. Bosses resist
+    // (Enemy3D.Immobilize cuts it to a third), so it doesn't trivialise encounters.
+    const float StunSeconds = 6f;
+
+    void StunShot()
+    {
+        var target = Target;
+        if (!SpendSpecial()) return;
+        FaceToward(target.transform.position);
+        OnAttackPerformed?.Invoke(true);
+        if (CombatFeedbackUI.Instance != null) CombatFeedbackUI.Instance.FocusTarget = target;
+        int maxHit = SpecialMaxHit(WeaponStyle.Ranged);
+        ConsumeShot(false);
+        if (_mag != null) _mag.NoteShotFired();
+        StartSpecialCooldown();
+
+        if (Random.value > SpecialHitChance(target, WeaponStyle.Ranged, 1.5f))
+        {
+            CombatFeedbackUI.ShowWorldSplat(target.transform.position, 0, false);
+            Msg("<color=#7FC8FF>STUN SHOT</color> misses.");
+            return;
+        }
+        int dmg = DealSpecialDamage(target, Random.Range(1, maxHit + 1), WeaponStyle.Ranged);
+        var enemy = target.GetComponent<Enemy3D>();
+        if (enemy != null && !target.IsDead) enemy.Immobilize(StunSeconds);
+        Msg($"<color=#7FC8FF>STUN SHOT!</color> {target.DisplayName} can't move.");
+        AwardXP(dmg, true, false, CurrentStance());
+        if (target.IsDead) Msg($"{target.DisplayName} is defeated.");
+    }
+
+    // ── Fission special: Rapid Blast ─────────────────────────────────────────
+    // A fast burst of blasts, each rolling its own accuracy and damage and burning its own core (the
+    // gauntlets' save chance applies per blast). At 50% energy a full bar fires two bursts.
+    const int   RapidBlastShots = 6;
+    const float RapidBlastInterval = 0.15f;
+
+    void RapidBlast()
+    {
+        var target = Target;
+        if (!SpendSpecial()) return;
+        FaceToward(target.transform.position);
+        _readyAt = Mathf.Max(_readyAt, Time.time + RapidBlastShots * RapidBlastInterval + 0.6f);
+        Msg("<color=#7FE7FF>RAPID BLAST!</color>");
+        StartCoroutine(RapidBlastRoutine(target));
+    }
+
+    System.Collections.IEnumerator RapidBlastRoutine(CombatTarget target)
+    {
+        int total = 0;
+        for (int i = 0; i < RapidBlastShots; i++)
+        {
+            if (_pe == null || target == null || target.IsDead || _pe.Equipment.AmmoQuantity <= 0) break;
+            int maxHit = SpecialMaxHit(WeaponStyle.Fission);   // read before the core is spent
+            OnAttackPerformed?.Invoke(true);
+            ConsumeShot(true);
+            if (Random.value <= SpecialHitChance(target, WeaponStyle.Fission, 1.25f))
+                total += DealSpecialDamage(target, Random.Range(1, maxHit + 1), WeaponStyle.Fission);
+            else
+                CombatFeedbackUI.ShowWorldSplat(target.transform.position, 0, false);
+            yield return new WaitForSeconds(RapidBlastInterval);
+        }
+        if (total > 0) AwardXP(total, true, true, CurrentStance());
+        if (target != null && target.IsDead) Msg($"{target.DisplayName} is defeated.");
+    }
+
+    // ── Fission special: Overload Cascade (original) ─────────────────────────
+    void OverloadCascade()
+    {
+        string blocked = SpecialBlockReason;
+        if (blocked != null) { Msg(blocked + "."); return; }
 
         var cm = CombatManager.Instance;
         if (cm == null) return;

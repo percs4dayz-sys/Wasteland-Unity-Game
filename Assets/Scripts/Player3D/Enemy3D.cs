@@ -250,6 +250,7 @@ public class Enemy3D : MonoBehaviour
 
         if (dist > attackRange)
         {
+            if (Time.time < _rootedUntil) return;   // pinned in place — can't close the distance
             transform.position += to.normalized * moveSpeed * Time.deltaTime;
             return;
         }
@@ -333,6 +334,18 @@ public class Enemy3D : MonoBehaviour
 
     /// <summary>Brutality L40 stagger: push this enemy's next swing back by some seconds — and
     /// interrupt a swing that's mid-windup, so a well-timed stagger cancels the incoming hit.</summary>
+    float _rootedUntil;
+
+    /// <summary>Marksmanship Stun Shot: the enemy can't walk toward you for a while (it can still swing if
+    /// you're already in reach). Bosses and mini-bosses resist — a third of the duration.</summary>
+    public void Immobilize(float seconds)
+    {
+        if (_ct != null && (_ct.isBoss || _ct.isMiniBoss)) seconds /= 3f;
+        _rootedUntil = Mathf.Max(_rootedUntil, Time.time + seconds);
+    }
+
+    public bool IsImmobilized => Time.time < _rootedUntil;
+
     public void Stagger(float seconds)
     {
         CancelWindup();
