@@ -90,6 +90,13 @@ public class ItemData
     /// </summary>
     public float ammoSaveChance;
 
+    /// <summary>Weapon special this item grants (see WeaponSpecials). None on a Fission weapon means the
+    /// original Overload Cascade, so older gauntlets keep working without being touched.</summary>
+    public WeaponSpecial special;
+
+    /// <summary>Hits from this weapon leave the target irradiated (damage over time). Endgame Fission only.</summary>
+    public bool radiation;
+
     public bool IsWeapon => type == ItemType.Weapon;
     public bool IsArmor => type is ItemType.Shield or ItemType.Helmet or ItemType.Chest or ItemType.Legs;
     public bool IsTool => type == ItemType.Tool;

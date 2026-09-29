@@ -14,6 +14,10 @@ static class LegacyInputOnly
 {
     static LegacyInputOnly()
     {
+        // Background asset-import workers also run [InitializeOnLoad], but they have no PlayerSettings
+        // loaded, and GetSerializedAssetInterfaceSingleton hard-crashes them. Only the main editor needs this.
+        if (AssetDatabase.IsAssetImportWorkerProcess()) return;
+
         var playerSettings = new SerializedObject(Unsupported.GetSerializedAssetInterfaceSingleton("PlayerSettings"));
         if (playerSettings.FindProperty("activeInputHandler")?.intValue != 0) return;
 

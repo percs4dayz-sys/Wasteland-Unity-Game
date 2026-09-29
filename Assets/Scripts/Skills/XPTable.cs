@@ -16,10 +16,11 @@ public static class XPTable
 {
     public const int MaxLevel       = 99;    // every skill except Endurance
     public const int EnduranceStart = 10;    // a fresh character has 10 HP, never 1
-    public const int EnduranceMax   = 220;
+    public const int EnduranceMax   = 250;
 
-    // Divisor in the 2^(n/D) term. 9 is the standard curve; 20.25 is tuned so Endurance's full
-    // 10 → 220 climb lands near 4M XP — about twice a normal skill's 99.
+    // Divisor in the 2^(n/D) term. 9 is the standard curve; 20.25 was tuned so the old 10 → 220 climb
+    // landed near 4M XP. The divisor is unchanged for the 250 ceiling so existing saves keep their
+    // levels (XP is what's saved) — levels 221-250 are simply a new, steep endgame stretch.
     const double StandardDivisor  = 9.0;
     const double EnduranceDivisor = 20.25;
 

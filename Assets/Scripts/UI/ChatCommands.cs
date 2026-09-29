@@ -25,8 +25,15 @@ public static class ChatCommands
             case "/unstuck":
                 DoStuck();
                 return true;
+            case "/quests":
+            case "/journal":
+                JournalUI.Instance?.OpenQuests();
+                return true;
+            case "/village":
+                DoVillage(text.Split(' '));
+                return true;
             case "/help":
-                HUDController.Emit("<color=#80C0FF>Commands:</color> /stuck — return to your spawn point if you get stuck or fall out of the world.\n/ai <prompt> — ask the in-game assistant a question.");
+                HUDController.Emit("<color=#80C0FF>Commands:</color> /stuck — return to your spawn point if you get stuck or fall out of the world.\n/quests (or J) — open the quest log.\n/village — show the harbor village centre; /village here [radius] moves it to you; /village clear resets it.\n/ai <prompt> — ask the in-game assistant a question.");
                 return true;
             case "/ai":
             case "/ask":
@@ -58,6 +65,33 @@ public static class ChatCommands
             default:
                 HUDController.Emit($"<color=#FF8080>Unknown command:</color> {cmd}. Type /help.");
                 return true;
+        }
+    }
+
+    /// <summary>/village here [radius] — make the spot you're standing on the village centre (rebuilds it).
+    /// /village clear — go back to the scene's TownSite_SW_Harbor marker. /village — show where it is.</summary>
+    static void DoVillage(string[] parts)
+    {
+        string sub = parts.Length > 1 ? parts[1].ToLowerInvariant() : "";
+        var player = PlayerEntity.Instance;
+        switch (sub)
+        {
+            case "here":
+                if (player == null) { HUDController.Emit("<color=#FF8080>/village here needs you in the world.</color>"); return; }
+                float radius = parts.Length > 2 && float.TryParse(parts[2], out float r) ? Mathf.Clamp(r, 10f, 120f) : WorldAnchors.DefaultVillageRadius;
+                WorldAnchors.SetVillage(player.transform.position, radius);
+                HUDController.Emit($"<color=#80C0FF>Village centre set here (radius {radius:0} m).</color> Rebuilding in a moment.");
+                return;
+            case "clear":
+                WorldAnchors.ClearVillage();
+                HUDController.Emit("<color=#80C0FF>Village anchor reset to the scene marker.</color>");
+                return;
+            default:
+                if (WorldAnchors.TryGet(WorldAnchors.VillageKey, out Vector3 pos, out float rad))
+                    HUDController.Emit($"<color=#80C0FF>Village centre:</color> ({pos.x:0}, {pos.y:0}, {pos.z:0}), radius {rad:0} m. Use /village here to move it.");
+                else
+                    HUDController.Emit("<color=#FFC040>No village found in this scene.</color> Stand in it and type /village here.");
+                return;
         }
     }
 

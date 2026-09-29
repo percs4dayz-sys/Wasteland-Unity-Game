@@ -103,7 +103,11 @@ public class FissionGolem : MonoBehaviour
         _node.dropItemId         = FissionItems.RawCore(tier);
         _node.dropQuantity       = 1;                      // one core per successful strip
         _node.xpPerAction        = EffectiveXpPerCore;
-        _node.minYield           = minYield;
+        // Design rule: higher gathering levels cut the grind, they don't just reroll it. Every 20
+        // levels of the harvest skill raises the GUARANTEED floor by 2 cores (the ceiling stays put),
+        // so a level-80+ stripper never walks away with the bottom of the roll.
+        int lvl = PlayerEntity.Instance != null ? PlayerEntity.Instance.Stats.GetLevel(harvestSkill) : 1;
+        _node.minYield           = Mathf.Min(maxYield, minYield + (lvl / 20) * 2);
         _node.maxYield           = maxYield;
         _node.ResetYield(); // AddComponent ran Awake before the corpse's yield was configured.
         _node.respawnTicks       = int.MaxValue;   // this corpse never respawns; a spawner makes a new golem

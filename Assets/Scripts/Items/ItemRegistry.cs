@@ -51,9 +51,13 @@ public static class ItemRegistry
         // Fission line (ids 400-414): geiger counter, raw + refined cores per tier, power gauntlets.
         FissionItems.Register(Add);
         GatheringTools.Register(Add);
+        WeaponSpecials.Register(Add);        // ids 162-163 + specials on Warblade / Railgun
 
         // Tiered gatherables: raw fish 200-203, cooked food 210-213, raw wood 220-223.
         TierGatherables.Register(Add);
+
+        // Small settlement quests (ids 750-753): cheese crackers, treasure map, toilet paper, rabbit's foot.
+        SideQuestItems.Register(Add);
 
         // Readable journal pages (ids 300+) — lore that guides the player toward the endgame.
         JournalLore.Register(Add);
