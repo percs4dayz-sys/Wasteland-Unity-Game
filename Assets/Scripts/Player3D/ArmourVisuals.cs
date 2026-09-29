@@ -392,7 +392,7 @@ public class ArmourVisuals : MonoBehaviour
     /// <summary>The conventional part name for a family/set and slot, e.g.
     /// ("SK_FANT_KNGT_17", Torso) → "SK_FANT_KNGT_17_10TORS_HU01". Sidekick's naming is strict
     /// enough that this is derivable, so no catalogue lookup is needed.</summary>
-    static string GuessPartName(string family, CharacterPartType type)
+    internal static string GuessPartName(string family, CharacterPartType type)
     {
         string code = SlotCode(type);
         if (code == null || string.IsNullOrEmpty(family)) return null;

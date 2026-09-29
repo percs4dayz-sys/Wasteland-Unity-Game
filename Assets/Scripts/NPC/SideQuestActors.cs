@@ -232,11 +232,31 @@ public class SideQuestSpawner : MonoBehaviour
 public static class SideQuestActors
 {
     static CombatTarget _rabbit;
+    const string RabbitModel = "NPC/GiantRabbit";   // Assets/Resources/NPC/GiantRabbit.glb
 
-    /// <summary>Placeholder person: a collider root with a separate visual child (capsule body + head) so
-    /// walking can bob the visual without moving the collider. Swap in a real model any time by putting
-    /// the NPC component on that model instead.</summary>
-    public static GameObject BuildPerson(string name, Color color, float height = 1.9f)
+    /// <summary>Scale a model to <paramref name="height"/> metres and sit its feet on the parent capsule's base.
+    /// The capsule is non-uniformly scaled, so the model is measured in world space and re-parented cleanly.</summary>
+    static void SizeAndSeat(GameObject model, Transform parent, float height)
+    {
+        var rends = model.GetComponentsInChildren<Renderer>(true);
+        if (rends.Length == 0) return;
+        var b = rends[0].bounds;
+        foreach (var r in rends) b.Encapsulate(r.bounds);
+        if (b.size.y < 0.001f) return;
+
+        // Undo the capsule's squashed scale so the model keeps its proportions, then size it.
+        var ps = parent.lossyScale;
+        model.transform.localScale = new Vector3(1f / ps.x, 1f / ps.y, 1f / ps.z) * (height / b.size.y);
+        rends = model.GetComponentsInChildren<Renderer>(true);
+        b = rends[0].bounds;
+        foreach (var r in rends) b.Encapsulate(r.bounds);
+        float capsuleBottom = parent.position.y - 1.6f;   // capsule primitive is 2 tall at scale 1.6 → 1.6 m below centre
+        model.transform.position += Vector3.up * (capsuleBottom - b.min.y);
+    }
+
+    /// <summary>A person: a collider root with a separate visual child. The visual is a generated Synty Sidekick
+    /// character (see NpcAvatar), or a capsule placeholder if the Sidekick base model isn't available.</summary>
+    public static GameObject BuildPerson(string name, Color color, float height = 1.9f, bool kid = false, bool guard = false)
     {
         var root = new GameObject(name);
         var col = root.AddComponent<CapsuleCollider>();
@@ -244,6 +264,17 @@ public static class SideQuestActors
 
         var visual = new GameObject("Visual").transform;
         visual.SetParent(root.transform, false);
+
+        // A real Synty Sidekick character when the base model is in the project; capsules otherwise.
+        var avatar = NpcAvatar.Create(name, NpcAvatar.RandomLook(name, kid, guard));
+        if (avatar != null)
+        {
+            avatar.transform.SetParent(visual, false);
+            avatar.transform.localPosition = Vector3.zero;
+            avatar.transform.localRotation = Quaternion.identity;
+            if (kid) visual.localScale = Vector3.one * 0.75f;
+            return root;
+        }
 
         var body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         body.name = "Body";
@@ -275,17 +306,32 @@ public static class SideQuestActors
         rabbit.name = SideQuests.GiantRabbitName;
         rabbit.transform.localScale = new Vector3(2.4f, 1.6f, 2.4f);
         rabbit.transform.position = spot + Vector3.up * 1.6f;
-        var white = new Color(0.95f, 0.93f, 0.9f);
-        rabbit.GetComponent<Renderer>().material.color = white;
-        foreach (float side in new[] { -0.25f, 0.25f })
+
+        var model = Resources.Load<GameObject>(RabbitModel);
+        if (model != null)
         {
-            var ear = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            ear.name = "Ear";
-            Object.Destroy(ear.GetComponent<Collider>());
-            ear.transform.SetParent(rabbit.transform, false);
-            ear.transform.localPosition = new Vector3(side, 1.35f, 0f);
-            ear.transform.localScale = new Vector3(0.18f, 0.55f, 0.18f);
-            ear.GetComponent<Renderer>().material.color = white;
+            // The real model. The capsule stays as the collider (and the pivot), invisible.
+            rabbit.GetComponent<Renderer>().enabled = false;
+            var visual = Object.Instantiate(model, rabbit.transform);
+            visual.name = "RabbitModel";
+            visual.transform.localRotation = Quaternion.identity;
+            SizeAndSeat(visual, rabbit.transform, 2.6f);
+        }
+        else
+        {
+            // Placeholder until Assets/Resources/NPC/GiantRabbit.glb is in the project.
+            var white = new Color(0.95f, 0.93f, 0.9f);
+            rabbit.GetComponent<Renderer>().material.color = white;
+            foreach (float side in new[] { -0.25f, 0.25f })
+            {
+                var ear = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                ear.name = "Ear";
+                Object.Destroy(ear.GetComponent<Collider>());
+                ear.transform.SetParent(rabbit.transform, false);
+                ear.transform.localPosition = new Vector3(side, 1.35f, 0f);
+                ear.transform.localScale = new Vector3(0.18f, 0.55f, 0.18f);
+                ear.GetComponent<Renderer>().material.color = white;
+            }
         }
 
         var ct = rabbit.AddComponent<CombatTarget>();

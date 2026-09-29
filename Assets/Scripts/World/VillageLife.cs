@@ -24,6 +24,7 @@ public class VillagerLife : MonoBehaviour, ITalkableNPC
 
     NavMeshAgent _agent;
     Transform _visual;
+    Animator _animator;
     TextMeshPro _bubble;
     float _idleUntil, _nextChatter, _bubbleUntil, _pauseUntil, _phase;
     int _patrolIndex;
@@ -32,6 +33,8 @@ public class VillagerLife : MonoBehaviour, ITalkableNPC
     void Start()
     {
         _visual = transform.Find("Visual");
+        _animator = _visual != null ? _visual.GetComponentInChildren<Animator>() : null;
+        if (_animator != null && _animator.runtimeAnimatorController == null) _animator = null;
         _phase = Random.value * 10f;
         _idleUntil = Time.time + Random.Range(0.5f, 4f);
         _nextChatter = Time.time + Random.Range(5f, 20f);
@@ -41,7 +44,7 @@ public class VillagerLife : MonoBehaviour, ITalkableNPC
             _agent = gameObject.AddComponent<NavMeshAgent>();
             _agent.radius = 0.4f; _agent.height = 1.9f;
             _agent.acceleration = 10f; _agent.angularSpeed = 280f; _agent.stoppingDistance = 0.3f;
-            _agent.speed = role == Role.Kid ? 3.2f : role == Role.Drunk ? 0.9f : role == Role.Patrol ? 1.7f : 1.4f;
+            _agent.speed = role == Role.Kid ? 4.8f : role == Role.Drunk ? 1.3f : role == Role.Patrol ? 2.4f : 2.2f;
             _agent.Warp(hit.position);
         }
         if (role == Role.Fireside) FaceFire();
@@ -99,6 +102,13 @@ public class VillagerLife : MonoBehaviour, ITalkableNPC
 
     void Animate()
     {
+        if (_animator != null)
+        {
+            // A real character: the locomotion blend does the walking, we just feed it our speed.
+            float v = _agent != null && _walking ? _agent.velocity.magnitude : 0f;
+            _animator.SetFloat("Speed", v * 1.3f, 0.1f, Time.deltaTime);
+            return;
+        }
         if (_visual == null) return;
         float t = Time.time + _phase;
         if (role == Role.Fireside)
@@ -241,7 +251,8 @@ public static class VillageLife
 
         foreach (var r in Roster)
         {
-            var go = SideQuestActors.BuildPerson(r.name, r.color, r.role == VillagerLife.Role.Kid ? 1.3f : 1.9f);
+            var go = SideQuestActors.BuildPerson(r.name, r.color, r.role == VillagerLife.Role.Kid ? 1.4f : 1.9f,
+                kid: r.role == VillagerLife.Role.Kid, guard: r.role == VillagerLife.Role.Patrol);
             go.transform.SetParent(root, true);
             Vector3 pos = r.role == VillagerLife.Role.Fireside
                 ? WorldAnchors.Ground(fire + new Vector3(2.2f, 0f, 0.6f))
