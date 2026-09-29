@@ -14,7 +14,7 @@
 public enum Skill
 {
     // ── Melee. "Melee" is the CATEGORY these three live in, never a skill itself. ──
-    Attack,         // melee accuracy — trained via Precise/Rapid stance   (was Bladework)
+    Attack,         // melee accuracy — trained via Accurate stance   (was Bladework)
     Strength,       // melee max hit — trained via Aggressive/Powerful     (was Brutality)
     Defence,        // melee defence — trained via Defensive stance        (was Hardening)
 
