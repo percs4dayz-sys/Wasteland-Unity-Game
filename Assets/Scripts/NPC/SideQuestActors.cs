@@ -78,12 +78,23 @@ public static class WorldAnchors
         return Find(key, out pos);
     }
 
+    // Scanning the whole (very large) scene is slow, so each name is looked up once per scene.
+    static readonly Dictionary<string, Vector3?> _found = new();
+    static int _foundScene = -1;
+
     static bool Find(string name, out Vector3 pos)
     {
-        foreach (var t in Object.FindObjectsByType<Transform>(FindObjectsInactive.Include))
-            if (t.name == name) { pos = t.position; return true; }
-        pos = default;
-        return false;
+        int scene = SceneManager.GetActiveScene().handle;
+        if (scene != _foundScene) { _found.Clear(); _foundScene = scene; }
+        if (!_found.TryGetValue(name, out var hit))
+        {
+            hit = null;
+            foreach (var t in Object.FindObjectsByType<Transform>(FindObjectsInactive.Include))
+                if (t.name == name) { hit = t.position; break; }
+            _found[name] = hit;
+        }
+        pos = hit ?? default;
+        return hit.HasValue;
     }
 
     public static void SetVillage(Vector3 pos, float radius)
@@ -102,8 +113,14 @@ public static class WorldAnchors
     /// <summary>Snap a point onto the ground: terrain height if there's terrain, else a downward raycast.</summary>
     public static Vector3 Ground(Vector3 p)
     {
-        var t = Terrain.activeTerrain;
-        if (t != null) { p.y = t.SampleHeight(p) + t.transform.position.y; return p; }
+        // Use the terrain tile actually under this point (the scene may have several, or none).
+        foreach (var t in Terrain.activeTerrains)
+        {
+            var tp = t.transform.position; var size = t.terrainData.size;
+            if (p.x < tp.x || p.z < tp.z || p.x > tp.x + size.x || p.z > tp.z + size.z) continue;
+            p.y = t.SampleHeight(p) + tp.y;
+            return p;
+        }
         if (Physics.Raycast(p + Vector3.up * 80f, Vector3.down, out var hit, 300f, ~0, QueryTriggerInteraction.Ignore)) p.y = hit.point.y;
         return p;
     }
@@ -164,14 +181,14 @@ public class SideQuestSpawner : MonoBehaviour
         bool stale = scene != _builtScene || WorldAnchors.Version != _builtVersion;
         if (stale)
         {
-            if (_root != null) Destroy(_root);
+            if (_root != null) { _root.SetActive(false); Destroy(_root); }   // inactive first so the rebuild doesn't see its NPCs
             _root = null;
             _sites.Clear();
             _builtScene = scene; _builtVersion = WorldAnchors.Version;
             _noVillage = !WorldAnchors.TryGet(WorldAnchors.VillageKey, out Vector3 c, out float r);
             if (!_noVillage) Build(c, r);
         }
-        if (_root != null) UpdateSites(p);
+        if (_root != null) { UpdateSites(p); KeepRabbit(p); }
     }
 
     void Build(Vector3 center, float radius)
@@ -195,6 +212,15 @@ public class SideQuestSpawner : MonoBehaviour
             go.transform.position = pos;
             go.AddComponent<SideQuestNPC>().npcName = def.name;
         }
+    }
+
+    /// <summary>Pest Control: once Farmer Hale has asked, keep the rabbit around (e.g. after a reload) until it dies.</summary>
+    void KeepRabbit(PlayerEntity p)
+    {
+        var q = SideQuests.Find("pest");
+        if (q == null || SideQuests.Stage(p, q) != 0 || !p.HasFlag("sq:pest:seen0")) return;
+        var hale = FindObjectsByType<SideQuestNPC>(FindObjectsSortMode.None).FirstOrDefault(n => n.npcName == "Farmer Hale");
+        if (hale != null) SideQuestActors.EnsureGiantRabbit(p, hale.transform.position);
     }
 
     /// <summary>World sites exist only while their stage is the active one.</summary>
@@ -234,22 +260,28 @@ public static class SideQuestActors
     static CombatTarget _rabbit;
     const string RabbitModel = "NPC/GiantRabbit";   // Assets/Resources/NPC/GiantRabbit.glb
 
+    static Bounds MeasureBounds(GameObject model)
+    {
+        var rends = model.GetComponentsInChildren<Renderer>(true);
+        var b = rends[0].bounds;
+        foreach (var r in rends) b.Encapsulate(r.bounds);
+        return b;
+    }
+
     /// <summary>Scale a model to <paramref name="height"/> metres and sit its feet on the parent capsule's base.
     /// The capsule is non-uniformly scaled, so the model is measured in world space and re-parented cleanly.</summary>
     static void SizeAndSeat(GameObject model, Transform parent, float height)
     {
-        var rends = model.GetComponentsInChildren<Renderer>(true);
-        if (rends.Length == 0) return;
-        var b = rends[0].bounds;
-        foreach (var r in rends) b.Encapsulate(r.bounds);
-        if (b.size.y < 0.001f) return;
+        if (model.GetComponentInChildren<Renderer>(true) == null) return;
+        Bounds b;
 
         // Undo the capsule's squashed scale so the model keeps its proportions, then size it.
         var ps = parent.lossyScale;
-        model.transform.localScale = new Vector3(1f / ps.x, 1f / ps.y, 1f / ps.z) * (height / b.size.y);
-        rends = model.GetComponentsInChildren<Renderer>(true);
-        b = rends[0].bounds;
-        foreach (var r in rends) b.Encapsulate(r.bounds);
+        model.transform.localScale = new Vector3(1f / ps.x, 1f / ps.y, 1f / ps.z);
+        b = MeasureBounds(model);
+        if (b.size.y < 0.001f) return;
+        model.transform.localScale *= height / b.size.y;
+        b = MeasureBounds(model);
         float capsuleBottom = parent.position.y - 1.6f;   // capsule primitive is 2 tall at scale 1.6 → 1.6 m below centre
         model.transform.position += Vector3.up * (capsuleBottom - b.min.y);
     }
@@ -337,6 +369,7 @@ public static class SideQuestActors
         var ct = rabbit.AddComponent<CombatTarget>();
         ct.maxHP = 60; ct.attackLevel = 8; ct.defenceLevel = 6; ct.maxDamage = 4; ct.tier = 1;
         ct.isAggressive = false; ct.isMiniBoss = true;
+        ct.Reset();   // AddComponent ran Awake at the default 10 HP, before maxHP was set
         var e = rabbit.AddComponent<Enemy3D>();
         e.aggroRange = 10f; e.moveSpeed = 3.6f; e.attackCooldown = 2.2f; e.respawnSeconds = 99999f;
         _rabbit = ct;

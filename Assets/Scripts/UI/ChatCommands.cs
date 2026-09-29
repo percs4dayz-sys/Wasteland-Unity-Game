@@ -29,7 +29,7 @@ public static class ChatCommands
                 DoVillage(text.Split(' '));
                 return true;
             case "/help":
-                HUDController.Emit("<color=#80C0FF>Commands:</color> /stuck — return to your spawn point if you get stuck or fall out of the world.\n/ai <prompt> — ask the in-game assistant a question.");
+                HUDController.Emit("<color=#80C0FF>Commands:</color> /stuck — return to your spawn point if you get stuck or fall out of the world.\n/village — show the harbor village centre; /village here [radius] moves it to you; /village clear resets it.\n/ai <prompt> — ask the in-game assistant a question.");
                 return true;
             case "/ai":
             case "/ask":
