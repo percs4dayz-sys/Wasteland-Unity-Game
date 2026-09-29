@@ -24,7 +24,7 @@ public class SideQuestStage
 
     // world-site stage
     public string siteName, siteExamine;
-    public int siteTier = 1;
+    public string siteAnchor;                            // scene object the site is placed at (WorldAnchors)
     public Color siteColor = new Color(0.55f, 0.4f, 0.25f);
 }
 
@@ -165,7 +165,7 @@ public static class SideQuests
             },
             new SideQuestStage
             {
-                siteName = "Circled Location I", siteTier = 1,
+                siteName = "Circled Location I", siteAnchor = "Spawn - West meadow",
                 siteExamine = "An X on Old Dusty's map. The ground has been disturbed.",
                 complete = new[]
                 {
@@ -175,7 +175,7 @@ public static class SideQuests
             },
             new SideQuestStage
             {
-                siteName = "Circled Location II", siteTier = 2,
+                siteName = "Circled Location II", siteAnchor = "Spawn - Creek bend",
                 siteExamine = "The second X on Old Dusty's map. Something is buried here.",
                 complete = new[]
                 {
@@ -185,7 +185,7 @@ public static class SideQuests
             },
             new SideQuestStage
             {
-                siteName = "Circled Location III", siteTier = 3, needsRoom = true,
+                siteName = "Circled Location III", siteAnchor = "Spawn - Quarry flats", needsRoom = true,
                 siteExamine = "The third X. A hatch is half-buried in the ground.",
                 complete = new[]
                 {
@@ -200,36 +200,84 @@ public static class SideQuests
                 },
             },
         }},
+
+        new SideQuest { id = "water", title = "Standing Water", stages = new[]
+        {
+            new SideQuestStage
+            {
+                npc = "Old Marta",
+                offer = new[]
+                {
+                    "The well water tastes like pennies and regret. Has for years.",
+                    "Tinker Voss says he can build a filter. Tinker Voss says a lot of things. Go see if any of them are true.",
+                },
+            },
+            new SideQuestStage
+            {
+                npc = "Tinker Voss",
+                needsRoom = true,
+                offer = new[]
+                {
+                    "A water filter? Sure. Easy. I've had the design in my head for years.",
+                    "I need 3 wood scrap for the frame and 1 scrap bar for the housing. The rest I'll improvise. I always do.",
+                },
+                reminder = new[] { "3 wood scrap and 1 scrap bar. Frame and housing. The rest is improvisation." },
+                complete = new[]
+                {
+                    "<i>He hammers, curses, hammers again. Water trickles through the pipe... and runs clear.</i>",
+                    "Huh. That actually worked. I was not prepared for that. Take these, they were in the way.",
+                },
+                requirement = p => p.Inventory.Contains(40, 3) && p.Inventory.Contains(11, 1),
+                onComplete = p =>
+                {
+                    p.Inventory.Remove(40, 3);
+                    p.Inventory.Remove(11, 1);
+                    p.Inventory.Add(41, 20);   // sulphur
+                    p.Stats.AddXP(Skill.Smithing, 200);
+                },
+            },
+            new SideQuestStage
+            {
+                npc = "Old Marta",
+                offer = new[]
+                {
+                    "<i>She sips. Her face does something complicated.</i>",
+                    "It tastes like... nothing. Nothing! Do you know how long it's been since something tasted like nothing?",
+                    "Bless you, dear. The whole harbor owes you a drink. A clean one.",
+                },
+                onComplete = p => p.Stats.AddXP(Skill.Endurance, 150),
+            },
+        }},
     };
 
     /// <summary>Where each NPC lives and what they say when they have no active stage for you.</summary>
     public class NpcDef
     {
         public string name, examine, quest;
-        public int tier;
+        public string anchor;   // "village" or the name of a scene object
         public Color color;
         public string[] idle, afterDone;
     }
 
     public static readonly NpcDef[] Npcs =
     {
-        new NpcDef { name = "Deacon Pruitt", quest = "vending", tier = 1, color = new Color(0.45f, 0.3f, 0.5f),
+        new NpcDef { name = "Deacon Pruitt", quest = "vending", anchor = "village", color = new Color(0.45f, 0.3f, 0.5f),
             examine = "Keeper of the Sacred Vending Machine. Wears an apron that says HOLY.",
             idle = new[] { "The Machine sees all. It just can't dispense anything right now." },
             afterDone = new[] { "The faith endures. Do not ask what's in the packet." } },
-        new NpcDef { name = "Gideon Marsh", quest = "cult", tier = 1, color = new Color(0.4f, 0.4f, 0.45f),
+        new NpcDef { name = "Gideon Marsh", quest = "cult", anchor = "village", color = new Color(0.4f, 0.4f, 0.45f),
             examine = "A worried man with a stack of unanswered letters.",
             idle = new[] { "Any word from Tobias?" },
             afterDone = new[] { "I'm not going. I'm just... thinking about hot water." } },
-        new NpcDef { name = "Brother Tobias", quest = "cult", tier = 2, color = new Color(0.9f, 0.88f, 0.75f),
+        new NpcDef { name = "Brother Tobias", quest = "cult", anchor = "TownSite_Central", color = new Color(0.9f, 0.88f, 0.75f),
             examine = "Wears clean robes. Smells of soap. Suspicious.",
             idle = new[] { "We're not a cult. We're a community with a dress code." },
             afterDone = new[] { "Thursday is laundry day. Won't you join us?" } },
-        new NpcDef { name = "Farmer Hale", quest = "pest", tier = 1, color = new Color(0.35f, 0.5f, 0.25f),
+        new NpcDef { name = "Farmer Hale", quest = "pest", anchor = "village", color = new Color(0.35f, 0.5f, 0.25f),
             examine = "Stares at his fence a lot.",
             idle = new[] { "My crops. My poor crops." },
             afterDone = new[] { "Harvest is back. I still check the fence every hour." } },
-        new NpcDef { name = "Old Dusty", quest = "map", tier = 1, color = new Color(0.65f, 0.55f, 0.35f),
+        new NpcDef { name = "Old Dusty", quest = "map", anchor = "village", color = new Color(0.65f, 0.55f, 0.35f),
             examine = "A scavenger propped against a wall, breathing shallowly.",
             idle = new[] { "<i>*cough*</i> Closer, kid..." },
             afterDone = new[] { "<i>Old Dusty is not moving. You're fairly sure he's smirking.</i>" } },
@@ -285,27 +333,38 @@ public static class SideQuests
         return lines.ToArray();
     }
 
-    /// <summary>Talk to an NPC: run the active NPC-stage they own, else fall back to idle lines.</summary>
-    public static void Talk(NpcDef def, Vector3 pos)
+    /// <summary>Runs the active quest stage this named NPC owns, if any. Returns true when a quest spoke
+    /// (so the caller skips its own idle chatter). Shared by SideQuestNPC and the village's residents.</summary>
+    public static bool TryTalk(string npcName, Vector3 pos)
     {
         var p = PlayerEntity.Instance;
         var dlg = DialogueUI.Instance;
-        if (p == null || dlg == null) return;
-        if (dlg.IsConversationWith(def.name)) { dlg.ShowNextLine(); return; }
+        if (p == null || dlg == null) return false;
+        if (dlg.IsConversationWith(npcName)) { dlg.ShowNextLine(); return true; }
 
         foreach (var q in All)
         {
             int n = Stage(p, q);
-            if (n >= q.stages.Length || q.stages[n].npc != def.name) continue;
+            if (n >= q.stages.Length || q.stages[n].npc != npcName) continue;
             bool firstVisit = !p.HasFlag(SeenFlag(q, n));
             var lines = Run(p, q, n, pos);
             if (lines != null && lines.Length > 0)
             {
                 if (firstVisit && n == 0) HUDController.Emit($"<color=#FFD966>Quest started:</color> {q.title}");
-                dlg.StartDialogue(def.name, lines);
-                return;
+                dlg.StartDialogue(npcName, lines);
+                return true;
             }
         }
+        return false;
+    }
+
+    /// <summary>Talk to a quest NPC: their quest stage if they have one, else idle lines.</summary>
+    public static void Talk(NpcDef def, Vector3 pos)
+    {
+        if (TryTalk(def.name, pos)) return;
+        var p = PlayerEntity.Instance;
+        var dlg = DialogueUI.Instance;
+        if (p == null || dlg == null) return;
         var idle = IsDone(p, def.quest) ? def.afterDone : def.idle;
         dlg.StartDialogue(def.name, idle[UnityEngine.Random.Range(0, idle.Length)]);
     }
