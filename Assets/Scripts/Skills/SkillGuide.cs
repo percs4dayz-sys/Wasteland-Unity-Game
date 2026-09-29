@@ -41,7 +41,7 @@ public static class SkillGuide
         [Skill.Attack]       = "Melee accuracy — how reliably your swings land. Gates the melee weapon tiers.",
         [Skill.Strength]     = "Raw melee power. Trained via Powerful (Aggressive) stance. Determines max hit.",
         [Skill.Defence]      = "Melee defence and durability. Trained via Defensive stance. Reduces damage taken.",
-        [Skill.Endurance]    = "Your hit-point pool — this level IS your HP, up to 220. Trains off any combat.",
+        [Skill.Endurance]    = "Your hit-point pool — this level IS your HP, up to 250. Trains off any combat.",
         [Skill.Marksmanship] = "Ranged accuracy and damage. Gates all firearm tiers.",
         [Skill.Fishing]   = "Food fished from hazardous waterways. Feeds Cooking.",
         [Skill.Cooking]   = "Cooking raw catches into healing meals and buff foods.",
@@ -115,7 +115,8 @@ public static class SkillGuide
             new Milestone(150, "150 HP — most things can no longer burst you down."),
             new Milestone(175, "175 HP."),
             new Milestone(200, "200 HP."),
-            new Milestone(220, "220 HP — the ceiling. Nothing in the wasteland out-lasts you."),
+            new Milestone(220, "220 HP — the old ceiling. Thirty more to go."),
+            new Milestone(250, "250 HP — the ceiling. Nothing in the wasteland out-lasts you."),
         },
 [Skill.Marksmanship] = new[]
         {

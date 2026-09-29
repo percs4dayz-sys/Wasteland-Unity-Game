@@ -13,7 +13,7 @@ public class PlayerStats : MonoBehaviour
 
     public int CurrentHP { get; private set; }
 
-    /// <summary>Endurance IS hit points — the level and the HP number are the same value, 10 to 220.</summary>
+    /// <summary>Endurance IS hit points — the level and the HP number are the same value, 10 to 250.</summary>
     public int MaxHP => GetLevel(Skill.Endurance);
 
     /// <summary>True from the moment HP hits 0 until <see cref="Revive"/> — blocks further damage,
