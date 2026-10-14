@@ -14,6 +14,7 @@
 #include "Player/WLPlayerState.h"
 #include "Player/WLPlayerController.h"
 #include "Player/WLCharacterMovementComponent.h"
+#include "Core/WLGameMode.h"
 #include "GameFramework/GameStateBase.h"
 #include "EngineUtils.h"
 #include "Net/UnrealNetwork.h"
@@ -67,6 +68,7 @@ void UWLCombatComponent::BeginPlay()
 	if (GetOwner() && GetOwner()->HasAuthority())
 	{
 		Rng.Initialize(FMath::Rand());
+		SpawnedAt = Now();
 		if (UWLGameTickSubsystem* Tick = UWLGameTickSubsystem::Get(this))
 		{
 			Tick->Register(TScriptInterface<IWLTickable>(this));
@@ -660,9 +662,71 @@ void UWLCombatComponent::OnGameTick(int64 TickCount)
 	TickBleeds();
 	if (IsDead())
 	{
+		OutOfBoundsTimer = 0.f;
 		return;
 	}
+	TickVoidRescue();
 	TickQueuedSwing(TickCount);
+}
+
+bool UWLCombatComponent::HasGroundBelow() const
+{
+	const AActor* Owner = GetOwner();
+	if (!Owner || !GetWorld())
+	{
+		return true;
+	}
+	// Any walkable surface (not a wall or an underside) within VoidFallDistance below the feet.
+	const FVector Start = Owner->GetActorLocation() + FVector(0.f, 0.f, 200.f);
+	const FVector End = Start - FVector(0.f, 0.f, VoidFallDistance + 200.f);
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(WLVoidRescue), false, Owner);
+	TArray<FHitResult> Hits;
+	GetWorld()->LineTraceMultiByChannel(Hits, Start, End, ECC_Visibility, Params);
+	for (const FHitResult& Hit : Hits)
+	{
+		if (Hit.bBlockingHit && Hit.ImpactNormal.Z >= 0.2f)
+		{
+			return true;
+		}
+	}
+	// LineTraceMulti only reports overlaps before the first block; check the block itself too.
+	FHitResult Single;
+	return GetWorld()->LineTraceSingleByChannel(Single, Start, End, ECC_Visibility, Params) && Single.ImpactNormal.Z >= 0.2f;
+}
+
+void UWLCombatComponent::TickVoidRescue()
+{
+	if (OutOfBoundsDelay <= 0.f)
+	{
+		return;
+	}
+	if (HasGroundBelow())
+	{
+		OutOfBoundsTimer = 0.f;
+		return;
+	}
+	const UWLGameTickSubsystem* Tick = UWLGameTickSubsystem::Get(this);
+	OutOfBoundsTimer += Tick ? Tick->GetTickDuration() : 0.6f;
+
+	// Just logged in: a bad saved position is visible at once; don't let them plummet for 5 s first.
+	const bool bJustLoaded = Now() - SpawnedAt < 4.0;
+	if (OutOfBoundsTimer < (bJustLoaded ? 0.f : OutOfBoundsDelay))
+	{
+		return;
+	}
+	OutOfBoundsTimer = 0.f;
+
+	AWLPlayerCharacter* Character = GetPlayerCharacter();
+	AWLGameMode* GM = GetWorld()->GetAuthGameMode<AWLGameMode>();
+	if (!Character || !GM || !GM->TeleportToSpawn(Character->GetController()))
+	{
+		return;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("%s: no ground within %.0f uu below; returned to spawn."), *GetNameSafe(Character), VoidFallDistance);
+	Disengage();
+	Message(bJustLoaded
+		? LOCTEXT("VoidLoad", "Your saved position was outside the world — returned to spawn.")
+		: LOCTEXT("VoidFall", "You drifted out of bounds — returned to spawn."));
 }
 
 void UWLCombatComponent::TickQueuedSwing(int64 TickCount)
@@ -1273,7 +1337,7 @@ float UWLCombatComponent::BeginReload()
 	ReloadWeaponId = W->ItemId;
 	bRepReloading = true;
 	const AGameStateBase* GS = GetWorld()->GetGameState();
-	ReloadStartServerTime = GS ? GS->GetServerWorldTimeSeconds() : GetWorld()->GetTimeSeconds();
+	ReloadStartServerTime = static_cast<float>(GS ? GS->GetServerWorldTimeSeconds() : GetWorld()->GetTimeSeconds());
 	ReloadEndServerTime = ReloadStartServerTime + Duration;
 	UpdateMagazineReplication();
 	return Duration;
@@ -1328,7 +1392,7 @@ float UWLCombatComponent::GetReloadProgress() const
 		return 0.f;
 	}
 	const AGameStateBase* GS = GetWorld() ? GetWorld()->GetGameState() : nullptr;
-	const float NowServer = GS ? GS->GetServerWorldTimeSeconds() : 0.f;
+	const float NowServer = GS ? static_cast<float>(GS->GetServerWorldTimeSeconds()) : 0.f;
 	return FMath::Clamp((NowServer - ReloadStartServerTime) / (ReloadEndServerTime - ReloadStartServerTime), 0.f, 1.f);
 }
 

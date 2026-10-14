@@ -32,7 +32,7 @@ struct WASTELANDERS_API FWLSkillMath
 		const double Range = 0.325 * (Marksmanship / 2 + Marksmanship);   // int division is the floor
 		const double Magic = 0.325 * (Fission / 2 + Fission);
 		const double Best = FMath::Max(Melee, FMath::Max(Range, Magic));
-		return FMath::Max(1, FMath::FloorToInt(Base + Best));
+		return FMath::Max(1, FMath::FloorToInt32(Base + Best));
 	}
 
 	/**

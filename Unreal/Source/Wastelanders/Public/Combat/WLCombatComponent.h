@@ -166,6 +166,14 @@ public:
 	/** OSRS auto-attack (true) or Unity one-swing-per-click (false). */
 	UPROPERTY(EditAnywhere, Category = "Wastelanders|Combat") bool bAutoRepeat = true;
 
+	/**
+	 * Void rescue (Unity PlayerRespawn out-of-bounds watchdog): no walkable ground within
+	 * VoidFallDistance below the player for OutOfBoundsDelay seconds -> AWLGameMode::TeleportToSpawn.
+	 * Shortly after login it reacts on the first tick (a bad saved position). 0 delay disables it.
+	 */
+	UPROPERTY(EditAnywhere, Category = "Wastelanders|Rescue") float VoidFallDistance = 5000.f;
+	UPROPERTY(EditAnywhere, Category = "Wastelanders|Rescue") float OutOfBoundsDelay = 5.f;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Wastelanders|Abilities") TSubclassOf<UGameplayAbility> BasicAttackAbility;
 	UPROPERTY(EditDefaultsOnly, Category = "Wastelanders|Abilities") TSubclassOf<UGameplayAbility> SpecialAttackAbility;
 	UPROPERTY(EditDefaultsOnly, Category = "Wastelanders|Abilities") TSubclassOf<UGameplayAbility> ReloadAbility;
@@ -204,6 +212,8 @@ protected:
 	void DealDamage(AWLEnemyCharacter* Victim, int32 Damage, FName Tag);
 	void TickBleeds();
 	void TickQueuedSwing(int64 TickCount);
+	void TickVoidRescue();
+	bool HasGroundBelow() const;
 	void StartCooldown(int64 TickCount);
 	bool CheckRangedGates(bool bAutoReload, bool bClearQueueWhenEmpty);
 	void FaceToward(const FVector& Point);
@@ -270,4 +280,6 @@ protected:
 	FGameplayAbilitySpecHandle ReloadHandle;
 	TWeakObjectPtr<UWLAbilitySystemComponent> BoundASC;
 	bool bRegisteredTick = false;
+	float OutOfBoundsTimer = 0.f;
+	double SpawnedAt = 0.0;
 };

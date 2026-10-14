@@ -1,6 +1,5 @@
 #include "Combat/WLModuleEffects.h"
 
-using E = EWLModuleEffect;
 
 void FWLModuleEffects::NotifyGear(uint32 InSignature)
 {
@@ -27,7 +26,7 @@ void FWLModuleEffects::ResetCombat()
 
 void FWLModuleEffects::Track(uint64 Target, double Now)
 {
-	const double Window = Powers(E::Combo) >= 2 ? 10.0 : 6.0;
+	const double Window = Powers(EWLModuleEffect::Combo) >= 2 ? 10.0 : 6.0;
 	if (Target != CurrentTarget || Now - LastHit > Window)
 	{
 		Chain = 0;
@@ -40,18 +39,18 @@ void FWLModuleEffects::Track(uint64 Target, double Now)
 int32 FWLModuleEffects::Accuracy(uint64 Target, bool bRanged, double Now)
 {
 	Track(Target, Now);
-	return Misses * 5 * Powers(E::MissAdapt) + (bRanged ? 4 * Powers(E::Targeting) : 0);
+	return Misses * 5 * Powers(EWLModuleEffect::MissAdapt) + (bRanged ? 4 * Powers(EWLModuleEffect::Targeting) : 0);
 }
 
 int32 FWLModuleEffects::Defence(double Now) const
 {
-	return Now < ReactiveUntil ? 8 * Powers(E::Reactive) : 0;
+	return Now < ReactiveUntil ? 8 * Powers(EWLModuleEffect::Reactive) : 0;
 }
 
 int32 FWLModuleEffects::TargetDefence(uint64 Target, int32 TargetDefenceLevel, double Now)
 {
 	Track(Target, Now);
-	const float Shred = FMath::Min(0.4f, Chain * 0.02f * Powers(E::Resonance));
+	const float Shred = FMath::Min(0.4f, Chain * 0.02f * Powers(EWLModuleEffect::Resonance));
 	return FMath::Max(0, FMath::RoundToInt(TargetDefenceLevel * (1.f - Shred)));
 }
 
@@ -65,14 +64,14 @@ void FWLModuleEffects::Miss(uint64 Target, double Now)
 
 float FWLModuleEffects::CooldownMultiplier(double Now, FRandomStream& Rng) const
 {
-	float Reduction = 0.03f * Powers(E::Processor) + 0.03f * Powers(E::Recovery) * (Now < KillUntil ? 2 : 1);
-	const int32 Adaptive = Powers(E::Adaptive);
-	Reduction += FMath::Min(Chain, 5) * (0.02f * Powers(E::Overclock) + (Adaptive >= 2 ? 0.03f : Adaptive * 0.02f));
-	if (Now < ServoUntil && Powers(E::Servo) > 0)
+	float Reduction = 0.03f * Powers(EWLModuleEffect::Processor) + 0.03f * Powers(EWLModuleEffect::Recovery) * (Now < KillUntil ? 2 : 1);
+	const int32 Adaptive = Powers(EWLModuleEffect::Adaptive);
+	Reduction += FMath::Min(Chain, 5) * (0.02f * Powers(EWLModuleEffect::Overclock) + (Adaptive >= 2 ? 0.03f : Adaptive * 0.02f));
+	if (Now < ServoUntil && Powers(EWLModuleEffect::Servo) > 0)
 	{
 		Reduction += 0.08f;
 	}
-	const int32 Loose = Powers(E::HasteProc);
+	const int32 Loose = Powers(EWLModuleEffect::HasteProc);
 	if (Loose > 0 && Rng.GetFraction() < 0.05f + 0.05f * Loose)
 	{
 		Reduction += 0.20f;
@@ -96,19 +95,19 @@ FWLModuleOutgoing FWLModuleEffects::Outgoing(uint64 Target, int32 Damage, bool b
 	LastHit = Now;
 
 	const int32 Capped = FMath::Min(5, Chain);
-	const int32 Combo = Powers(E::Combo);
-	float Bonus = 0.04f * Powers(E::Power) + 0.01f * Powers(E::Scanner) * Capped;
+	const int32 Combo = Powers(EWLModuleEffect::Combo);
+	float Bonus = 0.04f * Powers(EWLModuleEffect::Power) + 0.01f * Powers(EWLModuleEffect::Scanner) * Capped;
 	if (Combo > 0) Bonus += (Combo >= 2 ? 0.03f : 0.02f) * FMath::Min(Chain, Combo >= 2 ? 8 : 5);
-	if (Powers(E::Adaptive) >= 2) Bonus += 0.02f * Capped;
-	if (Powers(E::Tactical) >= 2) Bonus += 0.01f * Capped;
-	if (Powers(E::MissAdapt) >= 2) Bonus += 0.03f * PriorMisses;
-	if (Powers(E::Reactive) >= 2 && Now < ReactiveUntil) Bonus += 0.05f;
-	if (Powers(E::Emergency) >= 2 && PlayerHP < PlayerMaxHP * 0.3f) Bonus += 0.1f;
-	if (Rng.GetFraction() < 0.05f * Powers(E::Critical)) Bonus += 0.5f;
-	if (bRanged && Powers(E::Targeting) >= 2 && Rng.GetFraction() < 0.05f) Bonus += 0.5f;
-	if (Rng.GetFraction() < 0.05f * Powers(E::DoubleStrike)) Bonus += 0.4f;
-	if (Rng.GetFraction() < 0.08f * Powers(E::Burst)) Bonus += 0.5f;
-	const int32 Cap = Powers(E::Capacitor);
+	if (Powers(EWLModuleEffect::Adaptive) >= 2) Bonus += 0.02f * Capped;
+	if (Powers(EWLModuleEffect::Tactical) >= 2) Bonus += 0.01f * Capped;
+	if (Powers(EWLModuleEffect::MissAdapt) >= 2) Bonus += 0.03f * PriorMisses;
+	if (Powers(EWLModuleEffect::Reactive) >= 2 && Now < ReactiveUntil) Bonus += 0.05f;
+	if (Powers(EWLModuleEffect::Emergency) >= 2 && PlayerHP < PlayerMaxHP * 0.3f) Bonus += 0.1f;
+	if (Rng.GetFraction() < 0.05f * Powers(EWLModuleEffect::Critical)) Bonus += 0.5f;
+	if (bRanged && Powers(EWLModuleEffect::Targeting) >= 2 && Rng.GetFraction() < 0.05f) Bonus += 0.5f;
+	if (Rng.GetFraction() < 0.05f * Powers(EWLModuleEffect::DoubleStrike)) Bonus += 0.4f;
+	if (Rng.GetFraction() < 0.08f * Powers(EWLModuleEffect::Burst)) Bonus += 0.5f;
+	const int32 Cap = Powers(EWLModuleEffect::Capacitor);
 	if (Cap > 0 && ++Charge >= (Cap >= 2 ? 3 : 5))
 	{
 		Charge = 0;
@@ -117,19 +116,19 @@ FWLModuleOutgoing FWLModuleEffects::Outgoing(uint64 Target, int32 Damage, bool b
 
 	const int32 Result = FMath::Max(1, FMath::RoundToInt(Damage * (1.f + Bonus)));
 	const int32 Actual = FMath::Min(Result, TargetHP);
-	if (Powers(E::Leech) > 0 && Actual > 0)
+	if (Powers(EWLModuleEffect::Leech) > 0 && Actual > 0)
 	{
-		Out.LeechHeal = FMath::Max(1, FMath::FloorToInt(Actual * 0.03f * Powers(E::Leech)));
+		Out.LeechHeal = FMath::Max(1, FMath::FloorToInt(Actual * 0.03f * Powers(EWLModuleEffect::Leech)));
 	}
-	const int32 Serrated = Powers(E::Serrated);
-	if (Rng.GetFraction() < 0.05f * Powers(E::Bleed) + 0.10f * Serrated)
+	const int32 Serrated = Powers(EWLModuleEffect::Serrated);
+	if (Rng.GetFraction() < 0.05f * Powers(EWLModuleEffect::Bleed) + 0.10f * Serrated)
 	{
 		Out.BleedDamage = FMath::Max(1, FMath::RoundToInt(Damage * 0.10f));
 		Out.BleedMaxStacks = Serrated >= 2 ? 2 : 1;
 	}
-	if (Powers(E::Servo) > 0)
+	if (Powers(EWLModuleEffect::Servo) > 0)
 	{
-		ServoUntil = Now + (Powers(E::Servo) >= 2 ? 6.0 : 3.0);
+		ServoUntil = Now + (Powers(EWLModuleEffect::Servo) >= 2 ? 6.0 : 3.0);
 	}
 	if (Result >= TargetHP)
 	{
@@ -172,15 +171,15 @@ void FWLModuleEffects::TickBleeds(TFunctionRef<bool(uint64, int32)> Apply)
 
 float FWLModuleEffects::ShieldCapacity() const
 {
-	return 6.f * Powers(E::Barrier) + 10.f * Powers(E::Nano);
+	return 6.f * Powers(EWLModuleEffect::Barrier) + 10.f * Powers(EWLModuleEffect::Nano);
 }
 
 void FWLModuleEffects::Regenerate(double Now)
 {
 	const double Elapsed = FMath::Max(0.0, Now - LastRegen);
 	LastRegen = Now;
-	Shield = FMath::Min(ShieldCapacity(), Shield + static_cast<float>(Elapsed) * Powers(E::Nano));
-	const int32 Barrier = Powers(E::Barrier);
+	Shield = FMath::Min(ShieldCapacity(), Shield + static_cast<float>(Elapsed) * Powers(EWLModuleEffect::Nano));
+	const int32 Barrier = Powers(EWLModuleEffect::Barrier);
 	if (Barrier > 0 && Now - LastIncoming >= (Barrier >= 2 ? 8.0 : 12.0))
 	{
 		Shield = FMath::Max(Shield, 6.f * Barrier);
@@ -199,25 +198,25 @@ FWLModuleIncoming FWLModuleEffects::Incoming(int32 Damage, bool bAttackerAlive, 
 	LastIncoming = Now;
 	const int32 Original = Damage;
 
-	if (Rng.GetFraction() < 0.05f * Powers(E::Block))
+	if (Rng.GetFraction() < 0.05f * Powers(EWLModuleEffect::Block))
 	{
 		Out.bBlocked = true;
-		if (Powers(E::Block) >= 2 && bAttackerAlive)
+		if (Powers(EWLModuleEffect::Block) >= 2 && bAttackerAlive)
 		{
 			Out.ReturnDamage = FMath::Max(1, Original / 4);
 		}
 		return Out;
 	}
-	if (bRanged && Powers(E::Ballistic) >= 2 && Rng.GetFraction() < 0.05f)
+	if (bRanged && Powers(EWLModuleEffect::Ballistic) >= 2 && Rng.GetFraction() < 0.05f)
 	{
 		Out.bBlocked = true;
 		return Out;
 	}
 
-	float Reduction = 0.03f * Powers(E::Plates);
-	if (Damage >= 10) Reduction += 0.10f * Powers(E::HeavyGuard);
-	if (bRanged) Reduction += 0.10f * Powers(E::Ballistic);
-	if (PlayerHP < PlayerMaxHP * 0.3f) Reduction += 0.10f * Powers(E::Emergency);
+	float Reduction = 0.03f * Powers(EWLModuleEffect::Plates);
+	if (Damage >= 10) Reduction += 0.10f * Powers(EWLModuleEffect::HeavyGuard);
+	if (bRanged) Reduction += 0.10f * Powers(EWLModuleEffect::Ballistic);
+	if (PlayerHP < PlayerMaxHP * 0.3f) Reduction += 0.10f * Powers(EWLModuleEffect::Emergency);
 	Damage = FMath::Max(1, FMath::RoundToInt(Damage * (1.f - FMath::Min(0.6f, Reduction))));
 
 	const int32 Absorbed = FMath::Min(Damage, FMath::FloorToInt(Shield));
@@ -227,8 +226,8 @@ FWLModuleIncoming FWLModuleEffects::Incoming(int32 Damage, bool bAttackerAlive, 
 
 	if (bAttackerAlive)
 	{
-		int32 Reflect = Powers(E::Reflect) > 0 ? FMath::Max(1, FMath::FloorToInt(Original * 0.05f * Powers(E::Reflect))) : 0;
-		if (Rng.GetFraction() < 0.08f * Powers(E::Deflect))
+		int32 Reflect = Powers(EWLModuleEffect::Reflect) > 0 ? FMath::Max(1, FMath::FloorToInt(Original * 0.05f * Powers(EWLModuleEffect::Reflect))) : 0;
+		if (Rng.GetFraction() < 0.08f * Powers(EWLModuleEffect::Deflect))
 		{
 			Reflect += FMath::Max(1, Original / 2);
 		}

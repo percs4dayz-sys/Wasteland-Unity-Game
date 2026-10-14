@@ -113,7 +113,10 @@ float FWLCombatMath::ReachUnits(int32 WeaponRangeTiles, bool bRanged, EWLCombatS
 
 double FWLCombatMath::NextReadyTick(int64 CurrentTick, double ReadyAt, double CooldownTicks)
 {
-	const double Late = FMath::Clamp(static_cast<double>(CurrentTick) - ReadyAt, 0.0, 0.999);
+	// Sustained fire is always under a tick late; anything later means the weapon sat idle, and an
+	// idle weapon earns no carry (otherwise every fresh engage would start almost a tick early).
+	const double Since = static_cast<double>(CurrentTick) - ReadyAt;
+	const double Late = (Since > 0.0 && Since < 1.0) ? Since : 0.0;
 	return static_cast<double>(CurrentTick) - Late + CooldownTicks;
 }
 
