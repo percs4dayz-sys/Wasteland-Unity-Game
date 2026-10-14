@@ -21,6 +21,8 @@ public class Wastelanders : ModuleRules
 			"NavigationSystem",
 			"UMG",
 			"CommonUI",
+			"ModelViewViewModel",
+			"FieldNotification",
 			"StateTreeModule",
 			"GameplayStateTreeModule",
 			"Json",
