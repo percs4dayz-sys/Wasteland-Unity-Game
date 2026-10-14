@@ -1,6 +1,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Templates/Function.h"
+#include "Math/RandomStream.h"
 #include "Engine/DataAsset.h"
 #include "Data/WLDataTypes.h"
 #include "WLDropTableAsset.generated.h"

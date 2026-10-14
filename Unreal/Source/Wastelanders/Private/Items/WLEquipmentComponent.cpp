@@ -14,7 +14,7 @@
 #include "TimerManager.h"
 #include "Net/UnrealNetwork.h"
 
-static int32 SlotIdx(EWLEquipSlot Slot) { return static_cast<int32>(Slot); }
+static int32 Equip_SlotIdx(EWLEquipSlot Slot) { return static_cast<int32>(Slot); }
 
 UWLEquipmentComponent::UWLEquipmentComponent()
 {
@@ -67,7 +67,7 @@ void UWLEquipmentComponent::Report(const FText& Message) const
 
 int32 UWLEquipmentComponent::GetItemId(EWLEquipSlot Slot) const
 {
-	const int32 I = SlotIdx(Slot);
+	const int32 I = Equip_SlotIdx(Slot);
 	return Equipped.IsValidIndex(I) && !Equipped[I].IsEmpty() ? Equipped[I].ItemId : 0;
 }
 
@@ -80,7 +80,7 @@ const FWLItemRow* UWLEquipmentComponent::GetItem(EWLEquipSlot Slot) const
 
 TArray<int32> UWLEquipmentComponent::GetModules(EWLEquipSlot Slot) const
 {
-	const int32 I = SlotIdx(Slot);
+	const int32 I = Equip_SlotIdx(Slot);
 	return Equipped.IsValidIndex(I) && !Equipped[I].IsEmpty() ? Equipped[I].Modules : TArray<int32>();
 }
 
@@ -245,7 +245,7 @@ void UWLEquipmentComponent::NotifyChanged()
 
 void UWLEquipmentComponent::Equip(EWLEquipSlot Slot, int32 ItemId, const TArray<int32>& Modules)
 {
-	const int32 I = SlotIdx(Slot);
+	const int32 I = Equip_SlotIdx(Slot);
 	if (!IsServer() || !Equipped.IsValidIndex(I) || ItemId <= 0)
 	{
 		return;
@@ -260,7 +260,7 @@ void UWLEquipmentComponent::EquipAmmo(int32 ItemId, int32 Quantity)
 	{
 		return;
 	}
-	Equipped[SlotIdx(EWLEquipSlot::Ammo)] = FWLItemStack(ItemId, 1);
+	Equipped[Equip_SlotIdx(EWLEquipSlot::Ammo)] = FWLItemStack(ItemId, 1);
 	AmmoQuantity = Quantity;
 	NotifyChanged();
 }
@@ -284,7 +284,7 @@ bool UWLEquipmentComponent::ConsumeAmmo(int32 Quantity)
 	AmmoQuantity -= Quantity;
 	if (AmmoQuantity <= 0)
 	{
-		Equipped[SlotIdx(EWLEquipSlot::Ammo)].Reset();
+		Equipped[Equip_SlotIdx(EWLEquipSlot::Ammo)].Reset();
 		AmmoQuantity = 0;
 		NotifyChanged();
 	}
@@ -303,7 +303,7 @@ int32 UWLEquipmentComponent::Unequip(EWLEquipSlot Slot)
 	{
 		return 0;
 	}
-	Equipped[SlotIdx(Slot)].Reset();
+	Equipped[Equip_SlotIdx(Slot)].Reset();
 	if (Slot == EWLEquipSlot::Ammo)
 	{
 		AmmoQuantity = 0;
@@ -314,7 +314,7 @@ int32 UWLEquipmentComponent::Unequip(EWLEquipSlot Slot)
 
 void UWLEquipmentComponent::SetModules(EWLEquipSlot Slot, const TArray<int32>& Modules)
 {
-	const int32 I = SlotIdx(Slot);
+	const int32 I = Equip_SlotIdx(Slot);
 	if (!IsServer() || !Equipped.IsValidIndex(I) || Equipped[I].IsEmpty())
 	{
 		return;
@@ -339,6 +339,10 @@ void UWLEquipmentComponent::Clear()
 
 void UWLEquipmentComponent::RefreshAppliedWeaponSkin()
 {
+	if (!IsServer())
+	{
+		return;
+	}
 	const FWLWeaponSkinDef* Skin = FWLWeaponSkins::AppliedFor(GetOwningPlayerState(), GetItem(EWLEquipSlot::Weapon));
 	const FName NewSkin = Skin ? Skin->Id : NAME_None;
 	if (NewSkin != AppliedWeaponSkin)
@@ -462,13 +466,13 @@ void UWLEquipmentComponent::ApplySave(const FWLCharacterSave& In)
 		{
 			if (In.AmmoQuantity > 0)
 			{
-				Equipped[SlotIdx(Slot)] = FWLItemStack(Entry.ItemId, 1);
+				Equipped[Equip_SlotIdx(Slot)] = FWLItemStack(Entry.ItemId, 1);
 				AmmoQuantity = In.AmmoQuantity;
 			}
 		}
 		else
 		{
-			Equipped[SlotIdx(Slot)] = FWLItemStack(Entry.ItemId, 1, Entry.Modules);
+			Equipped[Equip_SlotIdx(Slot)] = FWLItemStack(Entry.ItemId, 1, Entry.Modules);
 		}
 	}
 	NotifyChanged();

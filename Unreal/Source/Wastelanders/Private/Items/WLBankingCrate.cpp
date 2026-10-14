@@ -5,6 +5,7 @@
 #include "AbilitySystem/WLAbilitySystemComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/CollisionProfile.h"
 #include "UObject/ConstructorHelpers.h"
 
 #define LOCTEXT_NAMESPACE "WLBankingCrate"

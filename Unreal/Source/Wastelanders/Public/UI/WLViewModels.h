@@ -88,6 +88,11 @@ public:
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "HUD") int32 TrackedSkillLevel = 1;
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "HUD") float TrackedSkillProgress = 0.f;
 
+	/** Beast row: pack stamina / status line, only once you own a beast (Unity PlayerHudPanel). */
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "HUD") bool bOwnsBeast = false;
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "HUD") FText BeastStatusText;
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "HUD") float BeastStatusFill = 0.f;
+
 	/** Beast task row (only while one is active; red caption = beast not summoned). */
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "HUD") bool bShowBeastTask = false;
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "HUD") FText BeastTaskLabel;
@@ -340,6 +345,11 @@ public:
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "Combat") float MaxSpecialEnergy = 100.f;
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "Combat") float SpecialCost = 50.f;
 
+	/** Beast special (Unity SpecialAttackHUD second control). */
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "Combat") bool bHasBeastSpecial = false;
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "Combat") FText BeastSpecialBlockReason;
+	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "Combat") int32 BeastSpecialCooldown = 0;
+
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "Combat") bool bUsesMagazine = false;
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "Combat") int32 MagazineLoaded = 0;
 	UPROPERTY(BlueprintReadOnly, FieldNotify, Category = "Combat") int32 MagazineSize = 0;
@@ -349,6 +359,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Combat") void SetStance(EWLCombatStance Stance);
 	UFUNCTION(BlueprintCallable, Category = "Combat") void FireSpecial();
 	UFUNCTION(BlueprintCallable, Category = "Combat") void Reload();
+	UFUNCTION(BlueprintCallable, Category = "Combat") void FireBeastSpecial();
 
 	static FText HeadingFor(EWLCombatStyle Style);
 

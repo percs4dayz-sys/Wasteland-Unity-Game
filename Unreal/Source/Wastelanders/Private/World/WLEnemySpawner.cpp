@@ -115,15 +115,22 @@ AWLEnemyCharacter* AWLEnemySpawner::SpawnOne()
 		return nullptr;
 	}
 
-	FActorSpawnParameters Params;
-	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 	const FRotator Facing(0.f, FMath::FRandRange(0.f, 360.f), 0.f);
 	// Lift by a capsule's worth; collision handling settles it onto the ground.
-	AWLEnemyCharacter* Enemy = GetWorld()->SpawnActor<AWLEnemyCharacter>(Class, Ground + FVector(0.f, 0.f, 100.f), Facing, Params);
+	const FTransform SpawnTM(Facing, Ground + FVector(0.f, 0.f, 100.f));
+	AWLEnemyCharacter* Enemy = GetWorld()->SpawnActorDeferred<AWLEnemyCharacter>(Class, SpawnTM, nullptr, nullptr,
+		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
 	if (!Enemy)
 	{
 		return nullptr;
 	}
+	// The spawner owns the lifecycle (Unity SpawnedEnemy): the corpse is destroyed and replaced here,
+	// rather than the enemy respawning itself at home.
+	Enemy->DeathMode = EWLEnemyDeathMode::DestroyCorpse;
+	Enemy->CorpseSeconds = 3.f; // Unity SpawnedEnemy.corpseSeconds
+	Enemy->SetHome(SpawnTM.GetLocation());
+	Enemy->FinishSpawning(SpawnTM);
+
 	Enemy->OnEnemyDied.AddUObject(this, &AWLEnemySpawner::HandleEnemyDied);
 	Live.Add(Enemy);
 	EverSpawned.Add(Enemy);

@@ -16,24 +16,24 @@
 
 namespace
 {
-	const FWLItemRow* FindRow(const AWLPlayerState* PS, int32 ItemId)
+	const FWLItemRow* IA_FindRow(const AWLPlayerState* PS, int32 ItemId)
 	{
 		const UWLDataSubsystem* Data = UWLDataSubsystem::Get(PS);
 		return (Data && ItemId > 0) ? Data->FindItem(ItemId) : nullptr;
 	}
 
-	bool IsDead(const AWLPlayerState* PS)
+	bool IA_IsDead(const AWLPlayerState* PS)
 	{
 		const UWLAbilitySystemComponent* ASC = PS ? PS->GetWLAbilitySystem() : nullptr;
 		return ASC && ASC->IsDead();
 	}
 
-	bool Valid(const AWLPlayerState* PS)
+	bool IA_Valid(const AWLPlayerState* PS)
 	{
 		return PS && PS->HasAuthority() && PS->GetInventory() && PS->GetEquipment();
 	}
 
-	UWLCombatComponent* PawnCombat(const AWLPlayerState* PS)
+	UWLCombatComponent* IA_PawnCombat(const AWLPlayerState* PS)
 	{
 		const AWLPlayerCharacter* Pawn = PS ? PS->GetPawn<AWLPlayerCharacter>() : nullptr;
 		return Pawn ? Pawn->GetCombat() : nullptr;
@@ -47,7 +47,7 @@ bool FWLItemActions::IsTwoHanded(const FWLItemRow* Item)
 
 void FWLItemActions::RefreshCombatStyle(AWLPlayerState* PS)
 {
-	if (UWLCombatComponent* Combat = PawnCombat(PS))
+	if (UWLCombatComponent* Combat = IA_PawnCombat(PS))
 	{
 		Combat->RefreshStyleFromEquipment();
 	}
@@ -55,7 +55,7 @@ void FWLItemActions::RefreshCombatStyle(AWLPlayerState* PS)
 
 FText FWLItemActions::EquipAt(AWLPlayerState* PS, int32 Index)
 {
-	if (!Valid(PS))
+	if (!IA_Valid(PS))
 	{
 		return FText::GetEmpty();
 	}
@@ -63,7 +63,7 @@ FText FWLItemActions::EquipAt(AWLPlayerState* PS, int32 Index)
 	UWLEquipmentComponent* Eq = PS->GetEquipment();
 
 	const FWLItemStack Incoming = Inv->GetSlot(Index);
-	const FWLItemRow* Item = Incoming.IsEmpty() ? nullptr : FindRow(PS, Incoming.ItemId);
+	const FWLItemRow* Item = Incoming.IsEmpty() ? nullptr : IA_FindRow(PS, Incoming.ItemId);
 	if (!Item)
 	{
 		return LOCTEXT("NotInInv", "Not in inventory.");
@@ -73,7 +73,7 @@ FText FWLItemActions::EquipAt(AWLPlayerState* PS, int32 Index)
 	{
 		return LOCTEXT("CantEquip", "Can't equip that.");
 	}
-	if (IsDead(PS))
+	if (IA_IsDead(PS))
 	{
 		return LOCTEXT("Down", "You can't do that while down.");
 	}
@@ -141,7 +141,7 @@ FText FWLItemActions::EquipAt(AWLPlayerState* PS, int32 Index)
 
 FText FWLItemActions::Unequip(AWLPlayerState* PS, EWLEquipSlot Slot)
 {
-	if (!Valid(PS))
+	if (!IA_Valid(PS))
 	{
 		return FText::GetEmpty();
 	}
@@ -152,7 +152,7 @@ FText FWLItemActions::Unequip(AWLPlayerState* PS, EWLEquipSlot Slot)
 	{
 		return LOCTEXT("NothingThere", "Nothing equipped there.");
 	}
-	const FWLItemRow* Item = FindRow(PS, Stack.ItemId);
+	const FWLItemRow* Item = IA_FindRow(PS, Stack.ItemId);
 	if (!Inv->AddStack(Stack))
 	{
 		return LOCTEXT("InvFull", "Inventory is full.");
@@ -164,18 +164,18 @@ FText FWLItemActions::Unequip(AWLPlayerState* PS, EWLEquipSlot Slot)
 
 FText FWLItemActions::Consume(AWLPlayerState* PS, int32 Index)
 {
-	if (!Valid(PS))
+	if (!IA_Valid(PS))
 	{
 		return FText::GetEmpty();
 	}
 	UWLInventoryComponent* Inv = PS->GetInventory();
 	const FWLItemStack Stack = Inv->GetSlot(Index);
-	const FWLItemRow* Item = Stack.IsEmpty() ? nullptr : FindRow(PS, Stack.ItemId);
+	const FWLItemRow* Item = Stack.IsEmpty() ? nullptr : IA_FindRow(PS, Stack.ItemId);
 	if (!Item || !Item->IsConsumable())
 	{
 		return LOCTEXT("CantUse", "Can't use that.");
 	}
-	if (IsDead(PS))
+	if (IA_IsDead(PS))
 	{
 		return LOCTEXT("CantEatDown", "You can't eat while down.");
 	}
@@ -199,7 +199,7 @@ FText FWLItemActions::Consume(AWLPlayerState* PS, int32 Index)
 	Inv->SetNextEatTick(Now + EatDelayTicks);
 
 	// Eating while engaged delays the next swing (the 3-tick attack delay).
-	if (UWLCombatComponent* Combat = PawnCombat(PS))
+	if (UWLCombatComponent* Combat = IA_PawnCombat(PS))
 	{
 		Combat->DelayAttackAfterEating(EatDelayTicks);
 	}
@@ -208,18 +208,18 @@ FText FWLItemActions::Consume(AWLPlayerState* PS, int32 Index)
 
 FText FWLItemActions::Bury(AWLPlayerState* PS, int32 Index)
 {
-	if (!Valid(PS))
+	if (!IA_Valid(PS))
 	{
 		return FText::GetEmpty();
 	}
 	UWLInventoryComponent* Inv = PS->GetInventory();
 	const FWLItemStack Stack = Inv->GetSlot(Index);
-	const FWLItemRow* Item = Stack.IsEmpty() ? nullptr : FindRow(PS, Stack.ItemId);
+	const FWLItemRow* Item = Stack.IsEmpty() ? nullptr : IA_FindRow(PS, Stack.ItemId);
 	if (!Item || !Item->bBuryable)
 	{
 		return LOCTEXT("CantBury", "You can't bury that.");
 	}
-	if (IsDead(PS))
+	if (IA_IsDead(PS))
 	{
 		return LOCTEXT("Down", "You can't do that while down.");
 	}
@@ -236,19 +236,19 @@ FText FWLItemActions::Bury(AWLPlayerState* PS, int32 Index)
 
 FText FWLItemActions::DropAt(AWLPlayerState* PS, int32 Index)
 {
-	if (!Valid(PS))
+	if (!IA_Valid(PS))
 	{
 		return FText::GetEmpty();
 	}
 	UWLInventoryComponent* Inv = PS->GetInventory();
 	const FWLItemStack Slot = Inv->GetSlot(Index);
-	const FWLItemRow* Item = Slot.IsEmpty() ? nullptr : FindRow(PS, Slot.ItemId);
+	const FWLItemRow* Item = Slot.IsEmpty() ? nullptr : IA_FindRow(PS, Slot.ItemId);
 	if (!Item)
 	{
 		return LOCTEXT("NotInInv", "Not in inventory.");
 	}
 	const APawn* Pawn = PS->GetPawn();
-	if (!Pawn || IsDead(PS))
+	if (!Pawn || IA_IsDead(PS))
 	{
 		return LOCTEXT("CantDrop", "Can't drop that here.");
 	}
@@ -264,7 +264,7 @@ FText FWLItemActions::DropAt(AWLPlayerState* PS, int32 Index)
 
 FText FWLItemActions::Socket(AWLPlayerState* PS, EWLEquipSlot Slot, int32 SocketIndex, int32 ModuleId)
 {
-	if (!Valid(PS))
+	if (!IA_Valid(PS))
 	{
 		return FText::GetEmpty();
 	}
@@ -316,12 +316,12 @@ FText FWLItemActions::Socket(AWLPlayerState* PS, EWLEquipSlot Slot, int32 Socket
 
 FText FWLItemActions::Read(AWLPlayerState* PS, int32 Index)
 {
-	if (!Valid(PS))
+	if (!IA_Valid(PS))
 	{
 		return FText::GetEmpty();
 	}
 	const FWLItemStack Stack = PS->GetInventory()->GetSlot(Index);
-	const FWLItemRow* Item = Stack.IsEmpty() ? nullptr : FindRow(PS, Stack.ItemId);
+	const FWLItemRow* Item = Stack.IsEmpty() ? nullptr : IA_FindRow(PS, Stack.ItemId);
 	if (!Item || !Item->IsReadable())
 	{
 		return LOCTEXT("CantRead", "There's nothing to read.");
@@ -336,12 +336,12 @@ FText FWLItemActions::Read(AWLPlayerState* PS, int32 Index)
 
 FText FWLItemActions::UseDefault(AWLPlayerState* PS, int32 Index)
 {
-	if (!Valid(PS))
+	if (!IA_Valid(PS))
 	{
 		return FText::GetEmpty();
 	}
 	const FWLItemStack Stack = PS->GetInventory()->GetSlot(Index);
-	const FWLItemRow* Item = Stack.IsEmpty() ? nullptr : FindRow(PS, Stack.ItemId);
+	const FWLItemRow* Item = Stack.IsEmpty() ? nullptr : IA_FindRow(PS, Stack.ItemId);
 	if (!Item)
 	{
 		return FText::GetEmpty();

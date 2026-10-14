@@ -1,6 +1,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Containers/ArrayView.h"
+#include "Templates/Function.h"
 #include "Core/WLTypes.h"
 #include "Items/WLItemTypes.h"
 

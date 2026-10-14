@@ -16,7 +16,7 @@
 
 #define LOCTEXT_NAMESPACE "WLGroundItem"
 
-static const FName VerbTake(TEXT("Take"));
+static const FName GroundItem_VerbTake(TEXT("Take"));
 
 AWLGroundItem::AWLGroundItem()
 {
@@ -31,6 +31,7 @@ AWLGroundItem::AWLGroundItem()
 	Collision->SetCollisionResponseToAllChannels(ECR_Overlap);
 	Collision->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
 	Collision->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	Collision->SetGenerateOverlapEvents(false); // radius queries go through UWLGroundItemSubsystem
 	SetRootComponent(Collision);
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
@@ -246,7 +247,7 @@ FText AWLGroundItem::GetExamineText_Implementation() const
 TArray<FWLInteractOption> AWLGroundItem::GetInteractOptions_Implementation(const AWLPlayerCharacter* Player) const
 {
 	FWLInteractOption Take;
-	Take.Verb = VerbTake;
+	Take.Verb = GroundItem_VerbTake;
 	Take.Label = FText::Format(LOCTEXT("TakeLabel", "Take {0}"), GetInteractName_Implementation());
 	Take.bDefault = true;
 	return { Take };
@@ -259,7 +260,7 @@ float AWLGroundItem::GetInteractRange_Implementation() const
 
 bool AWLGroundItem::Interact_Implementation(AWLPlayerCharacter* Player, FName Verb)
 {
-	if (!HasAuthority() || !Player || Verb != VerbTake)
+	if (!HasAuthority() || !Player || Verb != GroundItem_VerbTake)
 	{
 		return false;
 	}

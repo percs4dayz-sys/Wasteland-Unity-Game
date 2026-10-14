@@ -348,7 +348,10 @@ void AWLEnemyCharacter::HandleDeath(AActor* Instigator)
 		}
 
 		FWLEnemyLootParams Params;
+		Params.Enemy = this;
 		Params.Tier = GetTier();
+		Params.MaxHP = MaxHP;
+		Params.bDummy = bIsDummy;
 		Params.bMiniBoss = bIsMiniBoss;
 		Params.bBoss = bIsBoss;
 		Params.bGodHunter = bIsGodHunter;
@@ -358,6 +361,12 @@ void AWLEnemyCharacter::HandleDeath(AActor* Instigator)
 		UWLLootLibrary::DropEnemyLoot(Params, GetActorLocation(), Killer);
 	}
 
+	// Someone listening for our death (AWLEnemySpawner) replaces us: never self-respawn as well, or the
+	// population would double. Spawners should set DestroyCorpse explicitly; this is the safety net.
+	if (DeathMode == EWLEnemyDeathMode::RespawnAtHome && OnEnemyDied.IsBound())
+	{
+		DeathMode = EWLEnemyDeathMode::DestroyCorpse;
+	}
 	OnEnemyDied.Broadcast(this);
 	BeginCorpse();
 }

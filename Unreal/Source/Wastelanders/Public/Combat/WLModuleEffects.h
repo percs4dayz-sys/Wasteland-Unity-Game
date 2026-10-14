@@ -102,6 +102,8 @@ public:
 	 */
 	void TickBleeds(TFunctionRef<bool(uint64 /*Target*/, int32 /*Damage*/)> Apply);
 
+	bool HasBleed(uint64 Target) const { return Bleeds.Contains(Target); }
+
 	/** Energy/Nanofiber barrier capacity. */
 	float ShieldCapacity() const;
 	float GetShield() const { return Shield; }

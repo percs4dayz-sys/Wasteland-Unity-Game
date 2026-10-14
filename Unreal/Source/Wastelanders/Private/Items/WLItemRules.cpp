@@ -283,7 +283,7 @@ int32 FWLGearSetRules::WornCount(TConstArrayView<const FWLItemRow*> WornItems, F
 }
 
 /** Distinct set ids among the worn items: a set can only be complete if a piece of it is worn. */
-static TArray<FName, TInlineAllocator<8>> WornSetIds(TConstArrayView<const FWLItemRow*> WornItems)
+static TArray<FName, TInlineAllocator<8>> GearSet_WornSetIds(TConstArrayView<const FWLItemRow*> WornItems)
 {
 	TArray<FName, TInlineAllocator<8>> Ids;
 	for (const FWLItemRow* Item : WornItems)
@@ -298,7 +298,7 @@ static TArray<FName, TInlineAllocator<8>> WornSetIds(TConstArrayView<const FWLIt
 
 const FWLGearSetRow* FWLGearSetRules::ActiveFor(TConstArrayView<const FWLItemRow*> WornItems, EWLWeaponStyle Style, TFunctionRef<const FWLGearSetRow*(FName)> SetLookup)
 {
-	for (const FName SetId : WornSetIds(WornItems))
+	for (const FName SetId : GearSet_WornSetIds(WornItems))
 	{
 		const FWLGearSetRow* Def = SetLookup(SetId);
 		if (Def && Def->Style == Style && Def->PieceCount > 0 && WornCount(WornItems, SetId) >= Def->PieceCount)
@@ -318,7 +318,7 @@ float FWLGearSetRules::DamageMultiplier(TConstArrayView<const FWLItemRow*> WornI
 int32 FWLGearSetRules::BonusDefence(TConstArrayView<const FWLItemRow*> WornItems, TFunctionRef<const FWLGearSetRow*(FName)> SetLookup)
 {
 	int32 Best = 0;
-	for (const FName SetId : WornSetIds(WornItems))
+	for (const FName SetId : GearSet_WornSetIds(WornItems))
 	{
 		const FWLGearSetRow* Def = SetLookup(SetId);
 		if (Def && Def->PieceCount > 0 && WornCount(WornItems, SetId) >= Def->PieceCount && Def->BonusDefence > Best)

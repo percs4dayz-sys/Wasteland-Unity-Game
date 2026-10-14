@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Math/RandomStream.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Data/WLDataTypes.h"
 #include "WLLootLibrary.generated.h"
