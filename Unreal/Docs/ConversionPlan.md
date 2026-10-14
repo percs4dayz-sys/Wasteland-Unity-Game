@@ -124,7 +124,7 @@ presets need a low tier without hardware RT for older GPUs.
 
 The port was written in a cloud container without Unreal, so nothing has been compiled yet.
 
-1. Install UE 5.6 (Epic launcher is fine for client and editor; the dedicated server target needs a
+1. Install UE 5.8 (Epic launcher is fine for client and editor; the dedicated server target needs a
    source build).
 2. Right-click `Unreal/Wastelanders.uproject` > Generate project files, then build
    `WastelandersEditor` (Development Editor). Expect a round of compile fixes.
