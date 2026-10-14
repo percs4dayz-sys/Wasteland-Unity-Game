@@ -1,0 +1,2577 @@
+[
+  {
+    "Name": "Furnace_SmeltScrapBar",
+    "DisplayName": "Smelt Scrap Bar",
+    "Station": "Furnace",
+    "Inputs": [
+      {
+        "ItemId": 10,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 11,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 30,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Furnace_SmeltSteelGradeBar",
+    "DisplayName": "Smelt Steel-Grade Bar",
+    "Station": "Furnace",
+    "Inputs": [
+      {
+        "ItemId": 60,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 70,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 60,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Furnace_SmeltWiringAlloyBar",
+    "DisplayName": "Smelt Wiring/Alloy Bar",
+    "Station": "Furnace",
+    "Inputs": [
+      {
+        "ItemId": 61,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 71,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 90,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Furnace_SmeltTitaniumAlloyBar",
+    "DisplayName": "Smelt Titanium-Alloy Bar",
+    "Station": "Furnace",
+    "Inputs": [
+      {
+        "ItemId": 62,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 72,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 130,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Furnace_SmeltCyberSteelBar",
+    "DisplayName": "Smelt CyberSteel Bar",
+    "Station": "Furnace",
+    "Inputs": [
+      {
+        "ItemId": 63,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 73,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 180,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Furnace_RefineUnstableFissionCore",
+    "DisplayName": "Refine Unstable Fission Core",
+    "Station": "Furnace",
+    "Inputs": [
+      {
+        "ItemId": 405,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 410,
+    "OutputQuantity": 1,
+    "Skill": "Refinement",
+    "LevelRequired": 1,
+    "XPGranted": 100,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Furnace_RefineVolatileFissionCore",
+    "DisplayName": "Refine Volatile Fission Core",
+    "Station": "Furnace",
+    "Inputs": [
+      {
+        "ItemId": 406,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 411,
+    "OutputQuantity": 1,
+    "Skill": "Refinement",
+    "LevelRequired": 20,
+    "XPGranted": 220,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Furnace_RefineEnrichedFissionCore",
+    "DisplayName": "Refine Enriched Fission Core",
+    "Station": "Furnace",
+    "Inputs": [
+      {
+        "ItemId": 407,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 412,
+    "OutputQuantity": 1,
+    "Skill": "Refinement",
+    "LevelRequired": 40,
+    "XPGranted": 380,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Furnace_RefineWeaponizedFissionCore",
+    "DisplayName": "Refine Weaponized Fission Core",
+    "Station": "Furnace",
+    "Inputs": [
+      {
+        "ItemId": 408,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 413,
+    "OutputQuantity": 1,
+    "Skill": "Refinement",
+    "LevelRequired": 60,
+    "XPGranted": 600,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Furnace_RefineSingularityFissionCore",
+    "DisplayName": "Refine Singularity Fission Core",
+    "Station": "Furnace",
+    "Inputs": [
+      {
+        "ItemId": 409,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 414,
+    "OutputQuantity": 1,
+    "Skill": "Refinement",
+    "LevelRequired": 80,
+    "XPGranted": 900,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "CookingFire_CookRawShrimp",
+    "DisplayName": "Cook Raw Shrimp",
+    "Station": "CookingFire",
+    "Inputs": [
+      {
+        "ItemId": 22,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 23,
+    "OutputQuantity": 1,
+    "Skill": "Cooking",
+    "LevelRequired": 1,
+    "XPGranted": 15,
+    "RequiredFlag": "",
+    "BurnItemId": 24,
+    "NoBurnLevel": 34
+  },
+  {
+    "Name": "CookingFire_CookCarpStew",
+    "DisplayName": "Cook Carp Stew",
+    "Station": "CookingFire",
+    "Inputs": [
+      {
+        "ItemId": 200,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 210,
+    "OutputQuantity": 1,
+    "Skill": "Cooking",
+    "LevelRequired": 20,
+    "XPGranted": 40,
+    "RequiredFlag": "",
+    "BurnItemId": 24,
+    "NoBurnLevel": 55
+  },
+  {
+    "Name": "CookingFire_CookSearedGlowfin",
+    "DisplayName": "Cook Seared Glowfin",
+    "Station": "CookingFire",
+    "Inputs": [
+      {
+        "ItemId": 201,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 211,
+    "OutputQuantity": 1,
+    "Skill": "Cooking",
+    "LevelRequired": 40,
+    "XPGranted": 70,
+    "RequiredFlag": "",
+    "BurnItemId": 24,
+    "NoBurnLevel": 75
+  },
+  {
+    "Name": "CookingFire_CookLurkerBroth",
+    "DisplayName": "Cook Lurker Broth",
+    "Station": "CookingFire",
+    "Inputs": [
+      {
+        "ItemId": 202,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 212,
+    "OutputQuantity": 1,
+    "Skill": "Cooking",
+    "LevelRequired": 60,
+    "XPGranted": 110,
+    "RequiredFlag": "",
+    "BurnItemId": 24,
+    "NoBurnLevel": 92
+  },
+  {
+    "Name": "CookingFire_CookAbyssalFeast",
+    "DisplayName": "Cook Abyssal Feast",
+    "Station": "CookingFire",
+    "Inputs": [
+      {
+        "ItemId": 203,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 213,
+    "OutputQuantity": 1,
+    "Skill": "Cooking",
+    "LevelRequired": 80,
+    "XPGranted": 160,
+    "RequiredFlag": "",
+    "BurnItemId": 24,
+    "NoBurnLevel": 99
+  },
+  {
+    "Name": "Workbench_CraftFishingRod",
+    "DisplayName": "Craft Fishing Rod",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      },
+      {
+        "ItemId": 40,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 5,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 40,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftHatchet",
+    "DisplayName": "Craft Hatchet",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      },
+      {
+        "ItemId": 40,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 4,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 40,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftPickaxe",
+    "DisplayName": "Craft Pickaxe",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      },
+      {
+        "ItemId": 40,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 3,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 40,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftPipeMelee",
+    "DisplayName": "Craft Pipe Melee",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      },
+      {
+        "ItemId": 40,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 100,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 50,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftPipePistol",
+    "DisplayName": "Craft Pipe Pistol",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 3
+      }
+    ],
+    "OutputItemId": 12,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 75,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftRustyMachete",
+    "DisplayName": "Craft Rusty Machete",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      },
+      {
+        "ItemId": 40,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 1,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 40,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftSalvagedBuckler",
+    "DisplayName": "Craft Salvaged Buckler",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 139,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 40,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftSalvagedGreaves",
+    "DisplayName": "Craft Salvaged Greaves",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 138,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 40,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftSalvagedHelm",
+    "DisplayName": "Craft Salvaged Helm",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 136,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 40,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftSalvagedVest",
+    "DisplayName": "Craft Salvaged Vest",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 3
+      }
+    ],
+    "OutputItemId": 137,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 40,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftScrapChestplate",
+    "DisplayName": "Craft Scrap Chestplate",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 3
+      }
+    ],
+    "OutputItemId": 31,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 60,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftScrapHelmet",
+    "DisplayName": "Craft Scrap Helmet",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 30,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 40,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftScrapLeggings",
+    "DisplayName": "Craft Scrap Leggings",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 32,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 40,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftScrapShield",
+    "DisplayName": "Craft Scrap Shield",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 2,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 40,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_PressScrapRounds",
+    "DisplayName": "Press Scrap Rounds",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 41,
+        "Quantity": 5
+      },
+      {
+        "ItemId": 11,
+        "Quantity": 1
+      },
+      {
+        "ItemId": 40,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 13,
+    "OutputQuantity": 5,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 15,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineCrackedVisor",
+    "DisplayName": "Refine Cracked Visor",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 606,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 607,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 50,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineJuryRiggedEdge",
+    "DisplayName": "Refine Jury-Rigged Edge",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 600,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 601,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 50,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineLooseGearMechanism",
+    "DisplayName": "Refine Loose Gear Mechanism",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 602,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 603,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 50,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineReinforcedPlates",
+    "DisplayName": "Refine Reinforced Plates",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 608,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 609,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 50,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineSalvagerBoots",
+    "DisplayName": "Refine Salvager Boots",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 610,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 611,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 50,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineSalvagerGrip",
+    "DisplayName": "Refine Salvager Grip",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 604,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 605,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 50,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineWeldingShield",
+    "DisplayName": "Refine Welding Shield",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 612,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 613,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 50,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_ReplaceGeigerCounter",
+    "DisplayName": "Replace Geiger Counter",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 3
+      }
+    ],
+    "OutputItemId": 400,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 50,
+    "RequiredFlag": "roxy_fission_given",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_ReplacePowerGauntlets",
+    "DisplayName": "Replace Power Gauntlets",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 5
+      }
+    ],
+    "OutputItemId": 402,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 1,
+    "XPGranted": 50,
+    "RequiredFlag": "roxy_fission_given",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftScrapBlade",
+    "DisplayName": "Craft Scrap Blade",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 11,
+        "Quantity": 2
+      },
+      {
+        "ItemId": 40,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 101,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 5,
+    "XPGranted": 60,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_PressLowVelocityAmmo",
+    "DisplayName": "Press Low-Velocity Ammo",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 41,
+        "Quantity": 5
+      },
+      {
+        "ItemId": 11,
+        "Quantity": 1
+      },
+      {
+        "ItemId": 40,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 115,
+    "OutputQuantity": 5,
+    "Skill": "Smithing",
+    "LevelRequired": 10,
+    "XPGranted": 20,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftRivetedBuckler",
+    "DisplayName": "Craft Riveted Buckler",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 3
+      }
+    ],
+    "OutputItemId": 123,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 110,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftRivetedGreaves",
+    "DisplayName": "Craft Riveted Greaves",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 122,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 90,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftRivetedHelmet",
+    "DisplayName": "Craft Riveted Helmet",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 120,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 90,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftRivetedVest",
+    "DisplayName": "Craft Riveted Vest",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 4
+      }
+    ],
+    "OutputItemId": 121,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 140,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftScoutHood",
+    "DisplayName": "Craft Scout Hood",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 144,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 90,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftScoutJacket",
+    "DisplayName": "Craft Scout Jacket",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 4
+      }
+    ],
+    "OutputItemId": 145,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 140,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftScoutLeggings",
+    "DisplayName": "Craft Scout Leggings",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 146,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 90,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftSteelFishingRod",
+    "DisplayName": "Craft Steel Fishing Rod",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 220,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 706,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 90,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftSteelHatchet",
+    "DisplayName": "Craft Steel Hatchet",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 220,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 703,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 90,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftSteelPickaxe",
+    "DisplayName": "Craft Steel Pickaxe",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 220,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 700,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 90,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineBalancedCore",
+    "DisplayName": "Refine Balanced Core",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 614,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 70,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 615,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 100,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineHardenedEdge",
+    "DisplayName": "Refine Hardened Edge",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 616,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 70,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 617,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 100,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineReinforcedServos",
+    "DisplayName": "Refine Reinforced Servos",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 624,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 70,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 625,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 100,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineRiotPlating",
+    "DisplayName": "Refine Riot Plating",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 626,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 70,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 627,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 100,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineSerratedEdge",
+    "DisplayName": "Refine Serrated Edge",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 618,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 70,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 619,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 100,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineShockAbsorber",
+    "DisplayName": "Refine Shock Absorber",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 622,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 70,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 623,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 100,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineTargetingHUD",
+    "DisplayName": "Refine Targeting HUD",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 620,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 70,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 621,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 20,
+    "XPGranted": 100,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftMidtierRifle",
+    "DisplayName": "Craft Mid-tier Rifle",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 4
+      }
+    ],
+    "OutputItemId": 110,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 25,
+    "XPGranted": 150,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftNeonGauntlets",
+    "DisplayName": "Craft Neon Gauntlets",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 4
+      },
+      {
+        "ItemId": 411,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 403,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 25,
+    "XPGranted": 240,
+    "RequiredFlag": "roxy_fission_given",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftSteelBlade",
+    "DisplayName": "Craft Steel Blade",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 70,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 220,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 102,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 25,
+    "XPGranted": 130,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_PressBallisticAmmo",
+    "DisplayName": "Press Ballistic Ammo",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 41,
+        "Quantity": 5
+      },
+      {
+        "ItemId": 70,
+        "Quantity": 1
+      },
+      {
+        "ItemId": 220,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 116,
+    "OutputQuantity": 5,
+    "Skill": "Smithing",
+    "LevelRequired": 30,
+    "XPGranted": 35,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftAlloyFishingRod",
+    "DisplayName": "Craft Alloy Fishing Rod",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 221,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 707,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 180,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftAlloyHatchet",
+    "DisplayName": "Craft Alloy Hatchet",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 221,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 704,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 180,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftAlloyPickaxe",
+    "DisplayName": "Craft Alloy Pickaxe",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 221,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 701,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 180,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftHardenedAlloyGreaves",
+    "DisplayName": "Craft Hardened Alloy Greaves",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 126,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 160,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftHardenedAlloyHelm",
+    "DisplayName": "Craft Hardened Alloy Helm",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 124,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 160,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftHardenedAlloyPlate",
+    "DisplayName": "Craft Hardened Alloy Plate",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 4
+      }
+    ],
+    "OutputItemId": 125,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 240,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftHardenedAlloyShield",
+    "DisplayName": "Craft Hardened Alloy Shield",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 3
+      }
+    ],
+    "OutputItemId": 127,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 200,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftRangerCoat",
+    "DisplayName": "Craft Ranger Coat",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 4
+      }
+    ],
+    "OutputItemId": 148,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 210,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftRangerHood",
+    "DisplayName": "Craft Ranger Hood",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 147,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 135,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftRangerLeggings",
+    "DisplayName": "Craft Ranger Leggings",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 149,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 135,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineCapacitorCell",
+    "DisplayName": "Refine Capacitor Cell",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 628,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 71,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 629,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 150,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineEnergyBarrier",
+    "DisplayName": "Refine Energy Barrier",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 640,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 71,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 641,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 150,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineMagneticBoots",
+    "DisplayName": "Refine Magnetic Boots",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 638,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 71,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 639,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 150,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineOverclockChip",
+    "DisplayName": "Refine Overclock Chip",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 630,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 71,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 631,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 150,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefinePhaseStabilizer",
+    "DisplayName": "Refine Phase Stabilizer",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 632,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 71,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 633,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 150,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineReactiveArmor",
+    "DisplayName": "Refine Reactive Armor",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 636,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 71,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 637,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 150,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineTacticalScanner",
+    "DisplayName": "Refine Tactical Scanner",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 634,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 71,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 635,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 40,
+    "XPGranted": 150,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftAlloyRifle",
+    "DisplayName": "Craft Alloy Rifle",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 4
+      }
+    ],
+    "OutputItemId": 111,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 45,
+    "XPGranted": 260,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftEnergyInfusedBlade",
+    "DisplayName": "Craft Energy-Infused Blade",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 221,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 103,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 45,
+    "XPGranted": 230,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftSurgeGauntlets",
+    "DisplayName": "Craft Surge Gauntlets",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 71,
+        "Quantity": 4
+      },
+      {
+        "ItemId": 412,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 404,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 50,
+    "XPGranted": 360,
+    "RequiredFlag": "roxy_fission_given",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_PressHighGrainAmmo",
+    "DisplayName": "Press High-Grain Ammo",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 41,
+        "Quantity": 5
+      },
+      {
+        "ItemId": 71,
+        "Quantity": 1
+      },
+      {
+        "ItemId": 221,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 117,
+    "OutputQuantity": 5,
+    "Skill": "Smithing",
+    "LevelRequired": 50,
+    "XPGranted": 55,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftMarksmanLeggings",
+    "DisplayName": "Craft Marksman Leggings",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 152,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 180,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftMarksmanRig",
+    "DisplayName": "Craft Marksman Rig",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 4
+      }
+    ],
+    "OutputItemId": 151,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 280,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftMarksmanVisor",
+    "DisplayName": "Craft Marksman Visor",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 150,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 180,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftTacticalBallisticArmor",
+    "DisplayName": "Craft Tactical Ballistic Armor",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 4
+      }
+    ],
+    "OutputItemId": 129,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 360,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftTacticalBallisticGreaves",
+    "DisplayName": "Craft Tactical Ballistic Greaves",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 130,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 260,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftTacticalBallisticHelm",
+    "DisplayName": "Craft Tactical Ballistic Helm",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 128,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 260,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftTacticalBallisticShield",
+    "DisplayName": "Craft Tactical Ballistic Shield",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 3
+      }
+    ],
+    "OutputItemId": 131,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 300,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftTitaniumFishingRod",
+    "DisplayName": "Craft Titanium Fishing Rod",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 222,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 708,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 270,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftTitaniumHatchet",
+    "DisplayName": "Craft Titanium Hatchet",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 222,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 705,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 270,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftTitaniumPickaxe",
+    "DisplayName": "Craft Titanium Pickaxe",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 222,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 702,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 270,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineBallisticMatrix",
+    "DisplayName": "Refine Ballistic Matrix",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 650,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 72,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 651,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 200,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineBloodReactor",
+    "DisplayName": "Refine Blood Reactor",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 646,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 72,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 647,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 200,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineCombatAIChip",
+    "DisplayName": "Refine Combat AI Chip",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 644,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 72,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 645,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 200,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineCombatProcessor",
+    "DisplayName": "Refine Combat Processor",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 648,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 72,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 649,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 200,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineDeflectionField",
+    "DisplayName": "Refine Deflection Field",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 654,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 72,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 655,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 200,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineResonanceCore",
+    "DisplayName": "Refine Resonance Core",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 642,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 72,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 643,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 200,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineSprintActuators",
+    "DisplayName": "Refine Sprint Actuators",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 652,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 72,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 653,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 60,
+    "XPGranted": 200,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftPrecisionRifle",
+    "DisplayName": "Craft Precision Rifle",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 4
+      }
+    ],
+    "OutputItemId": 112,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 65,
+    "XPGranted": 400,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftVibroBlade",
+    "DisplayName": "Craft Vibro-Blade",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 222,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 104,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 65,
+    "XPGranted": 360,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_PressArmorPiercingAmmo",
+    "DisplayName": "Press Armor-Piercing Ammo",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 41,
+        "Quantity": 5
+      },
+      {
+        "ItemId": 72,
+        "Quantity": 1
+      },
+      {
+        "ItemId": 222,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 118,
+    "OutputQuantity": 5,
+    "Skill": "Smithing",
+    "LevelRequired": 70,
+    "XPGranted": 80,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftInfernoGauntlets",
+    "DisplayName": "Craft Inferno Gauntlets",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 72,
+        "Quantity": 4
+      },
+      {
+        "ItemId": 413,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 415,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 75,
+    "XPGranted": 480,
+    "RequiredFlag": "roxy_fission_given",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftDeadeyeLeggings",
+    "DisplayName": "Craft Deadeye Leggings",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 73,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 155,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 225,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftDeadeyeRig",
+    "DisplayName": "Craft Deadeye Rig",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 73,
+        "Quantity": 4
+      }
+    ],
+    "OutputItemId": 154,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 350,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftDeadeyeVisor",
+    "DisplayName": "Craft Deadeye Visor",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 73,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 153,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 225,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftPowerAssistedArmor",
+    "DisplayName": "Craft Power-Assisted Armor",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 73,
+        "Quantity": 4
+      }
+    ],
+    "OutputItemId": 133,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 520,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftPowerAssistedGreaves",
+    "DisplayName": "Craft Power-Assisted Greaves",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 73,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 134,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 380,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftPowerAssistedHelm",
+    "DisplayName": "Craft Power-Assisted Helm",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 73,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 132,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 380,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftPowerAssistedShield",
+    "DisplayName": "Craft Power-Assisted Shield",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 73,
+        "Quantity": 3
+      }
+    ],
+    "OutputItemId": 135,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 440,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineAdaptiveCombatMatrix",
+    "DisplayName": "Refine Adaptive Combat Matrix",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 656,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 73,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 657,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 250,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineEmergencyProtocol",
+    "DisplayName": "Refine Emergency Protocol",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 664,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 73,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 665,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 250,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineNanofiberBarrier",
+    "DisplayName": "Refine Nanofiber Barrier",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 668,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 73,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 669,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 250,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineNeuralLink",
+    "DisplayName": "Refine Neural Link",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 658,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 73,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 659,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 250,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineReactorCore",
+    "DisplayName": "Refine Reactor Core",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 660,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 73,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 661,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 250,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineServoOverdrive",
+    "DisplayName": "Refine Servo Overdrive",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 666,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 73,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 667,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 250,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_RefineTacticalAI",
+    "DisplayName": "Refine Tactical AI",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 662,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 73,
+        "Quantity": 2
+      }
+    ],
+    "OutputItemId": 663,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 80,
+    "XPGranted": 250,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftExperimentalEnergyRifle",
+    "DisplayName": "Craft Experimental Energy Rifle",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 73,
+        "Quantity": 4
+      }
+    ],
+    "OutputItemId": 113,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 85,
+    "XPGranted": 600,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_CraftMyomerBlade",
+    "DisplayName": "Craft Myomer Blade",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 73,
+        "Quantity": 3
+      },
+      {
+        "ItemId": 223,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 105,
+    "OutputQuantity": 1,
+    "Skill": "Smithing",
+    "LevelRequired": 85,
+    "XPGranted": 540,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  },
+  {
+    "Name": "Workbench_PressExperimentalAmmo",
+    "DisplayName": "Press Experimental Ammo",
+    "Station": "Workbench",
+    "Inputs": [
+      {
+        "ItemId": 41,
+        "Quantity": 5
+      },
+      {
+        "ItemId": 73,
+        "Quantity": 1
+      },
+      {
+        "ItemId": 223,
+        "Quantity": 1
+      }
+    ],
+    "OutputItemId": 119,
+    "OutputQuantity": 5,
+    "Skill": "Smithing",
+    "LevelRequired": 90,
+    "XPGranted": 110,
+    "RequiredFlag": "",
+    "BurnItemId": 0,
+    "NoBurnLevel": 0
+  }
+]
