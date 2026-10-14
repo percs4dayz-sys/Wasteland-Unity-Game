@@ -4,6 +4,7 @@
 #include "Engine/DeveloperSettings.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "Engine/TimerHandle.h"
+#include "Math/RandomStream.h"
 #include "WLSulphurVents.generated.h"
 
 class AWLResourceNode;

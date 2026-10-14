@@ -326,7 +326,7 @@ void UWLQuestComponent::UpdateJournal()
 		}
 		Flags->SetFlag(Flag);
 		const FText Name = Data ? Data->GetItemName(E.ItemId) : E.Title;
-		Say(FText::Format(LOCTEXT("JournalGranted", "[JOURNAL]: A weathered journal page is in your pack — {0}. Click it in your inventory to read."), Name));
+		Say(FText::Format(LOCTEXT("JournalGranted", "[JOURNAL]: A weathered journal page is in your pack \u2014 {0}. Click it in your inventory to read."), Name));
 	}
 }
 
@@ -515,11 +515,11 @@ bool UWLQuestComponent::AssignBeastTask()
 	const FText Note = Tier < Want
 		? FText::Format(LOCTEXT("TierNote", " (nothing of tier {0} lives around here, so it's a tier {1} hunt)"), Want, Tier)
 		: FText::GetEmpty();
-	SayBeastTask(FText::Format(LOCTEXT("NewTask", "New beast task: kill {0} × {1} with your beast at your side — +{2} Beastmastery XP per kill{3}."),
+	SayBeastTask(FText::Format(LOCTEXT("NewTask", "New beast task: kill {0} \u00D7 {1} with your beast at your side \u2014 +{2} Beastmastery XP per kill{3}."),
 		BeastTask.Required, FText::FromString(BeastTask.Creature), BeastTask.XPPerKill, Note));
 	if (!IsBeastOut())
 	{
-		SayBeastTask(LOCTEXT("SummonHint", "Summon your beast with B — kills only count while it's out with you."));
+		SayBeastTask(LOCTEXT("SummonHint", "Summon your beast with B \u2014 kills only count while it's out with you."));
 	}
 	return true;
 }
@@ -532,7 +532,7 @@ void UWLQuestComponent::RemindBeastTask()
 	}
 	const bool bLivesHere = HuntableKinds.ContainsByPredicate([this](const FWLBeastTaskRules::FKind& K) { return K.Name == BeastTask.Creature; });
 	const FText Where = bLivesHere ? FText::GetEmpty()
-		: FText::Format(LOCTEXT("NotHere", " They don't live around here — any tier {0} creature counts while you're in this area."), BeastTask.Tier);
+		: FText::Format(LOCTEXT("NotHere", " They don't live around here \u2014 any tier {0} creature counts while you're in this area."), BeastTask.Tier);
 	SayBeastTask(FText::Format(LOCTEXT("Remind", "Current beast task: {0}/{1} {2}.{3}"), BeastTask.Done, BeastTask.Required, FText::FromString(BeastTask.Creature), Where));
 }
 
@@ -559,7 +559,7 @@ void UWLQuestComponent::HandleEnemyKilled(AActor* Enemy, AWLPlayerState* Killer)
 		if (Now >= NextHintAt)
 		{
 			NextHintAt = Now + FWLBeastTaskRules::BeastOutHintSeconds;
-			SayBeastTask(LOCTEXT("NoBeastKill", "That kill didn't count — your beast has to be out with you. Press B to summon it."));
+			SayBeastTask(LOCTEXT("NoBeastKill", "That kill didn't count \u2014 your beast has to be out with you. Press B to summon it."));
 		}
 		return;
 	}
@@ -584,7 +584,7 @@ void UWLQuestComponent::HandleEnemyKilled(AActor* Enemy, AWLPlayerState* Killer)
 		BeastTask = FWLBeastTask();
 		NextAssignAt = Now + FWLBeastTaskRules::NextTaskDelay;
 		ReplicatedStateChanged();
-		SayBeastTask(FText::Format(LOCTEXT("TaskDone", "Task complete! {0} × {1} hunted down with your beast. Bonus +{2} Beastmastery XP — your next task is on its way."),
+		SayBeastTask(FText::Format(LOCTEXT("TaskDone", "Task complete! {0} \u00D7 {1} hunted down with your beast. Bonus +{2} Beastmastery XP \u2014 your next task is on its way."),
 			Finished.Required, FText::FromString(Finished.Creature), Bonus));
 		OnBeastTaskCompleted.Broadcast(PS);
 
@@ -615,7 +615,7 @@ bool UWLQuestComponent::GetBeastTaskHud(FText& OutLabel, FText& OutValue, float&
 	}
 	if (!BeastTask.IsValid())
 	{
-		OutLabel = bHuntableNearby ? LOCTEXT("FindingHunt", "Finding a hunt…") : LOCTEXT("NothingHere", "Nothing to hunt here");
+		OutLabel = bHuntableNearby ? LOCTEXT("FindingHunt", "Finding a hunt\u2026") : LOCTEXT("NothingHere", "Nothing to hunt here");
 		return true;
 	}
 	OutFill = FWLBeastTaskRules::Progress(BeastTask);
@@ -962,8 +962,8 @@ void UWLQuestComponent::ClientWelcome_Implementation(AActor* Roxy)
 	const bool bTouch = false;
 #endif
 	OnBanner.Broadcast(LOCTEXT("WelcomeTitle", "Welcome to the Broken Crescent"),
-		bTouch ? LOCTEXT("WelcomeSubTouch", "Roxy has work for you — she's just up the road. Tap her to talk.")
-		       : LOCTEXT("WelcomeSub", "Roxy has work for you — she's just up the road. Click her to talk."), 4.5f);
+		bTouch ? LOCTEXT("WelcomeSubTouch", "Roxy has work for you \u2014 she's just up the road. Tap her to talk.")
+		       : LOCTEXT("WelcomeSub", "Roxy has work for you \u2014 she's just up the road. Click her to talk."), 4.5f);
 
 	TWeakObjectPtr<AActor> WeakRoxy = Roxy;
 	FTimerHandle Handle;
@@ -974,8 +974,8 @@ void UWLQuestComponent::ClientWelcome_Implementation(AActor* Roxy)
 		if (R && Cam)
 		{
 			Cam->Peek(GetPC(), R->GetActorLocation() + FVector(0.f, 0.f, 120.f), bTouch
-				? LOCTEXT("PeekRoxyTouch", "That's Roxy. Tap her to talk — and hold your finger on anything to see everything you can do with it.")
-				: LOCTEXT("PeekRoxy", "That's Roxy. Click her to talk — and right-click anything to see everything you can do with it."));
+				? LOCTEXT("PeekRoxyTouch", "That's Roxy. Tap her to talk \u2014 and hold your finger on anything to see everything you can do with it.")
+				: LOCTEXT("PeekRoxy", "That's Roxy. Click her to talk \u2014 and right-click anything to see everything you can do with it."));
 		}
 	}), 3.f, false);
 }

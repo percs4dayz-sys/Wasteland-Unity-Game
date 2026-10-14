@@ -48,12 +48,12 @@ namespace
 		A.bAbortOnFailure = true;   // no dialogue at all: she tries again next time you talk
 		A.TextAlreadyOwned = LOCTEXT("RoxyOwned", "[Roxy]: You've already got a {item}, so I'll hang on to mine.");
 		A.TextInBank = LOCTEXT("RoxyBanked", "[Roxy]: You've already got a {item} in your bank, sweetcheeks. Take it out for this one.");
-		A.Text = LOCTEXT("RoxyGive", "[Roxy]: Here, take {count}{item} — you'll want it for this one. *winks*");
+		A.Text = LOCTEXT("RoxyGive", "[Roxy]: Here, take {count}{item} \u2014 you'll want it for this one. *winks*");
 		A.TextNoRoom = LOCTEXT("RoxyNoRoom", "[Roxy]: Your bag's stuffed. Make some room and I'll hand you the {item}.");
 		return A;
 	}
 
-	FText TitleLine(const FText& Title) { return FText::Format(LOCTEXT("TitleFmt", "— {0} —"), Title); }
+	FText TitleLine(const FText& Title) { return FText::Format(LOCTEXT("TitleFmt", "\u2014 {0} \u2014"), Title); }
 }
 
 UWLDialogueAsset* FWLBuiltinDialogues::Build(EWLBuiltinDialogue Which, UObject* Outer, const TArray<FText>& WandererLines)
@@ -92,7 +92,7 @@ UWLDialogueAsset* FWLBuiltinDialogues::BuildRoxy(UObject* Outer)
 	// 2. She's set the Beastmastery lesson but the picker was closed without choosing: re-offer it.
 	{
 		D->AddNode(TEXT("beast_reoffer"), {
-			LOCTEXT("BeastReoffer", "Still haven't picked? Go on — choose your companion. The moment you do, your first hunt is waiting for you. And be nice, they bite."),
+			LOCTEXT("BeastReoffer", "Still haven't picked? Go on \u2014 choose your companion. The moment you do, your first hunt is waiting for you. And be nice, they bite."),
 		});
 		FWLDialogueEntry& E = D->AddEntry(TEXT("beast_reoffer"));
 		E.Conditions = { FlagSet(WLQuestFlags::RoxyBeastGiven), FlagNotSet(WLQuestFlags::EggChosen) };
@@ -209,7 +209,7 @@ UWLDialogueAsset* FWLBuiltinDialogues::BuildRoxy(UObject* Outer)
 		D->AddNode(TEXT("hot_stuff"), {
 			TitleLine(Hot.Title),
 			LOCTEXT("HotStuff1", "All four combat skills at level 10. Now we're getting dangerous. Your Geiger Counter and power gauntlets are ready. Keep the counter in your bag or equip it as a tool; its readout points you toward a nearby Elemental Golem. If you already stored your counter in the bank, take it out first."),
-			LOCTEXT("HotStuff2", "Start with an Earth Golem here in the starter region. Defeat it with your usual weapons, then use your pickaxe to scrap its body for raw fission cores. That's Scrapping. Take the cores to a furnace and refine them — that trains Refinement. Finally, equip the power gauntlets and the refined cores in your ammo slot. Dealing damage with them trains Fission. Better golems yield stronger cores as those skills grow. Go make something glow, handsome."),
+			LOCTEXT("HotStuff2", "Start with an Earth Golem here in the starter region. Defeat it with your usual weapons, then use your pickaxe to scrap its body for raw fission cores. That's Scrapping. Take the cores to a furnace and refine them \u2014 that trains Refinement. Finally, equip the power gauntlets and the refined cores in your ammo slot. Dealing damage with them trains Fission. Better golems yield stronger cores as those skills grow. Go make something glow, handsome."),
 		});
 		FWLDialogueEntry& Ready = D->AddEntry(TEXT("hot_stuff"));
 		Ready.Conditions = { StageAtLeast(Roxy, StarterCount),
@@ -255,7 +255,7 @@ UWLDialogueAsset* FWLBuiltinDialogues::BuildOldMara(UObject* Outer)
 	}
 
 	D->AddNode(TEXT("intro"), {
-		LOCTEXT("Mara0", "Survivor. Good — I was starting to think I was the only one left out here."),
+		LOCTEXT("Mara0", "Survivor. Good \u2014 I was starting to think I was the only one left out here."),
 		LOCTEXT("Mara1", "This place is a proving ground. The portal to the north won't open until you've shown some basic competence."),
 		LOCTEXT("Mara2", "Dig through rubble, scavenge water, salvage wood. Learn to fight, to craft, to sustain yourself."),
 		LOCTEXT("Mara3", "I've got a few things that might help you get started. Don't waste them."),
@@ -273,11 +273,11 @@ UWLDialogueAsset* FWLBuiltinDialogues::BuildOldMara(UObject* Outer)
 	// (Bladework, Hearthcraft...) are Mara's own words from the tutorial island and kept as written.
 	D->AddNode(TEXT("guide"), {
 		LOCTEXT("Guide0", "Want the rundown? Fine. Here's what you're building, and where to do it."),
-		LOCTEXT("Guide1", "COMBAT. Bladework is your melee aim — it unlocks sharper blades. Brutality is raw power. Hardening toughens you and lets you wear heavier plate. Endurance is your lifeblood; more of it, the more hits you walk away from."),
-		LOCTEXT("Guide2", "The trick nobody tells you: hit F7 to change your STANCE. Same swing, different skill — Quick trains Bladework, Heavy trains Brutality, Defensive trains Hardening. Beat on that dummy in each one to round yourself out."),
+		LOCTEXT("Guide1", "COMBAT. Bladework is your melee aim \u2014 it unlocks sharper blades. Brutality is raw power. Hardening toughens you and lets you wear heavier plate. Endurance is your lifeblood; more of it, the more hits you walk away from."),
+		LOCTEXT("Guide2", "The trick nobody tells you: hit F7 to change your STANCE. Same swing, different skill \u2014 Quick trains Bladework, Heavy trains Brutality, Defensive trains Hardening. Beat on that dummy in each one to round yourself out."),
 		LOCTEXT("Guide3", "Marksmanship is for guns. Forge a Pipe Pistol at the bench, load some rounds, and put them downrange into the dummy."),
 		LOCTEXT("Guide4", "GATHERING. Scrapping cracks rubble into scrap. Woodcutting strips wood from debris. Fishing hauls food out of the water."),
-		LOCTEXT("Guide5", "CRAFTING. The furnace smelts scrap into bars — that's Hearthcraft. The bench builds guns and ammo — Tinkering. The cooking fire turns raw catches into food you can stomach — Sustenance. Eat it to heal."),
+		LOCTEXT("Guide5", "CRAFTING. The furnace smelts scrap into bars \u2014 that's Hearthcraft. The bench builds guns and ammo \u2014 Tinkering. The cooking fire turns raw catches into food you can stomach \u2014 Sustenance. Eat it to heal."),
 		LOCTEXT("Guide6", "Beastmastery is your companion. It grows stronger the more it fights at your side. You'll pick yours at the portal before you leave."),
 		LOCTEXT("Guide7", "Get every one of those to level two and the gate opens. Not a moment before."),
 		LOCTEXT("Guide8", "Last thing, and listen close: there are things bedded down in the far corners of the wasteland. Big, patient, hungry things. Stay clear of the map's corners until you're hard enough to survive what's waiting in them."),
@@ -289,7 +289,7 @@ UWLDialogueAsset* FWLBuiltinDialogues::BuildOldMara(UObject* Outer)
 	FWLDialogueNode& Post = D->AddNode(TEXT("post"), {
 		LOCTEXT("Post0", "Don't get greedy, Survivor. Keep pawing at my pack and I'll make you into lunch instead of teaching you how to cook one."),
 		LOCTEXT("Post1", "I already gave you a fair start. The rest you earn out there."),
-		LOCTEXT("Post2", "Go on. Rubble won't dig itself — and that portal won't open while you're chatting up an old woman."),
+		LOCTEXT("Post2", "Go on. Rubble won't dig itself \u2014 and that portal won't open while you're chatting up an old woman."),
 	});
 	Post.bCycleOneLine = true;
 	D->AddEntry(TEXT("post"));

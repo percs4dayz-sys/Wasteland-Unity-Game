@@ -1,3 +1,4 @@
+#include "Containers/LexFromString.h"
 #include "Quests/WLBeastTaskRules.h"
 
 namespace

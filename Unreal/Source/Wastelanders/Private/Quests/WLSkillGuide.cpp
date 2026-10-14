@@ -8,7 +8,7 @@ UWLSkillGuideAsset::UWLSkillGuideAsset()
 {
 	// Content ported verbatim from Skills/SkillGuide.cs (_subtitles, _trainedBy, _guides).
 	AddEntry(EWLSkill::Attack,
-		LOCTEXT("AttackSub", "Melee accuracy — how reliably your swings land. Gates the melee weapon tiers."),
+		LOCTEXT("AttackSub", "Melee accuracy \u2014 how reliably your swings land. Gates the melee weapon tiers."),
 		LOCTEXT("AttackHow", "Attack enemies with a melee weapon in Accurate stance."),
 		{
 			{ 1,  LOCTEXT("Atk1",  "Equip Scrap Blade & Pipe Melee.") },
@@ -24,11 +24,11 @@ UWLSkillGuideAsset::UWLSkillGuideAsset()
 		LOCTEXT("StrHow", "Attack enemies in Powerful (Aggressive) stance with a melee weapon."),
 		{
 			{ 1,  LOCTEXT("Str1",  "Base max-hit bonus from strength.") },
-			{ 20, LOCTEXT("Str20", "Unlock heavy swings — chance for bonus damage on each hit.") },
-			{ 40, LOCTEXT("Str40", "Stagger strikes — delay enemy attacks with crushing blows.") },
-			{ 60, LOCTEXT("Str60", "Sunder — attacks have a chance to reduce enemy defence.") },
-			{ 80, LOCTEXT("Str80", "Cleave — melee hits splash to nearby enemies.") },
-			{ 99, LOCTEXT("Str99", "Maximum carnage — bonus damage vs bosses and guaranteed stagger.") },
+			{ 20, LOCTEXT("Str20", "Unlock heavy swings \u2014 chance for bonus damage on each hit.") },
+			{ 40, LOCTEXT("Str40", "Stagger strikes \u2014 delay enemy attacks with crushing blows.") },
+			{ 60, LOCTEXT("Str60", "Sunder \u2014 attacks have a chance to reduce enemy defence.") },
+			{ 80, LOCTEXT("Str80", "Cleave \u2014 melee hits splash to nearby enemies.") },
+			{ 99, LOCTEXT("Str99", "Maximum carnage \u2014 bonus damage vs bosses and guaranteed stagger.") },
 		});
 
 	AddEntry(EWLSkill::Defence,
@@ -36,28 +36,28 @@ UWLSkillGuideAsset::UWLSkillGuideAsset()
 		LOCTEXT("DefHow", "Attack enemies in Defensive stance with a melee weapon."),
 		{
 			{ 1,  LOCTEXT("Def1",  "Base damage reduction from melee attacks.") },
-			{ 20, LOCTEXT("Def20", "Thick Skin — 5% passive melee damage reduction.") },
-			{ 40, LOCTEXT("Def40", "Iron Will — 10% chance to ignore stagger.") },
-			{ 60, LOCTEXT("Def60", "Battle Scarred — 15% damage reduction at low HP.") },
-			{ 80, LOCTEXT("Def80", "Juggernaut — cannot be staggered while attacking.") },
-			{ 99, LOCTEXT("Def99", "Unbreakable — 25% passive melee damage reduction.") },
+			{ 20, LOCTEXT("Def20", "Thick Skin \u2014 5% passive melee damage reduction.") },
+			{ 40, LOCTEXT("Def40", "Iron Will \u2014 10% chance to ignore stagger.") },
+			{ 60, LOCTEXT("Def60", "Battle Scarred \u2014 15% damage reduction at low HP.") },
+			{ 80, LOCTEXT("Def80", "Juggernaut \u2014 cannot be staggered while attacking.") },
+			{ 99, LOCTEXT("Def99", "Unbreakable \u2014 25% passive melee damage reduction.") },
 		});
 
 	// Endurance IS your hit points: the milestones are notable points on the 10 -> 220 climb.
 	AddEntry(EWLSkill::Endurance,
-		LOCTEXT("EndSub", "Your hit-point pool — this level IS your HP, up to 220. Trains off any combat."),
-		LOCTEXT("EndHow", "Deal damage in any fight — it levels passively."),
+		LOCTEXT("EndSub", "Your hit-point pool \u2014 this level IS your HP, up to 220. Trains off any combat."),
+		LOCTEXT("EndHow", "Deal damage in any fight \u2014 it levels passively."),
 		{
-			{ 10,  LOCTEXT("End10",  "Starting vitality — 10 HP.") },
-			{ 25,  LOCTEXT("End25",  "25 HP — you survive a second mistake.") },
+			{ 10,  LOCTEXT("End10",  "Starting vitality \u2014 10 HP.") },
+			{ 25,  LOCTEXT("End25",  "25 HP \u2014 you survive a second mistake.") },
 			{ 50,  LOCTEXT("End50",  "50 HP.") },
 			{ 75,  LOCTEXT("End75",  "75 HP.") },
-			{ 99,  LOCTEXT("End99",  "99 HP — where every other skill in the wasteland ends. You keep going.") },
+			{ 99,  LOCTEXT("End99",  "99 HP \u2014 where every other skill in the wasteland ends. You keep going.") },
 			{ 125, LOCTEXT("End125", "125 HP.") },
-			{ 150, LOCTEXT("End150", "150 HP — most things can no longer burst you down.") },
+			{ 150, LOCTEXT("End150", "150 HP \u2014 most things can no longer burst you down.") },
 			{ 175, LOCTEXT("End175", "175 HP.") },
 			{ 200, LOCTEXT("End200", "200 HP.") },
-			{ 220, LOCTEXT("End220", "220 HP — the ceiling. Nothing in the wasteland out-lasts you.") },
+			{ 220, LOCTEXT("End220", "220 HP \u2014 the ceiling. Nothing in the wasteland out-lasts you.") },
 		});
 
 	AddEntry(EWLSkill::Marksmanship,
@@ -138,7 +138,7 @@ UWLSkillGuideAsset::UWLSkillGuideAsset()
 		});
 
 	AddEntry(EWLSkill::Beastmastery,
-		LOCTEXT("BmSub", "Slayer-style hunting: your beast always has a task — kill a set number of one creature, matched to your tier. Higher levels = meaner prey and a stronger beast."),
+		LOCTEXT("BmSub", "Slayer-style hunting: your beast always has a task \u2014 kill a set number of one creature, matched to your tier. Higher levels = meaner prey and a stronger beast."),
 		LOCTEXT("BmHow", "Kill your beast task's creature with your beast out (B). Each kill gives XP equal to its max HP; finishing a task adds a 10% bonus."),
 		{
 			{ 1,  LOCTEXT("Bm1",  "Pick your beast at Roxy. Tier 1 beast tasks: 10-15 kills of one tier-1 creature.") },
@@ -151,11 +151,11 @@ UWLSkillGuideAsset::UWLSkillGuideAsset()
 		});
 
 	AddEntry(EWLSkill::Fission,
-		LOCTEXT("FisSub", "The third combat style. Power gauntlets fed by refined reactor cores — few shots, heavy hits."),
+		LOCTEXT("FisSub", "The third combat style. Power gauntlets fed by refined reactor cores \u2014 few shots, heavy hits."),
 		LOCTEXT("FisHow", "Fight with Power Gauntlets loaded with refined fission cores."),
 		{
 			{ 1,  LOCTEXT("Fis1",  "Equip Power Gauntlets. Meltdown: 1% chance a blast deals DOUBLE the core's max hit.") },
-			{ 10, LOCTEXT("Fis10", "Meltdown 2%. (Levels buy accuracy — damage is whatever core you load.)") },
+			{ 10, LOCTEXT("Fis10", "Meltdown 2%. (Levels buy accuracy \u2014 damage is whatever core you load.)") },
 			{ 20, LOCTEXT("Fis20", "Meltdown 3%. Volatile Cores hit for 20.") },
 			{ 40, LOCTEXT("Fis40", "Meltdown 5%. Enriched Cores hit for 32.") },
 			{ 60, LOCTEXT("Fis60", "Meltdown 7%. Weaponized Cores hit for 46.") },
@@ -241,7 +241,7 @@ TArray<FWLSkillMilestone> UWLSkillGuideAsset::GetMilestones(const UObject* World
 			M.Level = ToolRequiredLevel(Id);
 			M.Unlock = Skill == EWLSkill::Smithing
 				? FText::Format(LOCTEXT("ToolCraft", "Craft {0} at a Workbench."), Name)
-				: FText::Format(LOCTEXT("ToolUse", "Use {0} — {1}% faster gathering."), Name, ToolSpeedBonusPercent(Id));
+				: FText::Format(LOCTEXT("ToolUse", "Use {0} \u2014 {1}% faster gathering."), Name, ToolSpeedBonusPercent(Id));
 		}
 	}
 
@@ -277,7 +277,7 @@ FText UWLSkillGuideAsset::MakeTitle(const UObject* WorldContext, EWLSkill Skill,
 		}
 	}
 	// Unity printed "/99" for every skill; Endurance runs to 220, so show its real cap.
-	return FText::Format(LOCTEXT("GuideTitle", "{0}  —  Level {1}/{2}"), Name, CurrentLevel, FWLXPTable::MaxLevelFor(Skill));
+	return FText::Format(LOCTEXT("GuideTitle", "{0}  \u2014  Level {1}/{2}"), Name, CurrentLevel, FWLXPTable::MaxLevelFor(Skill));
 }
 
 #undef LOCTEXT_NAMESPACE

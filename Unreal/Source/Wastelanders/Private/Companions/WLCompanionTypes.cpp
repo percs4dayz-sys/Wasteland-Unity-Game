@@ -19,9 +19,9 @@ UWLCompanionDefinitions::UWLCompanionDefinitions()
 		S.StageScale = { 1.f, 1.2f, 1.45f };
 		S.CarrySlots = { 0, 0, 0 };
 		S.SharedDamageFraction = 0.10f;
-		S.HatchMessage = LOCTEXT("WolfHatch", "The egg cracks open — a scrawny mutant pup blinks up at you!");
+		S.HatchMessage = LOCTEXT("WolfHatch", "The egg cracks open \u2014 a scrawny mutant pup blinks up at you!");
 		S.ChoiceTitle = LOCTEXT("WolfTitle", "Mutant Pup");
-		S.ChoiceBlurb = LOCTEXT("WolfBlurb", "A snarling scrap of teeth and fur. Grows into a savage hunter at your side — and one day, an ALPHA.");
+		S.ChoiceBlurb = LOCTEXT("WolfBlurb", "A snarling scrap of teeth and fur. Grows into a savage hunter at your side \u2014 and one day, an ALPHA.");
 		S.StageMeshes.SetNum(3);
 	}
 	{
@@ -38,7 +38,7 @@ UWLCompanionDefinitions::UWLCompanionDefinitions()
 		S.StageScale = { 0.85f, 1.4f, 2.f };
 		S.CarrySlots = { 2, 4, 6 };
 		S.SharedDamageFraction = 0.35f;
-		S.HatchMessage = LOCTEXT("TurtleHatch", "The heavy egg splits — a tiny shellback pokes its head out and yawns.");
+		S.HatchMessage = LOCTEXT("TurtleHatch", "The heavy egg splits \u2014 a tiny shellback pokes its head out and yawns.");
 		S.ChoiceTitle = LOCTEXT("TurtleTitle", "Shellback Hatchling");
 		S.ChoiceBlurb = LOCTEXT("TurtleBlurb", "A plodding little tank. Grows into a great shellback that hauls extra gear for you (+2/+4/+6 pack slots).");
 		S.StageMeshes.SetNum(3);
@@ -60,7 +60,7 @@ UWLCompanionDefinitions::UWLCompanionDefinitions()
 		S.MarksmanshipBonus = 0.10f;      // 1.10 + 0.05 x stage
 		S.MarksmanshipPerStage = 0.05f;
 		S.HoverHeight = 130.f;            // Unity hoverHeight 1.3 m
-		S.HatchMessage = LOCTEXT("BirdHatch", "The speckled egg bursts — a scrappy rad-chick shrieks its first war cry!");
+		S.HatchMessage = LOCTEXT("BirdHatch", "The speckled egg bursts \u2014 a scrappy rad-chick shrieks its first war cry!");
 		S.ChoiceTitle = LOCTEXT("BirdTitle", "Rad-Chick");
 		S.ChoiceBlurb = LOCTEXT("BirdBlurb", "A scrappy ball of feathers and attitude. Grows into a skyhunter whose strikes hit far harder than they ought to.");
 		S.StageMeshes.SetNum(3);

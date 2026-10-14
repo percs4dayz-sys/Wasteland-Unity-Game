@@ -78,6 +78,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Input") TObjectPtr<UInputAction> ZoomAction;
 	UPROPERTY(EditDefaultsOnly, Category = "Input") TObjectPtr<UInputAction> RunAction;
 	UPROPERTY(EditDefaultsOnly, Category = "Input") TObjectPtr<UInputAction> DodgeAction;
+	UPROPERTY(EditDefaultsOnly, Category = "Input") TObjectPtr<UInputAction> CompanionToggleAction;
+	UPROPERTY(EditDefaultsOnly, Category = "Input") TObjectPtr<UInputAction> CompanionSpecialAction;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	float KeyOrbitSpeed = 90.f;
@@ -106,6 +108,8 @@ protected:
 	void OnRunStart(const FInputActionValue& Value);
 	void OnRunStop(const FInputActionValue& Value);
 	void OnDodge(const FInputActionValue& Value);
+	void OnCompanionToggle(const FInputActionValue& Value);
+	void OnCompanionSpecial(const FInputActionValue& Value);
 
 	void FollowPath();
 

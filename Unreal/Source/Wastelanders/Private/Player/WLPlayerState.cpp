@@ -8,6 +8,7 @@
 #include "Quests/WLPlayerFlagsComponent.h"
 #include "Quests/WLQuestComponent.h"
 #include "Companions/WLCompanionComponent.h"
+#include "Dialogue/WLDialogueComponent.h"
 #include "Persistence/WLCharacterSave.h"
 #include "Player/WLPlayerCharacter.h"
 #include "Net/UnrealNetwork.h"
@@ -31,6 +32,7 @@ AWLPlayerState::AWLPlayerState()
 	Flags = CreateDefaultSubobject<UWLPlayerFlagsComponent>(TEXT("Flags"));
 	Quests = CreateDefaultSubobject<UWLQuestComponent>(TEXT("Quests"));
 	Companions = CreateDefaultSubobject<UWLCompanionComponent>(TEXT("Companions"));
+	Dialogue = CreateDefaultSubobject<UWLDialogueComponent>(TEXT("Dialogue"));
 }
 
 void AWLPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

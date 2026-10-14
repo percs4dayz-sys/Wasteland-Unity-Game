@@ -10,7 +10,7 @@ const TArray<FWLJournalEntry>& FWLJournalLore::All()
 
 		FWLJournalEntry Day3;
 		Day3.ItemId = 300;
-		Day3.Title = LOCTEXT("Title300", "Journal Entry #1  ·  Day 3");
+		Day3.Title = LOCTEXT("Title300", "Journal Entry #1  \u00B7  Day 3");
 		Day3.bOnMainlandArrival = true;
 		Day3.Body = LOCTEXT("Body300",
 			"Found in a ruined campsite near the starting area.\n\n"
@@ -29,7 +29,7 @@ const TArray<FWLJournalEntry>& FWLJournalLore::All()
 
 		FWLJournalEntry Day27;
 		Day27.ItemId = 301;
-		Day27.Title = LOCTEXT("Title301", "Journal Entry #2  ·  Day 27");
+		Day27.Title = LOCTEXT("Title301", "Journal Entry #2  \u00B7  Day 27");
 		Day27.TotalLevelRequired = 150;
 		Day27.Body = LOCTEXT("Body301",
 			"Found near the first mini-boss arena.\n\n"
@@ -47,7 +47,7 @@ const TArray<FWLJournalEntry>& FWLJournalLore::All()
 
 		FWLJournalEntry Day184;
 		Day184.ItemId = 302;
-		Day184.Title = LOCTEXT("Title302", "Journal Entry #5  ·  Day 184");
+		Day184.Title = LOCTEXT("Title302", "Journal Entry #5  \u00B7  Day 184");
 		Day184.TotalLevelRequired = 400;
 		Day184.Body = LOCTEXT("Body302",
 			"Found shortly before the Major Boss.\n\n"

@@ -15,6 +15,7 @@ class UWLBankComponent;
 class UWLPlayerFlagsComponent;
 class UWLQuestComponent;
 class UWLCompanionComponent;
+class UWLDialogueComponent;
 struct FWLCharacterSave;
 
 /**
@@ -113,6 +114,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UWLCompanionComponent> Companions;
+
+	/** Server-owned conversation state; the quest component finds it instead of creating one at runtime. */
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	TObjectPtr<UWLDialogueComponent> Dialogue;
 
 	UPROPERTY(Replicated)
 	FGuid CharacterId;

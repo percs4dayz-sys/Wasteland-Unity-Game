@@ -583,13 +583,13 @@ void UWLCompanionComponent::Summon()
 	if (!HasCompanion())
 	{
 		Msg(bIncubating
-			? LOCTEXT("EggNotHatched", "Your egg hasn't hatched yet — keep it warm in your pack.")
+			? LOCTEXT("EggNotHatched", "Your egg hasn't hatched yet \u2014 keep it warm in your pack.")
 			: LOCTEXT("NoBeast", "You have no beast companion. Ask Roxy about her Beastmastery lesson."));
 		return;
 	}
 	if (Stamina < GetDefs()->MinSummonStamina)
 	{
-		Msg(LOCTEXT("TooTired", "Your beast is too worn out — let it rest a moment."));
+		Msg(LOCTEXT("TooTired", "Your beast is too worn out \u2014 let it rest a moment."));
 		return;
 	}
 	const FWLCompanionSpecies* S = GetSpecies();
@@ -737,7 +737,7 @@ void UWLCompanionComponent::DevCycleBeast()
 	bAlive = false;
 	DestroyPawn();
 	Summon();
-	Msg(FText::Format(LOCTEXT("DevCycle", "[DEBUG] Dog at Beastmastery {0} — {1}."), Target, GetBeastName()));
+	Msg(FText::Format(LOCTEXT("DevCycle", "[DEBUG] Dog at Beastmastery {0} \u2014 {1}."), Target, GetBeastName()));
 }
 
 void UWLCompanionComponent::ServerToggleSummon_Implementation()
@@ -822,15 +822,15 @@ bool UWLCompanionComponent::GetStatusLine(FText& OutText, float& OutFill) const
 	else if (St.bScattered)
 	{
 		OutFill = 0.f;
-		OutText = FText::Format(LOCTEXT("StatusFled", "Beast fled — returns {0}s"), St.RegroupIn);
+		OutText = FText::Format(LOCTEXT("StatusFled", "Beast fled \u2014 returns {0}s"), St.RegroupIn);
 	}
 	else
 	{
 		OutFill = St.StaminaPercent / 100.f;
 		const bool bRested = St.StaminaPercent >= 20;
 		OutText = bRested
-			? FText::Format(LOCTEXT("StatusResting", "{0} resting — tap to summon (B)"), Name)
-			: FText::Format(LOCTEXT("StatusWorn", "{0} worn out — {1}% rested"), Name, St.StaminaPercent);
+			? FText::Format(LOCTEXT("StatusResting", "{0} resting \u2014 tap to summon (B)"), Name)
+			: FText::Format(LOCTEXT("StatusWorn", "{0} worn out \u2014 {1}% rested"), Name, St.StaminaPercent);
 	}
 	return true;
 }

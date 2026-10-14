@@ -5,6 +5,7 @@
 #include "Player/WLChatCommands.h"
 #include "Interaction/WLInteractable.h"
 #include "Interaction/WLInteractorComponent.h"
+#include "Companions/WLCompanionComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
@@ -69,6 +70,8 @@ void AWLPlayerController::BuildDefaultInput()
 	ZoomAction = MakeAction(this, TEXT("IA_Zoom"), EInputActionValueType::Axis1D);
 	RunAction = MakeAction(this, TEXT("IA_Run"), EInputActionValueType::Boolean);
 	DodgeAction = MakeAction(this, TEXT("IA_Dodge"), EInputActionValueType::Boolean);
+	CompanionToggleAction = MakeAction(this, TEXT("IA_CompanionToggle"), EInputActionValueType::Boolean);
+	CompanionSpecialAction = MakeAction(this, TEXT("IA_CompanionSpecial"), EInputActionValueType::Boolean);
 
 	auto Negate = [this](FEnhancedActionKeyMapping& M) { M.Modifiers.Add(NewObject<UInputModifierNegate>(this)); };
 	auto Swizzle = [this](FEnhancedActionKeyMapping& M) { M.Modifiers.Add(NewObject<UInputModifierSwizzleAxis>(this)); };
@@ -96,6 +99,8 @@ void AWLPlayerController::BuildDefaultInput()
 	Ctx->MapKey(RunAction, EKeys::Gamepad_LeftThumbstick);
 	Ctx->MapKey(DodgeAction, EKeys::SpaceBar);
 	Ctx->MapKey(DodgeAction, EKeys::Gamepad_FaceButton_Right);
+	Ctx->MapKey(CompanionToggleAction, EKeys::B);
+	Ctx->MapKey(CompanionSpecialAction, EKeys::H);
 
 	DefaultMappingContext = Ctx;
 }
@@ -132,6 +137,8 @@ void AWLPlayerController::SetupInputComponent()
 	EIC->BindAction(RunAction, ETriggerEvent::Started, this, &AWLPlayerController::OnRunStart);
 	EIC->BindAction(RunAction, ETriggerEvent::Completed, this, &AWLPlayerController::OnRunStop);
 	EIC->BindAction(DodgeAction, ETriggerEvent::Started, this, &AWLPlayerController::OnDodge);
+	EIC->BindAction(CompanionToggleAction, ETriggerEvent::Started, this, &AWLPlayerController::OnCompanionToggle);
+	EIC->BindAction(CompanionSpecialAction, ETriggerEvent::Started, this, &AWLPlayerController::OnCompanionSpecial);
 }
 
 void AWLPlayerController::OnMove(const FInputActionValue& Value)
@@ -261,6 +268,22 @@ void AWLPlayerController::OnDodge(const FInputActionValue&)
 	if (AWLPlayerCharacter* Char = GetWLCharacter())
 	{
 		Char->GetWLMovement()->RequestDodge();
+	}
+}
+
+void AWLPlayerController::OnCompanionToggle(const FInputActionValue&)
+{
+	if (AWLPlayerState* PS = GetWLPlayerState())
+	{
+		PS->GetCompanions()->RequestToggle();
+	}
+}
+
+void AWLPlayerController::OnCompanionSpecial(const FInputActionValue&)
+{
+	if (AWLPlayerState* PS = GetWLPlayerState())
+	{
+		PS->GetCompanions()->RequestSpecial();
 	}
 }
 
