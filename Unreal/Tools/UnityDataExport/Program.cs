@@ -88,11 +88,6 @@ public static class Program
                 ["PaletteTier"] = i.paletteTier,
                 ["SetId"] = i.setId ?? "",
                 ["SocketCount"] = i.socketCount,
-                // Unity Resources paths; the UE side maps these onto soft object paths in the
-                // asset-migration pass (see Docs/ConversionPlan.md, "Asset pipeline").
-                ["UnityHeldModel"] = i.heldModel ?? "",
-                ["UnityHeldModelLeft"] = i.heldModelLeft ?? "",
-                ["UnityArmourMesh"] = i.armourMesh ?? "",
                 ["Requirements"] = i.requirements.ToDictionary(kv => kv.Key.ToString(), kv => kv.Value),
             });
         }

@@ -97,17 +97,10 @@ struct WASTELANDERS_API FWLItemRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
 	int32 SocketCount = 0;
 
-	/** Unity Resources path of the held model. Kept for the asset-migration pass. */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Migration")
-	FString UnityHeldModel;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Migration")
-	FString UnityHeldModelLeft;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Migration")
-	FString UnityArmourMesh;
-
-	/** Migrated UE assets. Filled in by the asset pass; empty until then. */
+	/**
+	 * New-art-direction assets. Unity art is deliberately NOT ported; these stay empty (code falls back
+	 * to placeholder meshes/icons) until new assets are authored.
+	 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Visual")
 	TSoftObjectPtr<UStaticMesh> HeldMesh;
 
