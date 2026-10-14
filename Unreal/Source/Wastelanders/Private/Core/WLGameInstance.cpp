@@ -2,7 +2,26 @@
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 
-void UWLGameInstance::JoinWorld(const FString& Address, const FString& CharacterName)
+FString UWLGameInstance::LookToUrlSafe(const FString& EncodedLook)
+{
+	FString Out = EncodedLook.Left(400);
+	Out.ReplaceInline(TEXT("="), TEXT("~"));
+	Out.ReplaceInline(TEXT("|"), TEXT("."));
+	Out.ReplaceInline(TEXT("?"), TEXT(""));
+	Out.ReplaceInline(TEXT("&"), TEXT(""));
+	Out.ReplaceInline(TEXT(" "), TEXT("_"));
+	return Out;
+}
+
+FString UWLGameInstance::LookFromUrlSafe(const FString& UrlSafe)
+{
+	FString Out = UrlSafe;
+	Out.ReplaceInline(TEXT("~"), TEXT("="));
+	Out.ReplaceInline(TEXT("."), TEXT("|"));
+	return Out;
+}
+
+void UWLGameInstance::JoinWorld(const FString& Address, const FString& CharacterName, const FString& EncodedLook)
 {
 	// Names are letters, digits, spaces and underscores only, so they ride safely on the travel URL.
 	SelectedCharacterName.Reset();
@@ -20,7 +39,11 @@ void UWLGameInstance::JoinWorld(const FString& Address, const FString& Character
 	if (APlayerController* PC = GetFirstLocalPlayerController())
 	{
 		// The character name rides on the URL; the server resolves account + character on login.
-		const FString Url = FString::Printf(TEXT("%s?Name=%s"), *Address, *SelectedCharacterName);
+		FString Url = FString::Printf(TEXT("%s?Name=%s"), *Address, *SelectedCharacterName);
+		if (!EncodedLook.IsEmpty())
+		{
+			Url += TEXT("?Look=") + LookToUrlSafe(EncodedLook);
+		}
 		PC->ClientTravel(Url, TRAVEL_Absolute);
 	}
 }

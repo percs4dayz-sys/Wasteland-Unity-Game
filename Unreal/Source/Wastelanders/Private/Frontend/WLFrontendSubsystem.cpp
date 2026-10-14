@@ -143,7 +143,7 @@ bool UWLFrontendSubsystem::Join()
 	}
 	Look.Add(TEXT("Gender"), Gender);
 	bPendingSplash = true;
-	GI->JoinWorld(ServerAddress, SanitizeName(CharacterName));
+	GI->JoinWorld(ServerAddress, SanitizeName(CharacterName), EncodeLook(Look));
 	return true;
 }
 

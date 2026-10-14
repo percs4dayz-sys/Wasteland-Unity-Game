@@ -54,4 +54,7 @@ protected:
 
 	/** Account ids by controller, captured at login before the PlayerState is fully set up. */
 	TMap<TWeakObjectPtr<APlayerController>, FString> PendingAccounts;
+
+	/** Character-creator look from the join URL; only used when the character is brand new. */
+	TMap<TWeakObjectPtr<APlayerController>, FString> PendingLooks;
 };

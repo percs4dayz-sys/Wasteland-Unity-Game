@@ -1,5 +1,7 @@
 #include "Core/WLGameMode.h"
 #include "Core/WLGameState.h"
+#include "Core/WLGameInstance.h"
+#include "Frontend/WLFrontendSubsystem.h"
 #include "Player/WLPlayerState.h"
 #include "Player/WLPlayerController.h"
 #include "Player/WLPlayerCharacter.h"
@@ -40,6 +42,11 @@ FString AWLGameMode::InitNewPlayer(APlayerController* NewPlayerController, const
 
 	const FString AccountId = UniqueId.IsValid() ? UniqueId->ToString() : FString::Printf(TEXT("dev:%s"), *Name.ToLower());
 	PendingAccounts.Add(NewPlayerController, AccountId);
+	const FString Look = UGameplayStatics::ParseOption(Options, TEXT("Look"));
+	if (!Look.IsEmpty())
+	{
+		PendingLooks.Add(NewPlayerController, UWLGameInstance::LookFromUrlSafe(Look));
+	}
 	if (NewPlayerController->PlayerState)
 	{
 		NewPlayerController->PlayerState->SetPlayerName(Name);
@@ -86,6 +93,8 @@ void AWLGameMode::OnCharacterLoaded(bool bSuccess, const FWLCharacterSave& Save,
 {
 	APlayerController* PC = WeakPC.Get();
 	PendingAccounts.Remove(WeakPC);
+	const FString PendingLook = PendingLooks.FindRef(WeakPC);
+	PendingLooks.Remove(WeakPC);
 	if (!PC)
 	{
 		return; // disconnected while loading
@@ -100,7 +109,12 @@ void AWLGameMode::OnCharacterLoaded(bool bSuccess, const FWLCharacterSave& Save,
 		PC->ClientReturnToMainMenuWithTextReason(NSLOCTEXT("WL", "LoadFailedKick", "Character load failed"));
 		return;
 	}
-	SpawnLoadedPlayer(PC, Save);
+	FWLCharacterSave Loaded = Save;
+	if (Loaded.Appearance.Num() == 0 && !PendingLook.IsEmpty())
+	{
+		Loaded.Appearance = UWLFrontendSubsystem::DecodeLook(PendingLook);
+	}
+	SpawnLoadedPlayer(PC, Loaded);
 }
 
 void AWLGameMode::SpawnLoadedPlayer(APlayerController* PC, const FWLCharacterSave& Save)
@@ -161,6 +175,7 @@ void AWLGameMode::Logout(AController* Exiting)
 	if (APlayerController* PC = Cast<APlayerController>(Exiting))
 	{
 		PendingAccounts.Remove(PC);
+		PendingLooks.Remove(PC);
 	}
 	Super::Logout(Exiting);
 }
