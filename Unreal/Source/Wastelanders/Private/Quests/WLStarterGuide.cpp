@@ -1,5 +1,4 @@
 #include "Quests/WLStarterGuide.h"
-#include "Containers/LexFromString.h"
 #include "Quests/WLQuestFlags.h"
 
 #define LOCTEXT_NAMESPACE "WLStarterGuide"

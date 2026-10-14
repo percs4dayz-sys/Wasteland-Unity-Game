@@ -342,7 +342,7 @@ void AWLEnemyAIController::MoveTowards(AWLEnemyCharacter* Enemy, const FVector& 
 	}
 	LastMoveGoal = Goal;
 
-	const UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 	if (NavSys && NavSys->GetDefaultNavDataInstance(FNavigationSystem::DontCreate))
 	{
 		const EPathFollowingRequestResult::Type Result = MoveToLocation(Goal, Acceptance, false, true, true, false, nullptr, true);

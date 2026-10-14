@@ -6,6 +6,10 @@ public class Wastelanders : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
+		// Parameters named Pawn/Instigator/Owner shadow engine members. Harmless here, so report them
+		// as warnings instead of failing the build.
+		ShadowVariableWarningLevel = WarningLevel.Warning;
+
 		PublicDependencyModuleNames.AddRange(new string[]
 		{
 			"Core",

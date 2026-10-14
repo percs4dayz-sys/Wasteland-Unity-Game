@@ -1,6 +1,7 @@
 #include "Combat/WLCombatComponent.h"
 #include "Combat/WLEnemyCharacter.h"
 #include "Combat/WLCombatFeedbackSubsystem.h"
+#include "Core/WLXPTable.h"
 #include "AbilitySystem/WLAbilitySystemComponent.h"
 #include "AbilitySystem/WLGA_BasicAttack.h"
 #include "AbilitySystem/WLGA_SpecialAttack.h"
