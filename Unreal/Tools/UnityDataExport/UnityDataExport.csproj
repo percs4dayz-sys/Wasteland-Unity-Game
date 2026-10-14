@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Compiles the Unity project's pure-data C# (item registry, skills, XP curves, recipes) against a
+       tiny UnityEngine stub, then dumps it as UE DataTable-ready JSON/CSV. Rerun whenever the Unity
+       data changes:  dotnet run -c Release (output path argument, default ../../Content/Data) -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <NoWarn>CS0414;CS0169;CS0649;CS8632;CS0162</NoWarn>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="*.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)../../../Assets/Scripts/Items/*.cs" Exclude="$(MSBuildThisFileDirectory)../../../Assets/Scripts/Items/WeaponSkins.cs;$(MSBuildThisFileDirectory)../../../Assets/Scripts/Items/HeldModels.cs;$(MSBuildThisFileDirectory)../../../Assets/Scripts/Items/Bank.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)../../../Assets/Scripts/Skills/Skill.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)../../../Assets/Scripts/Skills/SkillData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)../../../Assets/Scripts/Skills/XPTable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)../../../Assets/Scripts/World/CraftingRecipe.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)../../../Assets/Scripts/World/CraftingRecipes.cs" />
+  </ItemGroup>
+</Project>
