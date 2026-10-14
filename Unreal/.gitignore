@@ -17,3 +17,6 @@ Plugins/*/Binaries/
 Plugins/*/Intermediate/
 Tools/UnityDataExport/bin/
 Tools/UnityDataExport/obj/
+
+# The data exporter project file is source, unlike Unity-generated .csproj files.
+!Tools/UnityDataExport/UnityDataExport.csproj
