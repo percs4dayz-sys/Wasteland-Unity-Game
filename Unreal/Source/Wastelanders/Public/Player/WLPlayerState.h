@@ -18,6 +18,19 @@ class UWLCompanionComponent;
 class UWLDialogueComponent;
 struct FWLCharacterSave;
 
+/** One appearance choice. Unreal cannot replicate TMap, so the wire form is an array of these. */
+USTRUCT()
+struct FWLAppearanceEntry
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FName Key;
+
+	UPROPERTY()
+	FString Value;
+};
+
 /**
  * The persistent character. Everything Unity kept on PlayerEntity (stats, inventory, equipment,
  * bank, flags) lives here as replicated components, so it survives pawn death/respawn and maps 1:1
@@ -79,14 +92,22 @@ public:
 	bool IsCharacterLoaded() const { return bCharacterLoaded; }
 
 	/** Character-creator choices, replicated so other clients can build the body. */
-	UPROPERTY(ReplicatedUsing = OnRep_Appearance, BlueprintReadOnly, Category = "Wastelanders")
-	TMap<FName, FString> Appearance;
+	const TMap<FName, FString>& GetAppearance() const { return Appearance; }
+
+	/** SERVER. Set the look; rebuilds the replicated array so clients receive it. */
+	void SetAppearance(const TMap<FName, FString>& In);
 
 protected:
 	virtual void CopyProperties(APlayerState* PlayerState) override;
 
 	UFUNCTION()
 	void OnRep_Appearance();
+
+	/** Working copy of the look. Not replicated itself (TMap is unsupported); mirrored from AppearanceRep. */
+	TMap<FName, FString> Appearance;
+
+	UPROPERTY(ReplicatedUsing = OnRep_Appearance)
+	TArray<FWLAppearanceEntry> AppearanceRep;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	TObjectPtr<UWLAbilitySystemComponent> AbilitySystem;

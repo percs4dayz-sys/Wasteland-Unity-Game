@@ -38,7 +38,7 @@ AWLPlayerState::AWLPlayerState()
 void AWLPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AWLPlayerState, Appearance);
+	DOREPLIFETIME(AWLPlayerState, AppearanceRep);
 	DOREPLIFETIME(AWLPlayerState, CharacterId);
 	DOREPLIFETIME(AWLPlayerState, TotalKills);
 }
@@ -87,7 +87,7 @@ void AWLPlayerState::ApplySave(const FWLCharacterSave& In)
 	{
 		SetPlayerName(In.PlayerName);
 	}
-	Appearance = In.Appearance;
+	SetAppearance(In.Appearance);
 	TotalKills = In.TotalKills;
 
 	// Order matters: skills before equipment (equip gates read levels), inventory before bank.
@@ -110,13 +110,29 @@ void AWLPlayerState::CopyProperties(APlayerState* PlayerState)
 	{
 		Other->CharacterId = CharacterId;
 		Other->AccountId = AccountId;
-		Other->Appearance = Appearance;
+		Other->SetAppearance(Appearance);
 		Other->TotalKills = TotalKills;
 	}
 }
 
+void AWLPlayerState::SetAppearance(const TMap<FName, FString>& In)
+{
+	Appearance = In;
+	AppearanceRep.Reset();
+	for (const TPair<FName, FString>& Pair : Appearance)
+	{
+		AppearanceRep.Add({Pair.Key, Pair.Value});
+	}
+	ForceNetUpdate();
+}
+
 void AWLPlayerState::OnRep_Appearance()
 {
+	Appearance.Reset();
+	for (const FWLAppearanceEntry& E : AppearanceRep)
+	{
+		Appearance.Add(E.Key, E.Value);
+	}
 	if (AWLPlayerCharacter* Pawn = GetPawn<AWLPlayerCharacter>())
 	{
 		Pawn->RefreshAppearance();

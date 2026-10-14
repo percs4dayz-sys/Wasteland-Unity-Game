@@ -1,5 +1,5 @@
-#include "Containers/LexFromString.h"
 #include "Quests/WLBeastTaskRules.h"
+#include "Containers/LexFromString.h"
 
 namespace
 {
