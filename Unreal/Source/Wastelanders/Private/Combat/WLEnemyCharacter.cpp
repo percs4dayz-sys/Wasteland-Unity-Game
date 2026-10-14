@@ -154,18 +154,18 @@ AActor* AWLEnemyCharacter::GetAggroTarget() const
 	return AI ? AI->GetCurrentTarget() : nullptr;
 }
 
-bool AWLEnemyCharacter::IsAggroOn(const AActor* Pawn) const
+bool AWLEnemyCharacter::IsAggroOn(const AActor* Target) const
 {
-	if (!Pawn || IsDead())
+	if (!Target || IsDead())
 	{
 		return false;
 	}
-	if (FVector::Dist2D(Pawn->GetActorLocation(), GetActorLocation()) > AggroRange)
+	if (FVector::Dist2D(Target->GetActorLocation(), GetActorLocation()) > AggroRange)
 	{
 		return false;
 	}
 	const AWLEnemyAIController* AI = GetEnemyAI();
-	return bIsAggressive || (AI && AI->IsProvokedBy(Pawn));
+	return bIsAggressive || (AI && AI->IsProvokedBy(Target));
 }
 
 void AWLEnemyCharacter::Stagger(float Seconds)
@@ -285,9 +285,9 @@ AWLPlayerState* AWLEnemyCharacter::ResolvePlayerState(AActor* Instigator)
 	return nullptr;
 }
 
-void AWLEnemyCharacter::HandleDamageTaken(int32 Amount, AActor* Instigator, AActor* /*Causer*/)
+void AWLEnemyCharacter::HandleDamageTaken(int32 Amount, AActor* DamageSource, AActor* /*Causer*/)
 {
-	AWLPlayerState* PS = ResolvePlayerState(Instigator);
+	AWLPlayerState* PS = ResolvePlayerState(DamageSource);
 	if (!PS)
 	{
 		return;   // turrets, reflect from nobody: no credit, no provocation
@@ -316,12 +316,12 @@ AWLPlayerState* AWLEnemyCharacter::FindTopDamager() const
 	return Best;
 }
 
-void AWLEnemyCharacter::HandleOutOfHealth(AActor* Instigator, AActor* /*Causer*/)
+void AWLEnemyCharacter::HandleOutOfHealth(AActor* DamageSource, AActor* /*Causer*/)
 {
-	HandleDeath(Instigator);
+	HandleDeath(DamageSource);
 }
 
-void AWLEnemyCharacter::HandleDeath(AActor* Instigator)
+void AWLEnemyCharacter::HandleDeath(AActor* DamageSource)
 {
 	if (AWLEnemyAIController* AI = GetEnemyAI())
 	{
@@ -332,7 +332,7 @@ void AWLEnemyCharacter::HandleDeath(AActor* Instigator)
 	AWLPlayerState* Killer = FindTopDamager();
 	if (!Killer)
 	{
-		Killer = ResolvePlayerState(Instigator);
+		Killer = ResolvePlayerState(DamageSource);
 	}
 
 	// Dummies never count as kills or drop loot (CombatTarget.TakeDamage).

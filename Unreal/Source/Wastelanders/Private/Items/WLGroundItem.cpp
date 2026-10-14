@@ -181,8 +181,8 @@ bool AWLGroundItem::IsAvailableTo(const AWLPlayerState* Player) const
 		return false;
 	}
 	// Owner gone (logged out) or window elapsed: public.
-	const AWLPlayerState* Owner = OwnerPlayer.Get();
-	return bPublic || !Owner || Owner == Player;
+	const AWLPlayerState* OwnerPS = OwnerPlayer.Get();
+	return bPublic || !OwnerPS || OwnerPS == Player;
 }
 
 bool AWLGroundItem::IsNetRelevantFor(const AActor* RealViewer, const AActor* ViewTarget, const FVector& SrcLocation) const

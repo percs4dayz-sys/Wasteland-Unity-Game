@@ -69,11 +69,11 @@ void AWLEnemyAIController::NotifyProvoked(APawn* By)
 	}
 }
 
-bool AWLEnemyAIController::IsProvokedBy(const AActor* Pawn) const
+bool AWLEnemyAIController::IsProvokedBy(const AActor* QueryPawn) const
 {
 	for (const TWeakObjectPtr<APawn>& P : ProvokedBy)
 	{
-		if (P.Get() == Pawn)
+		if (P.Get() == QueryPawn)
 		{
 			return true;
 		}

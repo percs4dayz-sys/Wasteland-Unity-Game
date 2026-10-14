@@ -24,7 +24,7 @@ UWLUISubsystem* UWLUISubsystem::Get(const UObject* WorldContextObject)
 		return Get(PC);
 	}
 	const UWorld* World = WorldContextObject ? WorldContextObject->GetWorld() : nullptr;
-	const ULocalPlayer* LP = (World && GEngine) ? GEngine->GetFirstGamePlayer(World) : nullptr;
+	const ULocalPlayer* LP = (World && GEngine) ? GEngine->GetFirstGamePlayer(const_cast<UWorld*>(World)) : nullptr;
 	return LP ? LP->GetSubsystem<UWLUISubsystem>() : nullptr;
 }
 

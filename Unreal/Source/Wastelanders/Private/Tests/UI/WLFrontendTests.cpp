@@ -5,7 +5,7 @@
 #include "Frontend/WLFrontendSubsystem.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWLFrontendNameTest, "Wastelanders.UI.Frontend.Name",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ServerContext | EAutomationTestFlags::ProductFilter)
 bool FWLFrontendNameTest::RunTest(const FString&)
 {
 	TestEqual(TEXT("spaces become underscores"), UWLFrontendSubsystem::SanitizeName(TEXT("  Rusty Pete ")), FString(TEXT("Rusty_Pete")));
@@ -18,7 +18,7 @@ bool FWLFrontendNameTest::RunTest(const FString&)
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FWLFrontendLookTest, "Wastelanders.UI.Frontend.Look",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ServerContext | EAutomationTestFlags::ProductFilter)
 bool FWLFrontendLookTest::RunTest(const FString&)
 {
 	TMap<FName, FString> Look;

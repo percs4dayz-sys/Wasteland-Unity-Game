@@ -4,6 +4,7 @@
 #include "EngineUtils.h"
 #include "Engine/World.h"
 #include "Engine/HitResult.h"
+#include "Engine/OverlapResult.h"
 #include "TimerManager.h"
 #include "CollisionQueryParams.h"
 
